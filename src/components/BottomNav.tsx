@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Zap, Waves, Heart, Award } from 'lucide-react';
+import { Home, Zap, Waves, Heart, Users, Award } from 'lucide-react';
 
 const BottomNav = () => {
   const { pathname } = useLocation();
@@ -9,6 +9,7 @@ const BottomNav = () => {
     { to: '/spark', icon: Zap, label: 'SPARK' },
     { to: '/wave/setup', icon: Waves, label: 'WAVE' },
     { to: '/rsd', icon: Heart, label: 'RSD' },
+    { to: '/squad', icon: Users, label: 'Squad' },
     { to: '/badges', icon: Award, label: 'Badges' },
   ];
 
@@ -19,16 +20,17 @@ const BottomNav = () => {
           const active = pathname === to ||
             (to === '/spark' && pathname.startsWith('/spark')) ||
             (to === '/wave/setup' && pathname.startsWith('/wave')) ||
-            (to === '/rsd' && pathname.startsWith('/rsd'));
+            (to === '/rsd' && pathname.startsWith('/rsd')) ||
+            (to === '/squad' && pathname.startsWith('/squad'));
           return (
             <Link
               key={to}
               to={to}
-              className={`flex flex-col items-center gap-1 px-3 py-2 rounded-button transition-all duration-200
+              className={`flex flex-col items-center gap-1 px-2 py-2 rounded-button transition-all duration-200
                 ${active ? 'text-primary' : 'text-text-hint hover:text-text-secondary'}`}
             >
-              <Icon size={20} />
-              <span className="text-[10px] font-body font-medium">{label}</span>
+              <Icon size={18} />
+              <span className="text-[9px] font-body font-medium">{label}</span>
             </Link>
           );
         })}

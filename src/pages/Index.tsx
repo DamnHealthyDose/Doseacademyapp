@@ -55,7 +55,7 @@ const Index = () => {
         </motion.p>
 
         {/* Slick */}
-        <SlickMessage message="Hey! I'm Slick. Pick a tool — SPARK for emotions, WAVE for focus, RSD for when rejection stings." />
+        <SlickMessage message="Hey! I'm Slick. Pick a tool — SPARK for emotions, WAVE for focus, RSD for rejection, Squad for studying together." />
 
         {/* Active session resume card */}
         {hasActiveSession && (
@@ -110,6 +110,17 @@ const Index = () => {
             whileTap={{ scale: 0.97 }}
           >
             💜 RSD
+          </motion.button>
+          <motion.button
+            onClick={() => navigate('/squad')}
+            className="flex-1 h-14 bg-bg-card border-2 border-squad text-squad font-heading font-bold text-sm rounded-button
+                       flex items-center justify-center gap-1 hover:bg-squad/10 transition-colors"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.4 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            👥 Squad
           </motion.button>
         </div>
 
