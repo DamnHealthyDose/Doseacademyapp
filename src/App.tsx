@@ -9,6 +9,7 @@ import SparkPage from "./pages/SparkPage.tsx";
 import SparkComplete from "./pages/SparkComplete.tsx";
 import BadgesPage from "./pages/BadgesPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import SlickChatWidget from "./components/SlickChatWidget.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        <SlickChatWidget />
       </AppProvider>
     </TooltipProvider>
   </QueryClientProvider>
