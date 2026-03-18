@@ -55,7 +55,7 @@ const Index = () => {
         </motion.p>
 
         {/* Slick */}
-        <SlickMessage message="Hey! I'm Slick. Pick a tool — SPARK for emotions, WAVE for focus, RSD for when rejection stings." />
+        <SlickMessage message="Hey! I'm Slick. Pick a tool — SPARK for emotions, WAVE for focus, RSD for rejection, Squad for studying together." />
 
         {/* Active session resume card */}
         {hasActiveSession && (
