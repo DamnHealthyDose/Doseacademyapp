@@ -61,6 +61,8 @@ export default {
           foreground: "hsl(var(--warning-foreground))",
         },
         danger: "hsl(var(--danger))",
+        "rsd-warm": "hsl(var(--rsd-warm))",
+        "rsd-calm": "hsl(var(--rsd-calm))",
         "bg-deep": "hsl(var(--bg-deep))",
         "bg-card": "hsl(var(--bg-card))",
         "bg-elevated": "hsl(var(--bg-elevated))",
