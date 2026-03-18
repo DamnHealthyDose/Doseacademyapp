@@ -9,6 +9,10 @@ import Index from "./pages/Index.tsx";
 import SparkPage from "./pages/SparkPage.tsx";
 import SparkComplete from "./pages/SparkComplete.tsx";
 import BadgesPage from "./pages/BadgesPage.tsx";
+import WaveSetup from "./pages/WaveSetup.tsx";
+import WaveSession from "./pages/WaveSession.tsx";
+import WaveBreak from "./pages/WaveBreak.tsx";
+import WaveComplete from "./pages/WaveComplete.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
 
@@ -26,6 +30,10 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/spark" element={<SparkPage />} />
               <Route path="/spark/complete" element={<SparkComplete />} />
+              <Route path="/wave/setup" element={<WaveSetup />} />
+              <Route path="/wave/session" element={<WaveSession />} />
+              <Route path="/wave/break" element={<WaveBreak />} />
+              <Route path="/wave/complete" element={<WaveComplete />} />
               <Route path="/badges" element={<BadgesPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
