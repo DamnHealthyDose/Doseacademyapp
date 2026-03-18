@@ -37,6 +37,19 @@ interface RsdSession {
   completedAt: number | null;
 }
 
+export interface SquadSession {
+  task: string;
+  plannedDuration: number;
+  actualDuration: number;
+  mode: 'ambient' | 'invite';
+  sessionCode: string | null;
+  status: 'idle' | 'running' | 'paused' | 'complete' | 'abandoned';
+  startTime: number | null;
+  distractions: DistractionEntry[];
+  checkinCompletion: string | null;
+  checkinFeeling: string | null;
+}
+
 interface AppState {
   xp: number;
   streak: number;
@@ -64,6 +77,13 @@ interface AppState {
   rsdWeekCount: number;
   completeRsd: (scenario: string, intensity: number, usedBreathe: boolean, reframe: string, action: string) => void;
   resetRsd: () => void;
+  // Squad
+  squadSession: SquadSession;
+  setSquadSession: React.Dispatch<React.SetStateAction<SquadSession>>;
+  squadStreak: number;
+  startSquad: (task: string, duration: number, mode: 'ambient' | 'invite', code: string | null) => void;
+  completeSquad: (actualSeconds: number, distractions: DistractionEntry[]) => void;
+  resetSquad: () => void;
 }
 
 // --- Defaults ---
@@ -79,6 +99,12 @@ const defaultWaveSession: WaveSession = {
 
 const defaultRsdSession: RsdSession = {
   scenario: '', intensity: 0, usedBreathe: false, reframeChosen: '', actionChosen: '', completedAt: null,
+};
+
+const defaultSquadSession: SquadSession = {
+  task: '', plannedDuration: 25, actualDuration: 0, mode: 'ambient',
+  sessionCode: null, status: 'idle', startTime: null,
+  distractions: [], checkinCompletion: null, checkinFeeling: null,
 };
 
 const AppContext = createContext<AppState | null>(null);
@@ -107,12 +133,17 @@ const loadRsdStats = () => {
   try { const s = localStorage.getItem('dose-rsd-stats'); if (s) return JSON.parse(s); } catch {}
   return { totalSessions: 0, weekSessions: 0, weekStart: new Date().toDateString(), reframeCount: 0 };
 };
+const loadSquadStats = () => {
+  try { const s = localStorage.getItem('dose-squad-stats'); if (s) return JSON.parse(s); } catch {}
+  return { squadStreak: 0, totalSquadSessions: 0 };
+};
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const saved = loadState();
   const savedWave = loadWaveSession();
   const savedStats = loadWaveStats();
   const savedRsd = loadRsdStats();
+  const savedSquad = loadSquadStats();
 
   const [xp, setXp] = useState(saved?.xp ?? 100);
   const [streak, setStreak] = useState(saved?.streak ?? 3);
@@ -130,6 +161,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [rsdSessionCount, setRsdSessionCount] = useState(savedRsd.totalSessions);
   const [rsdWeekCount, setRsdWeekCount] = useState(savedRsd.weekSessions);
   const [rsdReframeCount, setRsdReframeCount] = useState(savedRsd.reframeCount);
+
+  const [squadSession, setSquadSession] = useState<SquadSession>(defaultSquadSession);
+  const [squadStreak, setSquadStreak] = useState(savedSquad.squadStreak);
+  const [totalSquadSessions, setTotalSquadSessions] = useState(savedSquad.totalSquadSessions);
 
   const hasActiveSession = waveSession.status === 'running' || waveSession.status === 'paused';
 
@@ -149,6 +184,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       totalSessions: rsdSessionCount, weekSessions: rsdWeekCount, weekStart: new Date().toDateString(), reframeCount: rsdReframeCount,
     }));
   }, [rsdSessionCount, rsdWeekCount, rsdReframeCount]);
+
+  useEffect(() => {
+    localStorage.setItem('dose-squad-stats', JSON.stringify({ squadStreak, totalSquadSessions }));
+  }, [squadStreak, totalSquadSessions]);
 
   // --- SPARK ---
   const setAnswer = (key: keyof SparkAnswers, value: string | number) => setAnswers(prev => ({ ...prev, [key]: value }));
@@ -195,17 +234,46 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setRsdWeekCount(prev => prev + 1);
     setRsdReframeCount(prev => prev + 1);
     setSessionsCount(prev => prev + 1);
-
-    // Badges
     if (!badges.includes('rsd-grounded')) setBadges(prev => [...prev, 'rsd-grounded']);
     if (usedBreathe && !badges.includes('rsd-breathed')) setBadges(prev => [...prev, 'rsd-breathed']);
     if (rsdReframeCount + 1 >= 5 && !badges.includes('rsd-challenger')) setBadges(prev => [...prev, 'rsd-challenger']);
     if (rsdWeekCount + 1 >= 3 && !badges.includes('rsd-teflon')) setBadges(prev => [...prev, 'rsd-teflon']);
-
     setRsdSession({ scenario, intensity, usedBreathe, reframeChosen: reframe, actionChosen: action, completedAt: Date.now() });
   };
 
   const resetRsd = () => setRsdSession(defaultRsdSession);
+
+  // --- SQUAD ---
+  const startSquad = (task: string, duration: number, mode: 'ambient' | 'invite', code: string | null) => {
+    setSquadSession({ task, plannedDuration: duration, actualDuration: 0, mode, sessionCode: code, status: 'idle', startTime: null, distractions: [], checkinCompletion: null, checkinFeeling: null });
+  };
+
+  const completeSquad = (actualSeconds: number, distractions: DistractionEntry[]) => {
+    const planned = squadSession.plannedDuration * 60;
+    const ratio = actualSeconds / planned;
+    const isFull = ratio >= 0.95;
+    const isPartial = ratio >= 0.5;
+    const isInvite = squadSession.mode === 'invite';
+
+    let earnedXp = 5;
+    if (isFull) { earnedXp = isInvite ? 30 : 25; }
+    else if (isPartial) { earnedXp = 15; }
+
+    setXp(prev => prev + earnedXp);
+    setSquadStreak(prev => prev + 1);
+    setTotalSquadSessions(prev => prev + 1);
+    setSessionsCount(prev => prev + 1);
+    setSessionsToday(prev => prev + 1);
+    setMinutesToday(prev => prev + Math.round(actualSeconds / 60));
+
+    if (!badges.includes('squad-up')) setBadges(prev => [...prev, 'squad-up']);
+    if (isInvite && !badges.includes('squad-together')) setBadges(prev => [...prev, 'squad-together']);
+    if (squadStreak + 1 >= 5 && !badges.includes('squad-fire')) setBadges(prev => [...prev, 'squad-fire']);
+
+    setSquadSession(prev => ({ ...prev, actualDuration: actualSeconds, distractions, status: 'complete' }));
+  };
+
+  const resetSquad = () => setSquadSession(defaultSquadSession);
 
   return (
     <AppContext.Provider value={{
@@ -214,6 +282,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       waveSession, setWaveSession, sessionsToday, minutesToday, focusStreak,
       startWave, completeWave, resetWave, hasActiveSession,
       rsdSession, rsdSessionCount, rsdWeekCount, completeRsd, resetRsd,
+      squadSession, setSquadSession, squadStreak, startSquad, completeSquad, resetSquad,
     }}>
       {children}
     </AppContext.Provider>

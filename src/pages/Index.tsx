@@ -111,7 +111,17 @@ const Index = () => {
           >
             💜 RSD
           </motion.button>
-        </div>
+          <motion.button
+            onClick={() => navigate('/squad')}
+            className="flex-1 h-14 bg-bg-card border-2 border-squad text-squad font-heading font-bold text-sm rounded-button
+                       flex items-center justify-center gap-1 hover:bg-squad/10 transition-colors"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.4 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            👥 Squad
+          </motion.button>
 
         {/* Stats */}
         <motion.div

@@ -77,8 +77,13 @@ const BadgesPage = () => {
         </div>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">RSD Badges</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 mb-6">
           {rsdBadges.map((b, i) => renderBadge(b, i))}
+        </div>
+
+        <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">Squad Badges</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {squadBadges.map((b, i) => renderBadge(b, i))}
         </div>
       </div>
       <BottomNav />

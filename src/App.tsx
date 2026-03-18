@@ -17,6 +17,12 @@ import RsdEntry from "./pages/RsdEntry.tsx";
 import RsdFlow from "./pages/RsdFlow.tsx";
 import RsdBreathe from "./pages/RsdBreathe.tsx";
 import RsdComplete from "./pages/RsdComplete.tsx";
+import SquadHome from "./pages/SquadHome.tsx";
+import SquadSetup from "./pages/SquadSetup.tsx";
+import SquadSession from "./pages/SquadSession.tsx";
+import SquadCheckin from "./pages/SquadCheckin.tsx";
+import SquadComplete from "./pages/SquadComplete.tsx";
+import SquadInvite from "./pages/SquadInvite.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
 
@@ -42,6 +48,12 @@ const App = () => (
               <Route path="/rsd/flow" element={<RsdFlow />} />
               <Route path="/rsd/breathe" element={<RsdBreathe />} />
               <Route path="/rsd/complete" element={<RsdComplete />} />
+              <Route path="/squad" element={<SquadHome />} />
+              <Route path="/squad/setup" element={<SquadSetup />} />
+              <Route path="/squad/session" element={<SquadSession />} />
+              <Route path="/squad/checkin" element={<SquadCheckin />} />
+              <Route path="/squad/complete" element={<SquadComplete />} />
+              <Route path="/squad/invite/:code" element={<SquadInvite />} />
               <Route path="/badges" element={<BadgesPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

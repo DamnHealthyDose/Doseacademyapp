@@ -47,7 +47,7 @@ const SquadSetup = () => {
           <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/squad')} className="text-text-secondary hover:text-foreground">
             <ArrowLeft size={20} />
           </button>
-          <div className="flex-1 flex justify-center"><ProgressDots total={3} current={step - 1} /></div>
+          <div className="flex-1 flex justify-center"><ProgressDots total={3} current={step - 1} completed={Array.from({ length: step - 1 }, (_, i) => i)} /></div>
           <div className="w-5" />
         </div>
 
