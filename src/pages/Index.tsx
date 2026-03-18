@@ -55,7 +55,7 @@ const Index = () => {
         </motion.p>
 
         {/* Slick */}
-        <SlickMessage message="Hey! I'm Slick. Pick a tool below — SPARK for emotions, WAVE for homework focus." />
+        <SlickMessage message="Hey! I'm Slick. Pick a tool — SPARK for emotions, WAVE for focus, RSD for when rejection stings." />
 
         {/* Active session resume card */}
         {hasActiveSession && (
@@ -80,8 +80,8 @@ const Index = () => {
         <div className="flex gap-3 mt-6 w-full">
           <motion.button
             onClick={() => navigate('/spark')}
-            className="flex-1 h-14 bg-bg-card border-2 border-primary text-primary font-heading font-bold text-base rounded-button
-                       flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
+            className="flex-1 h-14 bg-bg-card border-2 border-primary text-primary font-heading font-bold text-sm rounded-button
+                       flex items-center justify-center gap-1 hover:bg-primary/10 transition-colors"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.4 }}
@@ -91,14 +91,25 @@ const Index = () => {
           </motion.button>
           <motion.button
             onClick={() => navigate('/wave/setup')}
-            className="flex-1 h-14 bg-primary text-primary-foreground font-heading font-bold text-base rounded-button
-                       flex items-center justify-center gap-2 teal-glow hover:bg-primary-dark transition-colors"
+            className="flex-1 h-14 bg-primary text-primary-foreground font-heading font-bold text-sm rounded-button
+                       flex items-center justify-center gap-1 teal-glow hover:bg-primary-dark transition-colors"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.4 }}
             whileTap={{ scale: 0.97 }}
           >
-            🌊 Start WAVE
+            🌊 WAVE
+          </motion.button>
+          <motion.button
+            onClick={() => navigate('/rsd')}
+            className="flex-1 h-14 bg-bg-card border-2 border-rsd-warm text-rsd-warm font-heading font-bold text-sm rounded-button
+                       flex items-center justify-center gap-1 hover:bg-rsd-warm/10 transition-colors"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            💜 RSD
           </motion.button>
         </div>
 

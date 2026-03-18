@@ -17,6 +17,13 @@ const waveBadges = [
   { id: 'deep-diver', emoji: '🧠', name: 'Deep Diver', description: 'Complete a 45-min session' },
 ];
 
+const rsdBadges = [
+  { id: 'rsd-grounded', emoji: '💜', name: 'Grounded', description: 'Complete first RSD session' },
+  { id: 'rsd-breathed', emoji: '🌊', name: 'Breathed Through It', description: 'Used breathe bypass and completed' },
+  { id: 'rsd-challenger', emoji: '🧠', name: 'Story Challenger', description: 'Completed reframe step 5 times' },
+  { id: 'rsd-teflon', emoji: '🛡️', name: 'Nothing Stuck', description: 'Completed 3 sessions in one week' },
+];
+
 const BadgesPage = () => {
   const { badges } = useAppState();
 
@@ -58,8 +65,13 @@ const BadgesPage = () => {
         </div>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">WAVE Badges</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 mb-6">
           {waveBadges.map((b, i) => renderBadge(b, i))}
+        </div>
+
+        <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">RSD Badges</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {rsdBadges.map((b, i) => renderBadge(b, i))}
         </div>
       </div>
       <BottomNav />

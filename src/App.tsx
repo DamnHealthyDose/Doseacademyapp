@@ -13,6 +13,10 @@ import WaveSetup from "./pages/WaveSetup.tsx";
 import WaveSession from "./pages/WaveSession.tsx";
 import WaveBreak from "./pages/WaveBreak.tsx";
 import WaveComplete from "./pages/WaveComplete.tsx";
+import RsdEntry from "./pages/RsdEntry.tsx";
+import RsdFlow from "./pages/RsdFlow.tsx";
+import RsdBreathe from "./pages/RsdBreathe.tsx";
+import RsdComplete from "./pages/RsdComplete.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
 
@@ -34,6 +38,10 @@ const App = () => (
               <Route path="/wave/session" element={<WaveSession />} />
               <Route path="/wave/break" element={<WaveBreak />} />
               <Route path="/wave/complete" element={<WaveComplete />} />
+              <Route path="/rsd" element={<RsdEntry />} />
+              <Route path="/rsd/flow" element={<RsdFlow />} />
+              <Route path="/rsd/breathe" element={<RsdBreathe />} />
+              <Route path="/rsd/complete" element={<RsdComplete />} />
               <Route path="/badges" element={<BadgesPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

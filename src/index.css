@@ -39,6 +39,9 @@
 
     --danger: 0 84% 60%;
 
+    --rsd-warm: 330 90% 60%;
+    --rsd-calm: 263 70% 58%;
+
     --border: 170 18% 82%;
     --input: 170 18% 82%;
     --ring: 180 100% 39%;
@@ -88,6 +91,9 @@
     --warning-foreground: 0 0% 100%;
 
     --danger: 0 84% 60%;
+
+    --rsd-warm: 330 90% 60%;
+    --rsd-calm: 263 70% 58%;
 
     --border: 180 33% 15%;
     --input: 180 33% 15%;
