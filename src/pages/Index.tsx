@@ -122,6 +122,7 @@ const Index = () => {
           >
             👥 Squad
           </motion.button>
+        </div>
 
         {/* Stats */}
         <motion.div
