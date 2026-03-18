@@ -1,58 +1,112 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import slickImg from '@/assets/slick-character.png';
 
 interface Message {
   id: number;
-  role: 'user' | 'slick';
-  text: string;
+  role: 'user' | 'assistant';
+  content: string;
 }
 
-const SLICK_RESPONSES: Record<string, string> = {
-  anxious: "Take a slow breath in… hold… and out. You're safe right now. Want to try a SPARK session?",
-  overwhelmed: "When everything feels like too much, just pick ONE thing. The smallest thing. That's your win.",
-  sad: "It's okay to feel sad. You don't have to fix it right now — just notice it. I'm here.",
-  angry: "Anger is just energy looking for somewhere to go. Can you squeeze your fists tight for 5 seconds, then release?",
-  help: "I'm Slick — your SPARK buddy! I can help you when you're feeling stuck. Try telling me how you feel, or start a SPARK session from the home screen.",
-  spark: "SPARK stands for Situation, Perception, Affect, Reframe, Key Result. It's a 2-minute reset for when things feel big. Hit 'Start SPARK' on the home screen!",
-  default: "I hear you. Whatever you're feeling right now is valid. Want to try a quick SPARK session to work through it?",
-};
-
-const getSlickReply = (input: string): string => {
-  const lower = input.toLowerCase();
-  if (lower.includes('anxious') || lower.includes('anxiety') || lower.includes('nervous') || lower.includes('scared')) return SLICK_RESPONSES.anxious;
-  if (lower.includes('overwhelm') || lower.includes('too much') || lower.includes('can\'t')) return SLICK_RESPONSES.overwhelmed;
-  if (lower.includes('sad') || lower.includes('cry') || lower.includes('lonely') || lower.includes('alone')) return SLICK_RESPONSES.sad;
-  if (lower.includes('angry') || lower.includes('mad') || lower.includes('frustrated') || lower.includes('rage')) return SLICK_RESPONSES.angry;
-  if (lower.includes('help') || lower.includes('what') || lower.includes('who')) return SLICK_RESPONSES.help;
-  if (lower.includes('spark') || lower.includes('how')) return SLICK_RESPONSES.spark;
-  return SLICK_RESPONSES.default;
-};
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/slick-chat`;
 
 const SlickChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, role: 'slick', text: "Hey! I'm Slick 👋 Tell me how you're feeling and I'll try to help." },
+    { id: 0, role: 'assistant', content: "Hey! I'm Slick 👋 Tell me how you're feeling and I'll try to help." },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const text = input.trim();
-    if (!text) return;
-    const userMsg: Message = { id: Date.now(), role: 'user', text };
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
+    if (!text || isLoading) return;
 
-    setTimeout(() => {
-      const reply: Message = { id: Date.now() + 1, role: 'slick', text: getSlickReply(text) };
-      setMessages(prev => [...prev, reply]);
-    }, 600);
+    const userMsg: Message = { id: Date.now(), role: 'user', content: text };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    setInput('');
+    setIsLoading(true);
+
+    let assistantSoFar = '';
+
+    try {
+      const resp = await fetch(CHAT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
+        }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ error: 'Something went wrong' }));
+        throw new Error(err.error || `Error ${resp.status}`);
+      }
+
+      if (!resp.body) throw new Error('No response body');
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith('\r')) line = line.slice(0, -1);
+          if (line.startsWith(':') || line.trim() === '') continue;
+          if (!line.startsWith('data: ')) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === '[DONE]') break;
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const delta = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (delta) {
+              assistantSoFar += delta;
+              setMessages(prev => {
+                const last = prev[prev.length - 1];
+                if (last?.role === 'assistant' && last.id === -1) {
+                  return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
+                }
+                return [...prev, { id: -1, role: 'assistant', content: assistantSoFar }];
+              });
+            }
+          } catch {
+            textBuffer = line + '\n' + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Finalize the assistant message with a real ID
+      setMessages(prev =>
+        prev.map(m => m.id === -1 ? { ...m, id: Date.now() } : m)
+      );
+    } catch (e) {
+      const errorMsg = e instanceof Error ? e.message : 'Something went wrong';
+      setMessages(prev => [...prev, { id: Date.now(), role: 'assistant', content: `Hmm, I hit a snag: ${errorMsg}. Try again? 💚` }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -92,7 +146,9 @@ const SlickChatWidget = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-heading font-bold text-foreground">Slick</p>
-                <p className="text-xs text-text-hint">Your SPARK buddy</p>
+                <p className="text-xs text-text-hint">
+                  {isLoading ? 'Thinking...' : 'Your SPARK buddy'}
+                </p>
               </div>
               <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X size={18} />
@@ -108,10 +164,17 @@ const SlickChatWidget = () => {
                       ? 'bg-primary text-primary-foreground rounded-br-md'
                       : 'bg-secondary text-foreground rounded-bl-md'
                     }`}>
-                    {msg.text}
+                    {msg.content}
                   </div>
                 </div>
               ))}
+              {isLoading && messages[messages.length - 1]?.role === 'user' && (
+                <div className="flex justify-start">
+                  <div className="bg-secondary rounded-2xl rounded-bl-md px-3 py-2">
+                    <Loader2 size={16} className="animate-spin text-primary" />
+                  </div>
+                </div>
+              )}
               <div ref={bottomRef} />
             </div>
 
@@ -122,11 +185,12 @@ const SlickChatWidget = () => {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendMessage()}
                 placeholder="Tell me how you feel..."
-                className="flex-1 bg-secondary/60 text-foreground text-sm rounded-full px-4 py-2 font-body placeholder:text-text-hint focus:outline-none focus:ring-1 focus:ring-primary"
+                disabled={isLoading}
+                className="flex-1 bg-secondary/60 text-foreground text-sm rounded-full px-4 py-2 font-body placeholder:text-text-hint focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
               />
               <button
                 onClick={sendMessage}
-                disabled={!input.trim()}
+                disabled={!input.trim() || isLoading}
                 className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-30 transition-opacity"
               >
                 <Send size={14} />
