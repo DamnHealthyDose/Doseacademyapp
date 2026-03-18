@@ -4,6 +4,7 @@ import { Zap, ArrowRight } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import SlickMessage from '@/components/SlickMessage';
+import ThemeToggle from '@/components/ThemeToggle';
 import logo from '@/assets/dose-logo.png';
 
 const Index = () => {
@@ -18,7 +19,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-10 flex flex-col items-center">
+      <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col items-center">
+        {/* Theme toggle */}
+        <div className="self-end mb-2">
+          <ThemeToggle />
+        </div>
         {/* Logo */}
         <motion.img
           src={logo}
