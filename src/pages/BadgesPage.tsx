@@ -24,6 +24,13 @@ const rsdBadges = [
   { id: 'rsd-teflon', emoji: '🛡️', name: 'Nothing Stuck', description: 'Completed 3 sessions in one week' },
 ];
 
+const squadBadges = [
+  { id: 'squad-up', emoji: '👥', name: 'Squad Up', description: 'Complete first Squad Focus session' },
+  { id: 'squad-together', emoji: '🤝', name: 'Studied Together', description: 'Complete a session with a friend' },
+  { id: 'squad-fire', emoji: '🔥', name: 'Squad on Fire', description: '5 squad sessions in a row' },
+  { id: 'squad-accountability', emoji: '🏆', name: 'Accountability', description: 'Both finished in Mode B — 3 times' },
+];
+
 const BadgesPage = () => {
   const { badges } = useAppState();
 
