@@ -28,6 +28,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        <SlickChatWidget />
       </AppProvider>
     </TooltipProvider>
   </QueryClientProvider>
