@@ -23,6 +23,7 @@ import SquadSession from "./pages/SquadSession.tsx";
 import SquadCheckin from "./pages/SquadCheckin.tsx";
 import SquadComplete from "./pages/SquadComplete.tsx";
 import SquadInvite from "./pages/SquadInvite.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
 import CookieConsent from "./components/CookieConsent.tsx";
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/squad/complete" element={<SquadComplete />} />
               <Route path="/squad/invite/:code" element={<SquadInvite />} />
               <Route path="/badges" element={<BadgesPage />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
