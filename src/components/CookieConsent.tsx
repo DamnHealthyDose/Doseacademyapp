@@ -126,6 +126,13 @@ const CookieConsent = () => {
                 Save my choices
               </button>
             </div>
+
+            <p className="text-center text-[11px] text-muted-foreground font-dm-sans mt-3">
+              Read our{" "}
+              <Link to="/privacy" className="text-primary underline hover:text-primary/80" onClick={() => setVisible(false)}>
+                Privacy Policy
+              </Link>
+            </p>
           </motion.div>
         </>
       )}

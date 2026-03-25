@@ -166,6 +166,13 @@ const Index = () => {
             <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${Math.min((xp % 100), 100)}%` }} />
           </div>
         </motion.div>
+
+        {/* Footer */}
+        <div className="w-full mt-6 mb-2 flex items-center justify-center gap-3 text-[11px] text-muted-foreground font-body">
+          <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+          <span>·</span>
+          <span>© {new Date().getFullYear()} DOSE Academy</span>
+        </div>
       </div>
       <BottomNav />
     </div>
