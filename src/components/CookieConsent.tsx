@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Shield, BarChart3, ChevronUp } from "lucide-react";
+import { Cookie, Shield, BarChart3 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface CookiePrefs {
   essential: boolean;
@@ -125,6 +126,13 @@ const CookieConsent = () => {
                 Save my choices
               </button>
             </div>
+
+            <p className="text-center text-[11px] text-muted-foreground font-dm-sans mt-3">
+              Read our{" "}
+              <Link to="/privacy" className="text-primary underline hover:text-primary/80" onClick={() => setVisible(false)}>
+                Privacy Policy
+              </Link>
+            </p>
           </motion.div>
         </>
       )}
