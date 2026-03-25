@@ -25,6 +25,7 @@ import SquadComplete from "./pages/SquadComplete.tsx";
 import SquadInvite from "./pages/SquadInvite.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
+import CookieConsent from "./components/CookieConsent.tsx";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
           <SlickChatWidget />
+          <CookieConsent />
         </AppProvider>
       </ThemeProvider>
     </TooltipProvider>
