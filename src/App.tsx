@@ -57,6 +57,7 @@ const App = () => (
               <Route path="/squad/complete" element={<SquadComplete />} />
               <Route path="/squad/invite/:code" element={<SquadInvite />} />
               <Route path="/badges" element={<BadgesPage />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
