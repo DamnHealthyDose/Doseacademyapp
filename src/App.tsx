@@ -60,6 +60,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
           <SlickChatWidget />
+          <CookieConsent />
         </AppProvider>
       </ThemeProvider>
     </TooltipProvider>
