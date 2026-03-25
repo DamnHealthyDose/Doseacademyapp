@@ -15,7 +15,7 @@ const SlickMessage = ({ message }: SlickMessageProps) => {
     >
       <div className="relative flex-shrink-0">
         <motion.div
-          className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/30"
+          className="w-10 h-10 rounded-full overflow-hidden bg-white border-2 border-muted"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
