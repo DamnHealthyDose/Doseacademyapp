@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Shield, BarChart3, ChevronUp } from "lucide-react";
+import { Cookie, Shield, BarChart3 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface CookiePrefs {
   essential: boolean;
