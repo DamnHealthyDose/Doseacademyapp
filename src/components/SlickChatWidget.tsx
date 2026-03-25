@@ -205,8 +205,8 @@ const SlickChatWidget = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full overflow-hidden border-2 border-primary shadow-lg"
-            style={{ boxShadow: '0 4px 24px rgba(0,200,200,0.3)' }}
+className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full overflow-hidden bg-white border-[3px] border-muted shadow-lg"
+            style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}
           >
             <img src={slickImg} alt="Chat with Slick" className="w-full h-full object-cover" />
           </motion.button>
