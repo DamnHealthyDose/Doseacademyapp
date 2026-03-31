@@ -11,6 +11,7 @@ import logo from '@/assets/dose-logo.png';
 const Index = () => {
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
+  const [videoVersion, setVideoVersion] = useState<'narrated' | 'music'>('narrated');
   const { xp, streak, sessionsCount, sessionsToday, minutesToday, hasActiveSession, waveSession } = useAppState();
 
   const stats = [
@@ -210,8 +211,32 @@ const Index = () => {
               >
                 <X size={16} />
               </button>
+              {/* Version toggle */}
+              <div className="flex bg-black/80 border-b border-white/10">
+                <button
+                  onClick={() => setVideoVersion('narrated')}
+                  className={`flex-1 py-2.5 text-xs font-heading font-bold transition-colors ${
+                    videoVersion === 'narrated'
+                      ? 'text-white bg-white/10'
+                      : 'text-white/50 hover:text-white/70'
+                  }`}
+                >
+                  🎙 Narrated
+                </button>
+                <button
+                  onClick={() => setVideoVersion('music')}
+                  className={`flex-1 py-2.5 text-xs font-heading font-bold transition-colors ${
+                    videoVersion === 'music'
+                      ? 'text-white bg-white/10'
+                      : 'text-white/50 hover:text-white/70'
+                  }`}
+                >
+                  🎵 Music Only
+                </button>
+              </div>
               <video
-                src="/dose-onboarding.mp4"
+                key={videoVersion}
+                src={videoVersion === 'narrated' ? '/dose-onboarding-narrated.mp4' : '/dose-onboarding-music.mp4'}
                 controls
                 autoPlay
                 className="w-full"
