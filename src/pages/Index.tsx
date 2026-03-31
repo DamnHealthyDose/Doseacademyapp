@@ -11,6 +11,7 @@ import logo from '@/assets/dose-logo.png';
 const Index = () => {
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
+  const [videoVersion, setVideoVersion] = useState<'narrated' | 'music'>('narrated');
   const { xp, streak, sessionsCount, sessionsToday, minutesToday, hasActiveSession, waveSession } = useAppState();
 
   const stats = [
