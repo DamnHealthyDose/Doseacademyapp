@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Check, Play, X } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import SlickMessage from '@/components/SlickMessage';
