@@ -186,6 +186,41 @@ const Index = () => {
           <span>© {new Date().getFullYear()} DOSE Academy</span>
         </div>
       </div>
+      {/* Video modal */}
+      <AnimatePresence>
+        {showVideo && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowVideo(false)}
+          >
+            <motion.div
+              className="relative w-full max-w-lg rounded-2xl overflow-hidden bg-black shadow-2xl"
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowVideo(false)}
+                className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+              >
+                <X size={16} />
+              </button>
+              <video
+                src="/dose-onboarding.mp4"
+                controls
+                autoPlay
+                className="w-full"
+                style={{ aspectRatio: '16/9' }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <BottomNav />
     </div>
   );
