@@ -24,8 +24,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
       <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col items-center">
-        {/* Theme toggle */}
-        <div className="self-end mb-2">
+        {/* Top row: Watch intro + Theme toggle */}
+        <div className="w-full flex items-center justify-between mb-2">
+          <motion.button
+            onClick={() => setShowVideo(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-heading font-bold text-xs hover:bg-primary/20 transition-colors"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Play size={12} className="fill-current" /> What's DOSE?
+          </motion.button>
           <ThemeToggle />
         </div>
         {/* Logo */}
