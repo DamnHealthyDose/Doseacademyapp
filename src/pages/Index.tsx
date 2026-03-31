@@ -10,6 +10,7 @@ import logo from '@/assets/dose-logo.png';
 
 const Index = () => {
   const navigate = useNavigate();
+  const [showVideo, setShowVideo] = useState(false);
   const { xp, streak, sessionsCount, sessionsToday, minutesToday, hasActiveSession, waveSession } = useAppState();
 
   const stats = [
