@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Check, Play, X } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import SlickMessage from '@/components/SlickMessage';
@@ -9,6 +10,7 @@ import logo from '@/assets/dose-logo.png';
 
 const Index = () => {
   const navigate = useNavigate();
+  const [showVideo, setShowVideo] = useState(false);
   const { xp, streak, sessionsCount, sessionsToday, minutesToday, hasActiveSession, waveSession } = useAppState();
 
   const stats = [
@@ -22,8 +24,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
       <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col items-center">
-        {/* Theme toggle */}
-        <div className="self-end mb-2">
+        {/* Top row: Watch intro + Theme toggle */}
+        <div className="w-full flex items-center justify-between mb-2">
+          <motion.button
+            onClick={() => setShowVideo(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-heading font-bold text-xs hover:bg-primary/20 transition-colors"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Play size={12} className="fill-current" /> What's DOSE?
+          </motion.button>
           <ThemeToggle />
         </div>
         {/* Logo */}
@@ -174,6 +186,41 @@ const Index = () => {
           <span>© {new Date().getFullYear()} DOSE Academy</span>
         </div>
       </div>
+      {/* Video modal */}
+      <AnimatePresence>
+        {showVideo && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowVideo(false)}
+          >
+            <motion.div
+              className="relative w-full max-w-lg rounded-2xl overflow-hidden bg-black shadow-2xl"
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowVideo(false)}
+                className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+              >
+                <X size={16} />
+              </button>
+              <video
+                src="/dose-onboarding.mp4"
+                controls
+                autoPlay
+                className="w-full"
+                style={{ aspectRatio: '16/9' }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <BottomNav />
     </div>
   );
