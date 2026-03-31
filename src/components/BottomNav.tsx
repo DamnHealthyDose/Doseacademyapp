@@ -1,8 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Zap, Waves, Heart, Users, Award } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import MobileMenu from './MobileMenu';
 
 const BottomNav = () => {
   const { pathname } = useLocation();
+  const isMobile = useIsMobile();
 
   const items = [
     { to: '/', icon: Home, label: 'Home' },
@@ -12,6 +15,11 @@ const BottomNav = () => {
     { to: '/squad', icon: Users, label: 'Squad' },
     { to: '/badges', icon: Award, label: 'Badges' },
   ];
+
+  // On small screens, show hamburger menu instead of bottom tab bar
+  if (isMobile) {
+    return <MobileMenu />;
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-bg-card border-t border-border">
