@@ -126,7 +126,29 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
               {["How's it going?", "Any tips?", "You got this! 💪", "What are you studying?"].map(chip => (
                 <button
                   key={chip}
-                  onClick={() => { setInput(chip); setTimeout(() => { setInput(chip); }, 0); }}
+                  onClick={() => {
+                    setInput(chip);
+                    const userMsg: Message = { role: 'user', content: chip };
+                    const updated = [...messages, userMsg];
+                    setMessages(updated);
+                    setLoading(true);
+                    supabase.functions.invoke('squad-chat', {
+                      body: {
+                        messages: updated.map(m => ({ role: m.role, content: m.content })),
+                        personality: member.personality || 'friendly study buddy',
+                        subject: member.subject,
+                        initials: member.initials,
+                      },
+                    }).then(({ data, error }) => {
+                      if (error) throw error;
+                      setMessages(prev => [...prev, { role: 'assistant', content: data.reply || "brb 📖" }]);
+                    }).catch(() => {
+                      setMessages(prev => [...prev, { role: 'assistant', content: "sorry, got distracted lol. try again? 😅" }]);
+                    }).finally(() => {
+                      setLoading(false);
+                      setInput('');
+                    });
+                  }}
                   className="text-[11px] font-body text-squad bg-squad/10 hover:bg-squad/20 px-2.5 py-1 rounded-full transition-colors"
                 >
                   {chip}
