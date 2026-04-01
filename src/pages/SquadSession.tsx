@@ -24,9 +24,12 @@ const SquadSession = () => {
   const pausedMsRef = useRef(0);
 
   // Ambient squad
-  const [ambientSquad, setAmbientSquad] = useState<(AmbientMember & { visible: boolean })[]>(() =>
-    pickRandom(ambientPool, 5).map(m => ({ ...m, visible: true }))
-  );
+  const [chatMember, setChatMember] = useState<AmbientMember | null>(null);
+  const [ambientSquad, setAmbientSquad] = useState<(AmbientMember & { visible: boolean })[]>(() => {
+    const aiMembers = pickRandom(aiSquadMembers, 2 + Math.floor(Math.random() * 2));
+    const regularMembers = pickRandom(ambientPool, 3);
+    return [...aiMembers, ...regularMembers].map(m => ({ ...m, visible: true }));
+  });
 
   // Simulate ambient squad changes
   useEffect(() => {
