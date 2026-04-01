@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, Play, Flag, X } from 'lucide-react';
+import { Pause, Play, Flag, X, MessageCircle } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
-import { ambientPool, pickRandom, AmbientMember } from '@/lib/squadContent';
+import { ambientPool, aiSquadMembers, pickRandom, AmbientMember } from '@/lib/squadContent';
+import QuickChatBubble from '@/components/QuickChatBubble';
 
 const SquadSession = () => {
   const navigate = useNavigate();
