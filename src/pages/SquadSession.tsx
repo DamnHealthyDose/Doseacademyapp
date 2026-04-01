@@ -288,6 +288,10 @@ const SquadSession = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Quick chat bubble */}
+      {chatMember && (
+        <QuickChatBubble member={chatMember} onClose={() => setChatMember(null)} />
+      )}
     </div>
   );
 };
