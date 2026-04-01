@@ -2,7 +2,18 @@ export interface AmbientMember {
   initials: string;
   subject: string;
   minutesIn: number;
+  isAI?: boolean;
+  personality?: string;
 }
+
+export const aiSquadMembers: AmbientMember[] = [
+  { initials: "KP", subject: "Math", minutesIn: 18, isAI: true, personality: "encouraging math nerd who loves number tricks" },
+  { initials: "RJ", subject: "English", minutesIn: 7, isAI: true, personality: "chill study buddy who keeps things light" },
+  { initials: "SL", subject: "Science", minutesIn: 25, isAI: true, personality: "curious science enthusiast who shares fun facts" },
+  { initials: "MT", subject: "History", minutesIn: 11, isAI: true, personality: "supportive friend who hypes you up" },
+  { initials: "AV", subject: "Coding", minutesIn: 14, isAI: true, personality: "techy focus buddy who loves productivity tips" },
+  { initials: "JW", subject: "Art project", minutesIn: 9, isAI: true, personality: "creative and positive vibes, loves encouragement" },
+];
 
 export const ambientPool: AmbientMember[] = [
   { initials: "AK", subject: "Math", minutesIn: 12 },
