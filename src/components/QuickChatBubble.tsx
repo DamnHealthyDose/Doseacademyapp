@@ -120,6 +120,21 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
             )}
           </div>
 
+          {/* Quick reply chips */}
+          {messages.length <= 2 && !loading && (
+            <div className="px-3 pb-1 flex gap-1.5 flex-wrap">
+              {["How's it going?", "Any tips?", "You got this! 💪", "What are you studying?"].map(chip => (
+                <button
+                  key={chip}
+                  onClick={() => { setInput(chip); setTimeout(() => { setInput(chip); }, 0); }}
+                  className="text-[11px] font-body text-squad bg-squad/10 hover:bg-squad/20 px-2.5 py-1 rounded-full transition-colors"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Input */}
           <div className="p-3 border-t border-border flex gap-2">
             <input
