@@ -2,12 +2,16 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
-import { ambientPool, pickRandom } from '@/lib/squadContent';
+import { ambientPool, aiSquadMembers, pickRandom } from '@/lib/squadContent';
 import { useMemo } from 'react';
 
 const SquadHome = () => {
   const navigate = useNavigate();
-  const squad = useMemo(() => pickRandom(ambientPool, 4 + Math.floor(Math.random() * 3)), []);
+  const squad = useMemo(() => {
+    const aiPicks = pickRandom(aiSquadMembers, 2);
+    const regularPicks = pickRandom(ambientPool, 2 + Math.floor(Math.random() * 3));
+    return [...aiPicks, ...regularPicks];
+  }, []);
 
   const recentSessions = [
     'Math with JL · 25 min · ✓ Both finished',

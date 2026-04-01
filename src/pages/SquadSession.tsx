@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, Play, Flag, X } from 'lucide-react';
+import { Pause, Play, Flag, X, MessageCircle } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
-import { ambientPool, pickRandom, AmbientMember } from '@/lib/squadContent';
+import { ambientPool, aiSquadMembers, pickRandom, AmbientMember } from '@/lib/squadContent';
+import QuickChatBubble from '@/components/QuickChatBubble';
 
 const SquadSession = () => {
   const navigate = useNavigate();
@@ -23,9 +24,12 @@ const SquadSession = () => {
   const pausedMsRef = useRef(0);
 
   // Ambient squad
-  const [ambientSquad, setAmbientSquad] = useState<(AmbientMember & { visible: boolean })[]>(() =>
-    pickRandom(ambientPool, 5).map(m => ({ ...m, visible: true }))
-  );
+  const [chatMember, setChatMember] = useState<AmbientMember | null>(null);
+  const [ambientSquad, setAmbientSquad] = useState<(AmbientMember & { visible: boolean })[]>(() => {
+    const aiMembers = pickRandom(aiSquadMembers, 2 + Math.floor(Math.random() * 2));
+    const regularMembers = pickRandom(ambientPool, 3);
+    return [...aiMembers, ...regularMembers].map(m => ({ ...m, visible: true }));
+  });
 
   // Simulate ambient squad changes
   useEffect(() => {
@@ -199,17 +203,25 @@ const SquadSession = () => {
               {ambientSquad.filter(m => m.visible).map(m => (
                 <motion.div
                   key={m.initials}
-                  className="flex flex-col items-center min-w-[44px]"
+                  className={`flex flex-col items-center min-w-[44px] ${m.isAI ? 'cursor-pointer' : ''}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 1.5 }}
+                  onClick={() => m.isAI && setChatMember(m)}
                 >
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-squad-dim flex items-center justify-center text-squad font-heading font-bold text-[10px]">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-[10px] ${
+                      m.isAI ? 'bg-squad/25 text-squad ring-1 ring-squad/40' : 'bg-squad-dim text-squad'
+                    }`}>
                       {m.initials}
                     </div>
                     <span className="absolute bottom-0 right-0 w-2 h-2 bg-squad-glow rounded-full border border-bg-deep animate-pulse" />
+                    {m.isAI && (
+                      <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-squad rounded-full flex items-center justify-center">
+                        <MessageCircle size={8} className="text-primary-foreground" />
+                      </span>
+                    )}
                   </div>
                   <span className="text-text-hint text-[9px] mt-0.5">{m.subject}</span>
                 </motion.div>
@@ -276,6 +288,10 @@ const SquadSession = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Quick chat bubble */}
+      {chatMember && (
+        <QuickChatBubble member={chatMember} onClose={() => setChatMember(null)} />
+      )}
     </div>
   );
 };
