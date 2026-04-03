@@ -14,6 +14,10 @@ const AuthPage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
+  // Pre-signup age check params
+  const dobParam = params.get('dob');
+  const bracketParam = params.get('bracket');
+
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +28,9 @@ const AuthPage = () => {
     navigate(redirect, { replace: true });
     return null;
   }
+
+  // Block signup if no age check was done (must go through /signup-age-check first)
+  const signupAllowed = !!dobParam && !!bracketParam;
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
