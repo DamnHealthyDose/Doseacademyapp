@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
@@ -9,15 +9,31 @@ import ProgressDots from '@/components/ProgressDots';
 const SquadSetup = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const mode = (params.get('mode') || 'ambient') as 'ambient' | 'invite';
+  const mode = params.get('mode') || 'ambient';
   const isJoining = params.get('joined') === 'true';
   const joinCode = params.get('code');
 
+  const { startSquad } = useAppState();
+  const [step, setStep] = useState(1);
+  const [task, setTask] = useState('');
+  const [duration, setDuration] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [sessionCode] = useState(() => generateCode());
+
+  const miniSquad = useMemo(() => pickRandom(ambientPool, 4), []);
+
   // Guard: redirect away if invite mode (disabled for safety)
-  if (mode === 'invite') {
-    navigate('/squad', { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (mode === 'invite') {
+      navigate('/squad', { replace: true });
+    }
+  }, [mode, navigate]);
+
+  const handleChip = (label: string) => setTask(label === 'Other' ? '' : label);
+
+  const handleStart = () => {
+    startSquad(task, duration!, mode as 'ambient' | 'invite', mode === 'invite' ? sessionCode : null);
+    if (mode === 'invite' && !isJoining) {
 
   const { startSquad } = useAppState();
   const [step, setStep] = useState(1);
