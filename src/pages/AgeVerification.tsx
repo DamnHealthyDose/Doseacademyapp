@@ -52,9 +52,10 @@ const AgeVerification = () => {
     }
 
     // 16+ — verify immediately
+    const ageBracket = '16+';
     const { error } = await supabase
       .from('profiles')
-      .update({ date_of_birth: dob, age_verified: true })
+      .update({ date_of_birth: dob, age_verified: true, age_bracket: ageBracket })
       .eq('user_id', user.id);
 
     if (error) {
