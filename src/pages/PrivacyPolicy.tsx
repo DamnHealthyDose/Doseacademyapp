@@ -162,12 +162,15 @@ const PrivacyPolicy = () => {
           title="Contact us"
         >
           <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed">
-            If you have questions about your privacy or want to request data deletion, reach out:
+            If you have questions about your privacy, want to request data deletion, or need to exercise your parental rights under COPPA, reach out:
           </p>
           <div className="mt-3 rounded-xl border border-white/10 bg-card px-4 py-3">
             <p className="text-sm font-bold text-foreground font-nunito">Odishon Corp (DBA DOSE)</p>
             <p className="text-xs text-muted-foreground font-dm-sans mt-1">
               Website: getdose.app
+            </p>
+            <p className="text-xs text-muted-foreground font-dm-sans mt-1">
+              Email: privacy@getdose.app
             </p>
           </div>
         </Section>
