@@ -72,12 +72,17 @@ const AgeVerification = () => {
     if (!parentEmail) return;
     setLoading(true);
 
+    const consentToken = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
+
     const { error } = await supabase
       .from('profiles')
       .update({
         date_of_birth: dob,
+        age_bracket: '13-15' as any,
         parent_email: parentEmail,
-        // Parent consent is pending — will need email verification in future
+        consent_token: consentToken,
+        consent_token_expires_at: expiresAt,
         parent_consent_given: false,
       })
       .eq('user_id', user.id);

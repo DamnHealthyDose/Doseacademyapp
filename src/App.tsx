@@ -49,6 +49,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/age-verify" element={<AgeVerification />} />
+                <Route path="/signup-age-check" element={<SignupAgeCheck />} />
+                <Route path="/parent-consent/:token" element={<ParentConsent />} />
+                <Route path="/parent-dashboard/:token" element={<ParentDashboard />} />
               <Route path="/spark" element={<SparkPage />} />
               <Route path="/spark/complete" element={<SparkComplete />} />
               <Route path="/wave/setup" element={<WaveSetup />} />
