@@ -14,6 +14,10 @@ const AuthPage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
+  // Pre-signup age check params
+  const dobParam = params.get('dob');
+  const bracketParam = params.get('bracket');
+
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,16 +29,29 @@ const AuthPage = () => {
     return null;
   }
 
+  // Block signup if no age check was done (must go through /signup-age-check first)
+  const signupAllowed = !!dobParam && !!bracketParam;
+
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       if (mode === 'signup') {
+        if (!signupAllowed) {
+          navigate(`/signup-age-check?redirect=${encodeURIComponent(redirect)}`);
+          return;
+        }
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: {
+              dob: dobParam,
+              age_bracket: bracketParam,
+            },
+          },
         });
         if (error) throw error;
         toast({
@@ -95,7 +112,7 @@ const AuthPage = () => {
             {mode === 'login' ? 'Welcome back' : 'Create your account'}
           </h1>
           <p className="text-text-secondary text-sm font-body mb-6">
-            Sign in to access Study with a Friend
+            {mode === 'login' ? 'Sign in to access Study with a Friend' : 'Create your account to study with friends'}
           </p>
 
           {/* OAuth buttons */}
@@ -162,13 +179,24 @@ const AuthPage = () => {
           </form>
 
           <p className="text-center text-text-secondary text-sm font-body mt-4">
-            {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-            <button
-              onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-              className="text-primary font-bold"
-            >
-              {mode === 'login' ? 'Sign up' : 'Sign in'}
-            </button>
+            {mode === 'login' ? (
+              <>
+                Don't have an account?{' '}
+                <button
+                  onClick={() => navigate(`/signup-age-check?redirect=${encodeURIComponent(redirect)}`)}
+                  className="text-primary font-bold"
+                >
+                  Sign up
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <button onClick={() => setMode('login')} className="text-primary font-bold">
+                  Sign in
+                </button>
+              </>
+            )}
           </p>
         </motion.div>
       </div>

@@ -47,7 +47,10 @@ const PrivacyPolicy = () => {
               <strong>Preferences:</strong> Your cookie choices, theme preference, and app settings are stored in your browser's local storage.
             </Li>
             <Li>
-              <strong>No personal info:</strong> We do not collect your name, email, phone number, school, or location in the current version of DOSE Academy.
+              <strong>Account data (if signed up):</strong> If you create an account for Study with a Friend, we collect your email, a display name, and your age bracket. For users 13-15, we also collect a parent/guardian email for consent verification.
+            </Li>
+            <Li>
+              <strong>Data retention:</strong> Account data is retained for as long as your account is active. You or your parent/guardian can request deletion at any time. Chat data linked to device IDs is retained for up to 90 days of inactivity.
             </Li>
           </ul>
         </Section>
@@ -96,7 +99,44 @@ const PrivacyPolicy = () => {
             <Li>Squad Focus has zero chat or messaging — only silent co-presence and a single-word check-in.</Li>
             <Li>No real names or profile photos are ever displayed to other users.</Li>
             <Li>RSD session content is private. No parent, teacher, or counselor can see what you shared inside the tool.</Li>
-            <Li>We are working toward full COPPA compliance for users under 13.</Li>
+          </ul>
+        </Section>
+
+        <Section
+          icon={<Shield size={18} className="text-primary" />}
+          title="Children's privacy (COPPA)"
+        >
+          <ul className="space-y-2">
+            <Li>
+              <strong>Under 13:</strong> Users under 13 cannot create an account. Age is verified before any personal information is collected. No email, name, or other PII is stored for users who indicate they are under 13.
+            </Li>
+            <Li>
+              <strong>Ages 13-15:</strong> Users between 13 and 15 can create an account but require verifiable parental consent before accessing peer features (Study with a Friend). A parent or guardian must confirm consent via a unique email link.
+            </Li>
+            <Li>
+              <strong>Ages 16+:</strong> Users 16 and older have full access to all features after age verification.
+            </Li>
+            <Li>
+              <strong>Data minimization:</strong> After age verification, we store only the age bracket (under-13, 13-15, or 16+) — not the exact date of birth.
+            </Li>
+            <Li>
+              <strong>What we collect from minors:</strong> Display name (shown as initials only to others), age bracket, session progress, and parent email (for 13-15 users with parental consent).
+            </Li>
+          </ul>
+        </Section>
+
+        <Section
+          icon={<Shield size={18} className="text-primary" />}
+          title="Parental rights"
+        >
+          <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed mb-3">
+            If your child is between 13 and 15, you have the following rights under COPPA:
+          </p>
+          <ul className="space-y-2">
+            <Li><strong>Review:</strong> You can review the personal information we have collected about your child by visiting the Parent Dashboard link sent to you via email.</Li>
+            <Li><strong>Revoke consent:</strong> You can revoke your consent at any time, which will remove your child's access to peer features.</Li>
+            <Li><strong>Delete:</strong> You can request full deletion of your child's account and all associated data from the Parent Dashboard.</Li>
+            <Li><strong>Refuse further collection:</strong> You can prevent any further collection of your child's information by revoking consent or deleting the account.</Li>
           </ul>
         </Section>
 
@@ -122,12 +162,15 @@ const PrivacyPolicy = () => {
           title="Contact us"
         >
           <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed">
-            If you have questions about your privacy or want to request data deletion, reach out:
+            If you have questions about your privacy, want to request data deletion, or need to exercise your parental rights under COPPA, reach out:
           </p>
           <div className="mt-3 rounded-xl border border-white/10 bg-card px-4 py-3">
             <p className="text-sm font-bold text-foreground font-nunito">Odishon Corp (DBA DOSE)</p>
             <p className="text-xs text-muted-foreground font-dm-sans mt-1">
               Website: getdose.app
+            </p>
+            <p className="text-xs text-muted-foreground font-dm-sans mt-1">
+              Email: privacy@getdose.app
             </p>
           </div>
         </Section>

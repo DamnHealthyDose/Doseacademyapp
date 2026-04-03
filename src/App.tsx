@@ -9,6 +9,9 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index.tsx";
 import AuthPage from "./pages/AuthPage.tsx";
 import AgeVerification from "./pages/AgeVerification.tsx";
+import SignupAgeCheck from "./pages/SignupAgeCheck.tsx";
+import ParentConsent from "./pages/ParentConsent.tsx";
+import ParentDashboard from "./pages/ParentDashboard.tsx";
 import SparkPage from "./pages/SparkPage.tsx";
 import SparkComplete from "./pages/SparkComplete.tsx";
 import BadgesPage from "./pages/BadgesPage.tsx";
@@ -46,6 +49,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/age-verify" element={<AgeVerification />} />
+                <Route path="/signup-age-check" element={<SignupAgeCheck />} />
+                <Route path="/parent-consent/:token" element={<ParentConsent />} />
+                <Route path="/parent-dashboard/:token" element={<ParentDashboard />} />
               <Route path="/spark" element={<SparkPage />} />
               <Route path="/spark/complete" element={<SparkComplete />} />
               <Route path="/wave/setup" element={<WaveSetup />} />

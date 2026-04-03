@@ -69,7 +69,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          age_bracket: Database["public"]["Enums"]["age_bracket"] | null
           age_verified: boolean
+          consent_token: string | null
+          consent_token_expires_at: string | null
           created_at: string
           date_of_birth: string | null
           display_name: string | null
@@ -81,7 +84,10 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          age_bracket?: Database["public"]["Enums"]["age_bracket"] | null
           age_verified?: boolean
+          consent_token?: string | null
+          consent_token_expires_at?: string | null
           created_at?: string
           date_of_birth?: string | null
           display_name?: string | null
@@ -93,7 +99,10 @@ export type Database = {
           user_id: string
         }
         Update: {
+          age_bracket?: Database["public"]["Enums"]["age_bracket"] | null
           age_verified?: boolean
+          consent_token?: string | null
+          consent_token_expires_at?: string | null
           created_at?: string
           date_of_birth?: string | null
           display_name?: string | null
@@ -138,6 +147,7 @@ export type Database = {
       }
     }
     Enums: {
+      age_bracket: "under-13" | "13-15" | "16+"
       app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
@@ -266,6 +276,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      age_bracket: ["under-13", "13-15", "16+"],
       app_role: ["admin", "moderator", "user"],
     },
   },
