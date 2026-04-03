@@ -13,6 +13,12 @@ const SquadSetup = () => {
   const isJoining = params.get('joined') === 'true';
   const joinCode = params.get('code');
 
+  // Guard: redirect away if invite mode (disabled for safety)
+  if (mode === 'invite') {
+    navigate('/squad', { replace: true });
+    return null;
+  }
+
   const { startSquad } = useAppState();
   const [step, setStep] = useState(1);
   const [task, setTask] = useState('');

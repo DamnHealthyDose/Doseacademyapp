@@ -75,15 +75,14 @@ const SquadHome = () => {
             <p className="text-squad font-heading font-bold text-sm mt-3">Start focusing →</p>
           </button>
 
-          <button
-            onClick={() => navigate('/squad/setup?mode=invite')}
-            className="w-full dose-card p-4 border-2 border-primary text-left hover:bg-primary/5 transition-colors"
+          <div
+            className="w-full dose-card p-4 border-2 border-border text-left opacity-50 cursor-not-allowed"
           >
             <p className="text-foreground font-heading font-bold text-base">Study with a friend</p>
             <p className="text-text-secondary text-sm font-body mt-1">Invite someone specific. You'll each set your task and go.</p>
-            <span className="inline-block mt-2 text-[10px] font-body text-primary bg-primary/10 px-2 py-0.5 rounded-button">2-person · Async</span>
-            <p className="text-primary font-heading font-bold text-sm mt-3">Invite someone →</p>
-          </button>
+            <span className="inline-block mt-2 text-[10px] font-body text-text-hint bg-muted px-2 py-0.5 rounded-button">2-person · Async</span>
+            <p className="text-text-hint font-heading font-bold text-sm mt-3">🔒 Coming Soon — Age verification required</p>
+          </div>
         </motion.div>
 
         {/* Recent sessions */}
