@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, ShieldCheck } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { ambientPool, aiSquadMembers, pickRandom } from '@/lib/squadContent';
 import { useMemo } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 const SquadHome = () => {
   const navigate = useNavigate();
