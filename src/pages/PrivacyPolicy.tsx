@@ -47,7 +47,10 @@ const PrivacyPolicy = () => {
               <strong>Preferences:</strong> Your cookie choices, theme preference, and app settings are stored in your browser's local storage.
             </Li>
             <Li>
-              <strong>No personal info:</strong> We do not collect your name, email, phone number, school, or location in the current version of DOSE Academy.
+              <strong>Account data (if signed up):</strong> If you create an account for Study with a Friend, we collect your email, a display name, and your age bracket. For users 13-15, we also collect a parent/guardian email for consent verification.
+            </Li>
+            <Li>
+              <strong>Data retention:</strong> Account data is retained for as long as your account is active. You or your parent/guardian can request deletion at any time. Chat data linked to device IDs is retained for up to 90 days of inactivity.
             </Li>
           </ul>
         </Section>
