@@ -112,7 +112,7 @@ const AuthPage = () => {
             {mode === 'login' ? 'Welcome back' : 'Create your account'}
           </h1>
           <p className="text-text-secondary text-sm font-body mb-6">
-            Sign in to access Study with a Friend
+            {mode === 'login' ? 'Sign in to access Study with a Friend' : 'Create your account to study with friends'}
           </p>
 
           {/* OAuth buttons */}
