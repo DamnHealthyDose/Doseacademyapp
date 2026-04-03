@@ -179,13 +179,24 @@ const AuthPage = () => {
           </form>
 
           <p className="text-center text-text-secondary text-sm font-body mt-4">
-            {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-            <button
-              onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-              className="text-primary font-bold"
-            >
-              {mode === 'login' ? 'Sign up' : 'Sign in'}
-            </button>
+            {mode === 'login' ? (
+              <>
+                Don't have an account?{' '}
+                <button
+                  onClick={() => navigate(`/signup-age-check?redirect=${encodeURIComponent(redirect)}`)}
+                  className="text-primary font-bold"
+                >
+                  Sign up
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <button onClick={() => setMode('login')} className="text-primary font-bold">
+                  Sign in
+                </button>
+              </>
+            )}
           </p>
         </motion.div>
       </div>
