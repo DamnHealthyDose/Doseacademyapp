@@ -34,21 +34,6 @@ const SquadSetup = () => {
   const handleStart = () => {
     startSquad(task, duration!, mode as 'ambient' | 'invite', mode === 'invite' ? sessionCode : null);
     if (mode === 'invite' && !isJoining) {
-
-  const { startSquad } = useAppState();
-  const [step, setStep] = useState(1);
-  const [task, setTask] = useState('');
-  const [duration, setDuration] = useState<number | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [sessionCode] = useState(() => generateCode());
-
-  const miniSquad = useMemo(() => pickRandom(ambientPool, 4), []);
-
-  const handleChip = (label: string) => setTask(label === 'Other' ? '' : label);
-
-  const handleStart = () => {
-    startSquad(task, duration!, mode, mode === 'invite' ? sessionCode : null);
-    if (mode === 'invite' && !isJoining) {
       localStorage.setItem(`squad_session_${sessionCode}`, JSON.stringify({
         hostTask: task, hostDuration: duration, createdAt: Date.now(), status: 'waiting',
       }));
