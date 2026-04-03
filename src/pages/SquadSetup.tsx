@@ -22,10 +22,18 @@ const SquadSetup = () => {
 
   const miniSquad = useMemo(() => pickRandom(ambientPool, 4), []);
 
-  // Guard: redirect away if invite mode (disabled for safety)
+  // Guard: require auth + age verification for invite mode
   useEffect(() => {
     if (mode === 'invite') {
-      navigate('/squad', { replace: true });
+      // Auth/age checks are handled by SquadHome navigation
+      // This is a fallback for direct URL access
+      const checkAuth = async () => {
+        const { data: { session } } = await (await import('@/integrations/supabase/client')).supabase.auth.getSession();
+        if (!session) {
+          navigate('/auth?redirect=/squad/setup?mode=invite', { replace: true });
+        }
+      };
+      checkAuth();
     }
   }, [mode, navigate]);
 

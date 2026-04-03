@@ -5,7 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppProvider } from "@/context/AppContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index.tsx";
+import AuthPage from "./pages/AuthPage.tsx";
+import AgeVerification from "./pages/AgeVerification.tsx";
 import SparkPage from "./pages/SparkPage.tsx";
 import SparkComplete from "./pages/SparkComplete.tsx";
 import BadgesPage from "./pages/BadgesPage.tsx";
@@ -34,12 +37,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <AppProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
+        <AuthProvider>
+          <AppProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<AuthPage />} />
+                <Route path="/age-verify" element={<AgeVerification />} />
               <Route path="/spark" element={<SparkPage />} />
               <Route path="/spark/complete" element={<SparkComplete />} />
               <Route path="/wave/setup" element={<WaveSetup />} />
@@ -60,10 +66,11 @@ const App = () => (
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <SlickChatWidget />
-            <CookieConsent />
-          </BrowserRouter>
-        </AppProvider>
+              <SlickChatWidget />
+              <CookieConsent />
+            </BrowserRouter>
+          </AppProvider>
+        </AuthProvider>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,9 +1,22 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/hooks/useAuth';
 import logo from '@/assets/dose-logo.png';
 
 const SquadInvite = () => {
   const navigate = useNavigate();
+  const { code } = useParams();
+  const { user, profile } = useAuth();
+
+  const handleJoin = () => {
+    if (!user) {
+      navigate(`/auth?redirect=/squad/invite/${code}`);
+    } else if (!profile?.age_verified) {
+      navigate(`/age-verify?redirect=/squad/invite/${code}`);
+    } else {
+      navigate(`/squad/setup?mode=invite&joined=true&code=${code}`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
@@ -13,20 +26,20 @@ const SquadInvite = () => {
 
         <motion.h1 className="text-2xl font-heading font-extrabold text-foreground mb-2"
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          This feature is coming soon
+          You've been invited to study!
         </motion.h1>
         <motion.p className="text-text-secondary text-sm font-body mb-8"
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          We're adding age verification to keep everyone safe before enabling study-with-a-friend sessions.
+          Someone wants to focus with you. Sign in and verify your age to join them.
         </motion.p>
 
         <motion.button
-          onClick={() => navigate('/squad')}
+          onClick={handleJoin}
           className="w-full h-14 bg-squad text-primary-foreground font-heading font-bold rounded-button"
           whileTap={{ scale: 0.97 }}
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
         >
-          Go to Squad Focus →
+          {!user ? 'Sign in to join →' : !profile?.age_verified ? 'Verify age to join →' : 'Join the session →'}
         </motion.button>
       </div>
     </div>

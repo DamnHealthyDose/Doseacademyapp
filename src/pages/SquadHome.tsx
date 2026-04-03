@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, ShieldCheck } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { ambientPool, aiSquadMembers, pickRandom } from '@/lib/squadContent';
 import { useMemo } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 const SquadHome = () => {
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const squad = useMemo(() => {
     const aiPicks = pickRandom(aiSquadMembers, 2);
@@ -75,14 +77,28 @@ const SquadHome = () => {
             <p className="text-squad font-heading font-bold text-sm mt-3">Start focusing →</p>
           </button>
 
-          <div
-            className="w-full dose-card p-4 border-2 border-border text-left opacity-50 cursor-not-allowed"
+          <button
+            onClick={() => {
+              if (!user) {
+                navigate('/auth?redirect=/squad/setup?mode=invite');
+              } else if (!profile?.age_verified) {
+                navigate('/age-verify?redirect=/squad/setup?mode=invite');
+              } else {
+                navigate('/squad/setup?mode=invite');
+              }
+            }}
+            className="w-full dose-card p-4 border-2 border-border text-left hover:border-squad/30 transition-colors"
           >
-            <p className="text-foreground font-heading font-bold text-base">Study with a friend</p>
+            <div className="flex items-center justify-between">
+              <p className="text-foreground font-heading font-bold text-base">Study with a friend</p>
+              <ShieldCheck size={16} className="text-primary" />
+            </div>
             <p className="text-text-secondary text-sm font-body mt-1">Invite someone specific. You'll each set your task and go.</p>
             <span className="inline-block mt-2 text-[10px] font-body text-text-hint bg-muted px-2 py-0.5 rounded-button">2-person · Async</span>
-            <p className="text-text-hint font-heading font-bold text-sm mt-3">🔒 Coming Soon — Age verification required</p>
-          </div>
+            <p className="text-squad font-heading font-bold text-sm mt-3">
+              {!user ? '🔒 Sign in to unlock →' : !profile?.age_verified ? '🔒 Verify age to unlock →' : 'Invite someone →'}
+            </p>
+          </button>
         </motion.div>
 
         {/* Recent sessions */}

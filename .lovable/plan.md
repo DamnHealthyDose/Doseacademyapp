@@ -1,34 +1,46 @@
 
+# Authentication & Age Verification for Study with a Friend
 
-# Disable "Study with a Friend" & Add Coming Soon
-
-## Why
-Mode B (invite a friend) involves real peer-to-peer connections which pose safety risks without proper age verification and parental consent (COPPA). Disabling it now and marking it "Coming Soon" is the right call.
+## Overview
+Add email/Google/Apple authentication and age verification so Mode B can be safely re-enabled in the future. Auth is only required for the "Study with a Friend" feature — the rest of the app stays open.
 
 ## Changes
 
-### 1. Disable the invite button on SquadHome
-**File: `src/pages/SquadHome.tsx`** (lines 78-86)
-- Remove the `onClick` navigation to `/squad/setup?mode=invite`
-- Add `opacity-50 cursor-not-allowed` styling
-- Replace "Invite someone →" with a "Coming Soon" badge
-- Add a short note: "Age verification required — coming soon"
+### 1. Database: profiles table with age verification
+- `profiles` table: `user_id`, `display_name`, `date_of_birth`, `age_verified` (boolean), `parent_email`, `parent_consent_given` (boolean), `parent_consent_at`
+- RLS: users can read/update their own profile
+- Auto-create profile on signup via trigger
 
-### 2. Guard the invite route in SquadSetup
-**File: `src/pages/SquadSetup.tsx`**
-- If `mode=invite`, redirect back to `/squad` immediately (prevents direct URL access)
+### 2. Database: user_roles table (for future admin needs)
+- Standard roles table following the security template
 
-### 3. Guard the invite landing page
-**File: `src/pages/SquadInvite.tsx`**
-- Show a friendly "This feature is coming soon" message instead of the join flow
-- Link back to `/squad`
+### 3. Configure auth
+- Enable email + password (email confirmation required)
+- Configure Google + Apple OAuth via Lovable Cloud
 
-### Future considerations for age verification
-When ready to re-enable, the recommended approach would be:
-- **Authentication required** — users must sign up/log in before accessing Mode B
-- **Date-of-birth collection** at signup with parental consent flow for under-13 (COPPA)
-- **Parental email verification** — parent confirms permission via email link
-- **Backend enforcement** — edge function or RLS policy checks age-verified flag before allowing invite creation/acceptance
+### 4. Create auth pages
+- `/auth` — Login/Signup page with email + Google + Apple
+- Age verification step after first login (collect date of birth)
+- Parental consent flow for users 13-15 (collect parent email, show consent pending state)
 
-No database changes needed for this disable-only update.
+### 5. Auth context & route protection
+- Auth provider wrapping the app to track session state
+- `useAuth` hook for components
+- Protected route wrapper that checks auth + age verification before allowing Mode B access
 
+### 6. Update Squad flow
+- Re-enable the "Study with a Friend" button but gate it behind auth + age check
+- If not logged in → redirect to `/auth`
+- If logged in but no DOB → show age verification
+- If 13-15 and no parental consent → show "Waiting for parent approval"
+- If under 13 → block with friendly message
+- If 16+ or 13-15 with consent → allow access
+
+### 7. Parental consent edge function
+- Edge function to send consent request email to parent (future — when email domain is set up)
+- For now: parent consent will be a manual/placeholder flow
+
+## What stays the same
+- Mode A (ambient squad) remains fully open, no auth needed
+- All other features remain open
+- AI chat bubbles remain open
