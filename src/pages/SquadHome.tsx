@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 const SquadHome = () => {
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const squad = useMemo(() => {
     const aiPicks = pickRandom(aiSquadMembers, 2);
