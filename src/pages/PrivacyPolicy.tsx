@@ -96,7 +96,44 @@ const PrivacyPolicy = () => {
             <Li>Squad Focus has zero chat or messaging — only silent co-presence and a single-word check-in.</Li>
             <Li>No real names or profile photos are ever displayed to other users.</Li>
             <Li>RSD session content is private. No parent, teacher, or counselor can see what you shared inside the tool.</Li>
-            <Li>We are working toward full COPPA compliance for users under 13.</Li>
+          </ul>
+        </Section>
+
+        <Section
+          icon={<Shield size={18} className="text-primary" />}
+          title="Children's privacy (COPPA)"
+        >
+          <ul className="space-y-2">
+            <Li>
+              <strong>Under 13:</strong> Users under 13 cannot create an account. Age is verified before any personal information is collected. No email, name, or other PII is stored for users who indicate they are under 13.
+            </Li>
+            <Li>
+              <strong>Ages 13-15:</strong> Users between 13 and 15 can create an account but require verifiable parental consent before accessing peer features (Study with a Friend). A parent or guardian must confirm consent via a unique email link.
+            </Li>
+            <Li>
+              <strong>Ages 16+:</strong> Users 16 and older have full access to all features after age verification.
+            </Li>
+            <Li>
+              <strong>Data minimization:</strong> After age verification, we store only the age bracket (under-13, 13-15, or 16+) — not the exact date of birth.
+            </Li>
+            <Li>
+              <strong>What we collect from minors:</strong> Display name (shown as initials only to others), age bracket, session progress, and parent email (for 13-15 users with parental consent).
+            </Li>
+          </ul>
+        </Section>
+
+        <Section
+          icon={<Shield size={18} className="text-primary" />}
+          title="Parental rights"
+        >
+          <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed mb-3">
+            If your child is between 13 and 15, you have the following rights under COPPA:
+          </p>
+          <ul className="space-y-2">
+            <Li><strong>Review:</strong> You can review the personal information we have collected about your child by visiting the Parent Dashboard link sent to you via email.</Li>
+            <Li><strong>Revoke consent:</strong> You can revoke your consent at any time, which will remove your child's access to peer features.</Li>
+            <Li><strong>Delete:</strong> You can request full deletion of your child's account and all associated data from the Parent Dashboard.</Li>
+            <Li><strong>Refuse further collection:</strong> You can prevent any further collection of your child's information by revoking consent or deleting the account.</Li>
           </ul>
         </Section>
 
