@@ -8,9 +8,12 @@ interface Profile {
   display_name: string | null;
   date_of_birth: string | null;
   age_verified: boolean;
+  age_bracket: string | null;
   parent_email: string | null;
   parent_consent_given: boolean;
   parent_consent_at: string | null;
+  consent_token: string | null;
+  consent_token_expires_at: string | null;
 }
 
 interface AuthContextType {
