@@ -37,12 +37,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <AppProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
+        <AuthProvider>
+          <AppProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<AuthPage />} />
+                <Route path="/age-verify" element={<AgeVerification />} />
               <Route path="/spark" element={<SparkPage />} />
               <Route path="/spark/complete" element={<SparkComplete />} />
               <Route path="/wave/setup" element={<WaveSetup />} />
