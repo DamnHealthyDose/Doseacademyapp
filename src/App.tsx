@@ -66,10 +66,11 @@ const App = () => (
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <SlickChatWidget />
-            <CookieConsent />
-          </BrowserRouter>
-        </AppProvider>
+              <SlickChatWidget />
+              <CookieConsent />
+            </BrowserRouter>
+          </AppProvider>
+        </AuthProvider>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
