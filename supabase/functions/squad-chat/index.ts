@@ -26,7 +26,32 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, personality, subject, initials } = await req.json();
+    const body = await req.json();
+    const { messages, personality, subject, initials } = body;
+
+    // Input validation
+    if (!Array.isArray(messages) || messages.length === 0 || messages.length > 20) {
+      return new Response(JSON.stringify({ error: "Invalid messages" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    for (const m of messages) {
+      if (!m.role || !["user", "assistant"].includes(m.role) || typeof m.content !== "string" || m.content.length > 1000) {
+        return new Response(JSON.stringify({ error: "Invalid message format" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+    if (typeof personality !== "string" || personality.length > 500 ||
+        typeof subject !== "string" || subject.length > 200 ||
+        typeof initials !== "string" || initials.length > 10) {
+      return new Response(JSON.stringify({ error: "Invalid parameters" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
