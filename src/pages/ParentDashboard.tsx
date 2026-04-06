@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Trash2, XCircle, AlertTriangle, CheckCircle } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 
 type DashboardStatus = 'loading' | 'valid' | 'invalid' | 'revoked' | 'deleted';
 
@@ -12,8 +11,9 @@ interface ChildData {
   age_verified: boolean;
   parent_consent_given: boolean;
   created_at: string;
-  user_id: string;
 }
+
+const FUNC_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/parent-account-action`;
 
 const ParentDashboard = () => {
   const { token } = useParams<{ token: string }>();
@@ -28,56 +28,49 @@ const ParentDashboard = () => {
   }, [token]);
 
   const fetchChildData = async () => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('display_name, age_bracket, age_verified, parent_consent_given, created_at, user_id')
-      .eq('consent_token', token)
-      .single();
+    try {
+      const resp = await fetch(FUNC_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ action: 'validate', token }),
+      });
 
-    if (error || !data) {
-      // Try parent_email-based lookup for already-confirmed tokens
+      if (!resp.ok) { setStatus('invalid'); return; }
+      const data = await resp.json();
+      setChildData(data as ChildData);
+      setStatus('valid');
+    } catch {
       setStatus('invalid');
-      return;
     }
-
-    setChildData(data as ChildData);
-    setStatus('valid');
   };
 
-  const handleRevoke = async () => {
+  const handleAction = async (action: 'revoke-consent' | 'delete') => {
     if (!token) return;
     setLoading(true);
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        parent_consent_given: false,
-        age_verified: false,
-        parent_consent_at: null,
-      })
-      .eq('consent_token', token);
 
-    if (error) {
+    try {
+      const resp = await fetch(FUNC_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ action, token }),
+      });
+
+      if (resp.ok) {
+        setStatus(action === 'delete' ? 'deleted' : 'revoked');
+      } else {
+        setStatus('invalid');
+      }
+    } catch {
       setStatus('invalid');
-    } else {
-      setStatus('revoked');
     }
     setLoading(false);
-  };
-
-  const handleDelete = async () => {
-    if (!childData) return;
-    setLoading(true);
-    // Call the edge function for account deletion
-    const { error } = await supabase.functions.invoke('parent-account-action', {
-      body: { action: 'delete', userId: childData.user_id, token },
-    });
-
-    if (error) {
-      setStatus('invalid');
-    } else {
-      setStatus('deleted');
-    }
-    setLoading(false);
+    setConfirmAction(null);
   };
 
   return (
@@ -85,96 +78,109 @@ const ParentDashboard = () => {
       <div className="w-full max-w-[420px] px-6">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           {status === 'loading' && (
-            <p className="text-text-secondary font-body text-center">Loading...</p>
+            <p className="text-text-secondary font-body text-center">Loading dashboard...</p>
           )}
 
           {status === 'valid' && childData && (
-            <>
-              <div className="flex items-center gap-2 mb-4 justify-center">
-                <Shield size={24} className="text-primary" />
-                <h1 className="text-2xl font-heading font-extrabold text-foreground">Parent Dashboard</h1>
-              </div>
-              <p className="text-text-secondary text-sm font-body text-center mb-6">
-                Review and manage your child's data on DOSE Academy.
-              </p>
-
-              <div className="rounded-card bg-bg-elevated p-4 space-y-3 mb-6">
-                <DataRow label="Display name" value={childData.display_name || 'Not set'} />
-                <DataRow label="Age group" value={childData.age_bracket || 'Not verified'} />
-                <DataRow label="Account created" value={new Date(childData.created_at).toLocaleDateString()} />
-                <DataRow label="Consent status" value={childData.parent_consent_given ? 'Granted' : 'Pending'} />
+            <div className="space-y-6">
+              <div className="text-center">
+                <Shield size={48} className="text-primary mx-auto mb-4" />
+                <h1 className="text-2xl font-heading font-extrabold text-foreground mb-1">Parent Dashboard</h1>
+                <p className="text-text-secondary font-body text-sm">
+                  Manage your child's DOSE Academy account
+                </p>
               </div>
 
-              <p className="text-text-secondary text-xs font-body mb-4">
-                <strong>What we store:</strong> Display name (initials only shown to others), age bracket, and session progress. No photos, school info, or location data.
-              </p>
+              <div className="bg-secondary/50 rounded-xl p-4 space-y-3">
+                <h2 className="font-heading font-bold text-foreground">Stored Data</h2>
+                <div className="space-y-2 text-sm font-body">
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Display Name</span>
+                    <span className="text-foreground">{childData.display_name || 'Not set'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Age Group</span>
+                    <span className="text-foreground">{childData.age_bracket || 'Not set'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Consent</span>
+                    <span className={childData.parent_consent_given ? 'text-primary' : 'text-destructive'}>
+                      {childData.parent_consent_given ? 'Granted' : 'Not granted'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Account Created</span>
+                    <span className="text-foreground">{new Date(childData.created_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              </div>
 
-              {!confirmAction ? (
+              {!confirmAction && (
                 <div className="space-y-3">
                   <button
                     onClick={() => setConfirmAction('revoke')}
-                    className="w-full h-12 border-2 border-warning text-warning font-heading font-bold rounded-button flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl border-2 border-amber-500 text-amber-600 font-heading font-bold flex items-center justify-center gap-2"
                   >
-                    <XCircle size={18} /> Revoke consent
+                    <XCircle size={18} /> Revoke Consent
                   </button>
                   <button
                     onClick={() => setConfirmAction('delete')}
-                    className="w-full h-12 border-2 border-destructive text-destructive font-heading font-bold rounded-button flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl border-2 border-destructive text-destructive font-heading font-bold flex items-center justify-center gap-2"
                   >
-                    <Trash2 size={18} /> Delete account & data
+                    <Trash2 size={18} /> Delete Account
                   </button>
                 </div>
-              ) : (
-                <div className="rounded-card bg-bg-elevated p-4">
-                  <p className="text-foreground font-body text-sm font-bold mb-2">
-                    {confirmAction === 'revoke' ? 'Revoke consent?' : 'Delete account?'}
-                  </p>
-                  <p className="text-text-secondary text-xs font-body mb-4">
-                    {confirmAction === 'revoke'
-                      ? "Your child will lose access to Study with a Friend until consent is re-granted."
-                      : "This permanently deletes your child's account and all associated data. This cannot be undone."}
+              )}
+
+              {confirmAction && (
+                <div className="bg-destructive/10 rounded-xl p-4 space-y-3">
+                  <p className="text-sm font-body text-foreground">
+                    {confirmAction === 'delete'
+                      ? 'This will permanently delete your child\'s account and all associated data. This cannot be undone.'
+                      : 'This will revoke consent and disable peer features for your child.'}
                   </p>
                   <div className="flex gap-3">
                     <button
                       onClick={() => setConfirmAction(null)}
-                      className="flex-1 h-10 bg-bg-elevated border border-border rounded-button font-body text-sm"
+                      disabled={loading}
+                      className="flex-1 py-2 rounded-xl bg-secondary text-foreground font-heading font-bold"
                     >
                       Cancel
                     </button>
                     <button
-                      onClick={confirmAction === 'revoke' ? handleRevoke : handleDelete}
+                      onClick={() => handleAction(confirmAction === 'delete' ? 'delete' : 'revoke-consent')}
                       disabled={loading}
-                      className="flex-1 h-10 bg-destructive text-primary-foreground rounded-button font-body text-sm font-bold disabled:opacity-50"
+                      className="flex-1 py-2 rounded-xl bg-destructive text-destructive-foreground font-heading font-bold"
                     >
                       {loading ? 'Processing...' : 'Confirm'}
                     </button>
                   </div>
                 </div>
               )}
-            </>
-          )}
-
-          {status === 'invalid' && (
-            <div className="text-center">
-              <AlertTriangle size={48} className="text-warning mx-auto mb-4" />
-              <h2 className="text-xl font-heading font-extrabold text-foreground mb-2">Invalid link</h2>
-              <p className="text-text-secondary text-sm font-body">This link is no longer valid.</p>
             </div>
           )}
 
           {status === 'revoked' && (
             <div className="text-center">
-              <CheckCircle size={48} className="text-warning mx-auto mb-4" />
-              <h2 className="text-xl font-heading font-extrabold text-foreground mb-2">Consent revoked</h2>
-              <p className="text-text-secondary text-sm font-body">Your child's access to peer features has been removed.</p>
+              <CheckCircle size={48} className="text-amber-500 mx-auto mb-4" />
+              <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Consent Revoked</h1>
+              <p className="text-text-secondary font-body">Peer features have been disabled.</p>
             </div>
           )}
 
           {status === 'deleted' && (
             <div className="text-center">
-              <CheckCircle size={48} className="text-destructive mx-auto mb-4" />
-              <h2 className="text-xl font-heading font-extrabold text-foreground mb-2">Account deleted</h2>
-              <p className="text-text-secondary text-sm font-body">All data has been permanently removed. You can close this page.</p>
+              <CheckCircle size={48} className="text-primary mx-auto mb-4" />
+              <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Account Deleted</h1>
+              <p className="text-text-secondary font-body">All data has been permanently removed.</p>
+            </div>
+          )}
+
+          {status === 'invalid' && (
+            <div className="text-center">
+              <AlertTriangle size={48} className="text-destructive mx-auto mb-4" />
+              <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Invalid Link</h1>
+              <p className="text-text-secondary font-body">This dashboard link is no longer valid.</p>
             </div>
           )}
         </motion.div>
@@ -182,12 +188,5 @@ const ParentDashboard = () => {
     </div>
   );
 };
-
-const DataRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between">
-    <span className="text-text-hint text-xs font-body">{label}</span>
-    <span className="text-foreground text-xs font-body font-medium">{value}</span>
-  </div>
-);
 
 export default ParentDashboard;
