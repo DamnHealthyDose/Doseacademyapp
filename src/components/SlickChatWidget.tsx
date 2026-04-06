@@ -88,8 +88,6 @@ const SlickChatWidget = () => {
 
   const saveMessage = async (convoId: string, role: 'user' | 'assistant', content: string) => {
     await supabase.from('chat_messages').insert({ conversation_id: convoId, role, content });
-    // Touch updated_at on conversation
-    await supabase.from('chat_conversations').update({ updated_at: new Date().toISOString() }).eq('id', convoId);
   };
 
   const clearHistory = () => {
