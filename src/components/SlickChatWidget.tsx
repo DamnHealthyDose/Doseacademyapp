@@ -92,10 +92,8 @@ const SlickChatWidget = () => {
     await supabase.from('chat_conversations').update({ updated_at: new Date().toISOString() }).eq('id', convoId);
   };
 
-  const clearHistory = async () => {
-    if (conversationId) {
-      await supabase.from('chat_conversations').delete().eq('id', conversationId);
-    }
+  const clearHistory = () => {
+    // Clear client-side only — server records are immutable (no DELETE policy)
     setConversationId(null);
     setMessages([WELCOME_MSG]);
     setLoaded(false);

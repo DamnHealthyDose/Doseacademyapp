@@ -10,10 +10,11 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { action, userId, token } = await req.json()
+    const body = await req.json()
+    const { action, token } = body
 
-    if (!action || !userId || !token) {
-      return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+    if (!action || !token || typeof token !== 'string' || token.length > 100) {
+      return new Response(JSON.stringify({ error: 'Missing or invalid fields' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
@@ -23,33 +24,76 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     const supabase = createClient(supabaseUrl, serviceKey)
 
-    // Verify the token belongs to the user
+    // All actions are token-based — look up profile by consent_token
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('user_id, consent_token')
-      .eq('user_id', userId)
+      .select('user_id, display_name, age_bracket, age_verified, parent_consent_given, created_at, consent_token_expires_at')
+      .eq('consent_token', token)
       .single()
 
     if (profileError || !profile) {
-      return new Response(JSON.stringify({ error: 'Profile not found' }), {
+      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
         status: 404,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    // Verify token matches (parent must have received this token)
-    if (profile.consent_token !== token) {
-      return new Response(JSON.stringify({ error: 'Invalid token' }), {
-        status: 403,
+    // Check token expiry
+    if (profile.consent_token_expires_at && new Date(profile.consent_token_expires_at) < new Date()) {
+      return new Response(JSON.stringify({ error: 'Token has expired' }), {
+        status: 410,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    if (action === 'validate') {
+      // Return minimal child info for parent consent/dashboard pages
+      return new Response(JSON.stringify({
+        display_name: profile.display_name,
+        age_bracket: profile.age_bracket,
+        age_verified: profile.age_verified,
+        parent_consent_given: profile.parent_consent_given,
+        created_at: profile.created_at,
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    if (action === 'grant-consent') {
+      await supabase
+        .from('profiles')
+        .update({
+          parent_consent_given: true,
+          parent_consent_at: new Date().toISOString(),
+          age_verified: true,
+          consent_token: null,
+          consent_token_expires_at: null,
+        })
+        .eq('user_id', profile.user_id)
+
+      return new Response(JSON.stringify({ success: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    if (action === 'revoke-consent') {
+      await supabase
+        .from('profiles')
+        .update({
+          parent_consent_given: false,
+          age_verified: false,
+          parent_consent_at: null,
+        })
+        .eq('user_id', profile.user_id)
+
+      return new Response(JSON.stringify({ success: true }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
     if (action === 'delete') {
-      // Delete user profile first
-      await supabase.from('profiles').delete().eq('user_id', userId)
-      // Delete user from auth
-      const { error: deleteError } = await supabase.auth.admin.deleteUser(userId)
+      await supabase.from('profiles').delete().eq('user_id', profile.user_id)
+      const { error: deleteError } = await supabase.auth.admin.deleteUser(profile.user_id)
       if (deleteError) throw deleteError
 
       return new Response(JSON.stringify({ success: true, message: 'Account deleted' }), {
@@ -62,7 +106,7 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: 'An error occurred' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
