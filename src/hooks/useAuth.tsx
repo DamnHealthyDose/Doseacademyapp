@@ -45,10 +45,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const fetchProfile = async (userId: string) => {
     const { data } = await supabase
       .from('profiles')
-      .select('*')
+      .select('id, user_id, display_name, date_of_birth, age_verified, age_bracket, parent_email, parent_consent_given, parent_consent_at')
       .eq('user_id', userId)
       .single();
-    setProfile(data as Profile | null);
+    setProfile(data ? { ...data, consent_token: null, consent_token_expires_at: null } as Profile : null);
   };
 
   const refreshProfile = async () => {
