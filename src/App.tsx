@@ -30,6 +30,7 @@ import SquadCheckin from "./pages/SquadCheckin.tsx";
 import SquadComplete from "./pages/SquadComplete.tsx";
 import SquadInvite from "./pages/SquadInvite.tsx";
 import IgnitePage from "./pages/IgnitePage.tsx";
+import TeacherDashboard from "./pages/TeacherDashboard.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
