@@ -72,6 +72,7 @@ const App = () => (
               <Route path="/squad/invite/:code" element={<SquadInvite />} />
               <Route path="/badges" element={<BadgesPage />} />
               <Route path="/ignite" element={<IgnitePage />} />
+              <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
