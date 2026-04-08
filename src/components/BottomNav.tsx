@@ -30,7 +30,8 @@ const BottomNav = () => {
             (to === '/spark' && pathname.startsWith('/spark')) ||
             (to === '/wave/setup' && pathname.startsWith('/wave')) ||
             (to === '/rsd' && pathname.startsWith('/rsd')) ||
-            (to === '/squad' && pathname.startsWith('/squad'));
+            (to === '/squad' && pathname.startsWith('/squad')) ||
+            (to === '/ignite' && pathname.startsWith('/ignite'));
           return (
             <Link
               key={to}
