@@ -105,10 +105,25 @@ const TeacherDashboard = () => {
     activeStudents: new Set(filteredSessions.map(s => s.student_id)).size,
   }), [filteredSessions]);
 
-  if (authLoading || loading) {
+  if (authLoading || authorized === null) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-text-secondary font-body">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="text-center space-y-3">
+          <AlertTriangle size={32} className="text-amber-400 mx-auto" />
+          <h1 className="text-xl font-heading font-extrabold text-foreground">Access Denied</h1>
+          <p className="text-text-secondary font-body text-sm">You need an admin or moderator role to view this dashboard.</p>
+          <button onClick={() => navigate('/')} className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-heading font-bold text-sm">
+            Go Home
+          </button>
+        </div>
       </div>
     );
   }
