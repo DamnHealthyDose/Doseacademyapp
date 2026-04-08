@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Zap, Waves, Heart, Users, Award } from 'lucide-react';
+import { Home, Zap, Waves, Heart, Users, Award, Flame } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileMenu from './MobileMenu';
 
@@ -13,6 +13,7 @@ const BottomNav = () => {
     { to: '/wave/setup', icon: Waves, label: 'WAVE' },
     { to: '/rsd', icon: Heart, label: 'RSD' },
     { to: '/squad', icon: Users, label: 'Squad' },
+    { to: '/ignite', icon: Flame, label: 'IGNITE' },
     { to: '/badges', icon: Award, label: 'Badges' },
   ];
 
@@ -29,7 +30,8 @@ const BottomNav = () => {
             (to === '/spark' && pathname.startsWith('/spark')) ||
             (to === '/wave/setup' && pathname.startsWith('/wave')) ||
             (to === '/rsd' && pathname.startsWith('/rsd')) ||
-            (to === '/squad' && pathname.startsWith('/squad'));
+            (to === '/squad' && pathname.startsWith('/squad')) ||
+            (to === '/ignite' && pathname.startsWith('/ignite'));
           return (
             <Link
               key={to}

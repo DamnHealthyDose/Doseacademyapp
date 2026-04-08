@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Play, X } from 'lucide-react';
+import { ArrowRight, Check, Play, X, Flame } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import SlickMessage from '@/components/SlickMessage';
@@ -178,6 +178,28 @@ const Index = () => {
           <div className="flex-1 h-2 rounded-full bg-bg-elevated overflow-hidden">
             <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${Math.min((xp % 100), 100)}%` }} />
           </div>
+        </motion.div>
+
+        {/* IGNITE CTA */}
+        <motion.div
+          className="w-full mt-5"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <button
+            onClick={() => navigate('/ignite')}
+            className="w-full dose-card p-4 flex items-center gap-3 hover:border-primary/50 transition-colors group"
+          >
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <Flame size={20} className="text-primary" />
+            </div>
+            <div className="flex-1 text-left">
+              <span className="text-foreground font-heading font-bold text-sm block">IGNITE</span>
+              <span className="text-muted-foreground font-body text-xs">Break any task into your first move</span>
+            </div>
+            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
         </motion.div>
 
         {/* Footer */}
