@@ -47,13 +47,45 @@ Deno.serve(async (req) => {
     }
 
     if (action === 'validate') {
-      // Return minimal child info for parent consent/dashboard pages
+      // Also fetch aggregated IGNITE data for the parent dashboard
+      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString()
+      const { data: igniteSessions } = await supabase
+        .from('barkley_memory')
+        .select('steps_completed, spark_handoff, session_completed, streak_day, created_at')
+        .eq('student_id', profile.user_id)
+
+      const { data: streakData } = await supabase
+        .from('ignite_streaks')
+        .select('current_streak, last_activity_date')
+        .eq('user_id', profile.user_id)
+        .single()
+
+      const allSessions = igniteSessions || []
+      const weeklySessions = allSessions.filter(s => new Date(s.created_at) >= new Date(weekAgo))
+
+      const igniteData = {
+        currentStreak: streakData?.current_streak ?? 0,
+        lastActivity: streakData?.last_activity_date ?? null,
+        weeklySessionCount: weeklySessions.length,
+        weeklyAvgSteps: weeklySessions.length
+          ? Math.round(weeklySessions.reduce((a, s) => a + s.steps_completed, 0) / weeklySessions.length * 10) / 10
+          : 0,
+        weeklySparkHandoffs: weeklySessions.filter(s => s.spark_handoff).length,
+        totalSessions: allSessions.length,
+        todayActive: allSessions.some(s => {
+          const d = new Date(s.created_at)
+          const now = new Date()
+          return d.toDateString() === now.toDateString()
+        }),
+      }
+
       return new Response(JSON.stringify({
         display_name: profile.display_name,
         age_bracket: profile.age_bracket,
         age_verified: profile.age_verified,
         parent_consent_given: profile.parent_consent_given,
         created_at: profile.created_at,
+        ignite: igniteData,
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
