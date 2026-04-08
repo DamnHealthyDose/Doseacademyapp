@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Trash2, XCircle, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Shield, Trash2, XCircle, AlertTriangle, CheckCircle, Flame, TrendingUp, Zap } from 'lucide-react';
 
 type DashboardStatus = 'loading' | 'valid' | 'invalid' | 'revoked' | 'deleted';
+
+interface IgniteData {
+  currentStreak: number;
+  lastActivity: string | null;
+  weeklySessionCount: number;
+  weeklyAvgSteps: number;
+  weeklySparkHandoffs: number;
+  totalSessions: number;
+  todayActive: boolean;
+}
 
 interface ChildData {
   display_name: string | null;
@@ -11,6 +21,7 @@ interface ChildData {
   age_verified: boolean;
   parent_consent_given: boolean;
   created_at: string;
+  ignite?: IgniteData;
 }
 
 const FUNC_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/parent-account-action`;
@@ -73,6 +84,8 @@ const ParentDashboard = () => {
     setConfirmAction(null);
   };
 
+  const ignite = childData?.ignite;
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
       <div className="w-full max-w-[420px] px-6">
@@ -91,6 +104,7 @@ const ParentDashboard = () => {
                 </p>
               </div>
 
+              {/* Stored Data */}
               <div className="bg-secondary/50 rounded-xl p-4 space-y-3">
                 <h2 className="font-heading font-bold text-foreground">Stored Data</h2>
                 <div className="space-y-2 text-sm font-body">
@@ -114,6 +128,59 @@ const ParentDashboard = () => {
                   </div>
                 </div>
               </div>
+
+              {/* IGNITE Weekly Summary */}
+              {ignite && (
+                <div className="bg-secondary/50 rounded-xl p-4 space-y-3">
+                  <h2 className="font-heading font-bold text-foreground flex items-center gap-2">
+                    <Flame size={18} className="text-primary" /> IGNITE Weekly Summary
+                  </h2>
+
+                  {/* Today's status */}
+                  <div className="flex items-center gap-2 text-sm font-body">
+                    <div className={`w-2 h-2 rounded-full ${ignite.todayActive ? 'bg-primary' : 'bg-text-secondary/30'}`} />
+                    <span className="text-foreground">
+                      {ignite.todayActive ? 'Active today' : 'Not yet active today'}
+                    </span>
+                  </div>
+
+                  {/* Streak */}
+                  <div className="flex items-center gap-2 bg-primary/10 rounded-lg px-3 py-2">
+                    <Flame size={16} className="text-primary" />
+                    <span className="text-foreground font-heading font-bold text-sm">
+                      {ignite.currentStreak}-day streak
+                    </span>
+                    {ignite.currentStreak >= 7 && (
+                      <span className="text-primary text-xs font-body ml-auto">🎉 Milestone!</span>
+                    )}
+                  </div>
+
+                  {/* Weekly stats */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="text-center p-2">
+                      <TrendingUp size={14} className="text-primary mx-auto mb-1" />
+                      <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklySessionCount}</p>
+                      <p className="text-xs font-body text-text-secondary">Sessions</p>
+                    </div>
+                    <div className="text-center p-2">
+                      <Zap size={14} className="text-primary mx-auto mb-1" />
+                      <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklyAvgSteps}</p>
+                      <p className="text-xs font-body text-text-secondary">Avg Steps</p>
+                    </div>
+                    <div className="text-center p-2">
+                      <AlertTriangle size={14} className="text-amber-400 mx-auto mb-1" />
+                      <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklySparkHandoffs}</p>
+                      <p className="text-xs font-body text-text-secondary">Extra Support</p>
+                    </div>
+                  </div>
+
+                  {ignite.weeklySparkHandoffs > 0 && (
+                    <p className="text-xs font-body text-text-secondary">
+                      Your child needed extra support {ignite.weeklySparkHandoffs} time{ignite.weeklySparkHandoffs !== 1 ? 's' : ''} this week. This is normal — it means they recognized when they needed help.
+                    </p>
+                  )}
+                </div>
+              )}
 
               {!confirmAction && (
                 <div className="space-y-3">
