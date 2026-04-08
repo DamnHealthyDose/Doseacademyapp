@@ -38,11 +38,21 @@ const TeacherDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'week' | 'month'>('week');
 
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
+
   useEffect(() => {
     if (authLoading) return;
     if (!user) { navigate('/auth'); return; }
-    fetchData();
+    checkRole();
   }, [user, authLoading]);
+
+  const checkRole = async () => {
+    const { data } = await supabase.rpc('has_role', { _user_id: user!.id, _role: 'admin' });
+    if (data) { setAuthorized(true); fetchData(); return; }
+    const { data: isMod } = await supabase.rpc('has_role', { _user_id: user!.id, _role: 'moderator' });
+    if (isMod) { setAuthorized(true); fetchData(); return; }
+    setAuthorized(false);
+  };
 
   const fetchData = async () => {
     const [sessionsRes, streaksRes] = await Promise.all([
