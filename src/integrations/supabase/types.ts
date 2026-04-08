@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      barkley_memory: {
+        Row: {
+          age_group: Database["public"]["Enums"]["ignite_age_group"]
+          created_at: string
+          id: string
+          session_completed: boolean
+          spark_handoff: boolean
+          steps_completed: number
+          streak_day: number
+          student_id: string
+          task_input: string
+        }
+        Insert: {
+          age_group: Database["public"]["Enums"]["ignite_age_group"]
+          created_at?: string
+          id?: string
+          session_completed?: boolean
+          spark_handoff?: boolean
+          steps_completed?: number
+          streak_day?: number
+          student_id: string
+          task_input: string
+        }
+        Update: {
+          age_group?: Database["public"]["Enums"]["ignite_age_group"]
+          created_at?: string
+          id?: string
+          session_completed?: boolean
+          spark_handoff?: boolean
+          steps_completed?: number
+          streak_day?: number
+          student_id?: string
+          task_input?: string
+        }
+        Relationships: []
+      }
       chat_conversations: {
         Row: {
           created_at: string
@@ -66,6 +102,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ignite_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_activity_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -149,6 +212,7 @@ export type Database = {
     Enums: {
       age_bracket: "under-13" | "13-15" | "16+"
       app_role: "admin" | "moderator" | "user"
+      ignite_age_group: "middle_school" | "high_school"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -278,6 +342,7 @@ export const Constants = {
     Enums: {
       age_bracket: ["under-13", "13-15", "16+"],
       app_role: ["admin", "moderator", "user"],
+      ignite_age_group: ["middle_school", "high_school"],
     },
   },
 } as const
