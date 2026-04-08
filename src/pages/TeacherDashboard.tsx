@@ -38,11 +38,21 @@ const TeacherDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'week' | 'month'>('week');
 
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
+
   useEffect(() => {
     if (authLoading) return;
     if (!user) { navigate('/auth'); return; }
-    fetchData();
+    checkRole();
   }, [user, authLoading]);
+
+  const checkRole = async () => {
+    const { data } = await supabase.rpc('has_role', { _user_id: user!.id, _role: 'admin' });
+    if (data) { setAuthorized(true); fetchData(); return; }
+    const { data: isMod } = await supabase.rpc('has_role', { _user_id: user!.id, _role: 'moderator' });
+    if (isMod) { setAuthorized(true); fetchData(); return; }
+    setAuthorized(false);
+  };
 
   const fetchData = async () => {
     const [sessionsRes, streaksRes] = await Promise.all([
@@ -95,10 +105,25 @@ const TeacherDashboard = () => {
     activeStudents: new Set(filteredSessions.map(s => s.student_id)).size,
   }), [filteredSessions]);
 
-  if (authLoading || loading) {
+  if (authLoading || authorized === null) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-text-secondary font-body">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="text-center space-y-3">
+          <AlertTriangle size={32} className="text-amber-400 mx-auto" />
+          <h1 className="text-xl font-heading font-extrabold text-foreground">Access Denied</h1>
+          <p className="text-text-secondary font-body text-sm">You need an admin or moderator role to view this dashboard.</p>
+          <button onClick={() => navigate('/')} className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-heading font-bold text-sm">
+            Go Home
+          </button>
+        </div>
       </div>
     );
   }
