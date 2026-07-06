@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "dose-academy-mcp",
+      "version": "0.1.0",
+      "title": "DOSE Academy"
+    },
+    "tools": [
+      {
+        "name": "about_dose_academy",
+        "title": "About DOSE Academy",
+        "description": "Returns a short overview of DOSE Academy — an ADHD support app for teens (ages 10–17) with four core tools: SPARK, WAVE, RSD, and Squad Focus.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_dose_tools",
+        "title": "List DOSE tools",
+        "description": "Returns the DOSE Academy in-app tools (SPARK, WAVE, RSD, Squad, IGNITE) with a short purpose and app route for each.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "tool_key": {
+              "description": "Optional: return details for a single tool only.",
+              "type": "string",
+              "enum": [
+                "spark",
+                "wave",
+                "rsd",
+                "squad",
+                "ignite"
+              ]
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
