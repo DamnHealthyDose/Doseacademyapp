@@ -41,25 +41,14 @@ const SlickChatWidget = () => {
     setLoaded(true);
     const deviceId = getDeviceId();
 
-    // Find existing conversation
-    const { data: convos } = await supabase
-      .from('chat_conversations')
-      .select('id')
-      .eq('device_id', deviceId)
-      .order('updated_at', { ascending: false })
-      .limit(1);
-
-    if (convos && convos.length > 0) {
-      const convoId = convos[0].id;
-      setConversationId(convoId);
-
-      const { data: msgs } = await supabase
-        .from('chat_messages')
-        .select('id, role, content')
-        .eq('conversation_id', convoId)
-        .order('created_at', { ascending: true });
-
-      if (msgs && msgs.length > 0) {
+    const { data, error } = await supabase.functions.invoke('chat-history', {
+      body: { action: 'load', device_id: deviceId },
+    });
+    if (error || !data) return;
+    if (data.conversation_id) {
+      setConversationId(data.conversation_id);
+      const msgs = (data.messages ?? []) as Array<{ id: string; role: string; content: string }>;
+      if (msgs.length > 0) {
         setMessages([WELCOME_MSG, ...msgs.map(m => ({
           id: m.id,
           role: m.role as 'user' | 'assistant',
@@ -76,18 +65,18 @@ const SlickChatWidget = () => {
   const ensureConversation = async (): Promise<string> => {
     if (conversationId) return conversationId;
     const deviceId = getDeviceId();
-    const { data, error } = await supabase
-      .from('chat_conversations')
-      .insert({ device_id: deviceId })
-      .select('id')
-      .single();
-    if (error || !data) throw new Error('Failed to create conversation');
-    setConversationId(data.id);
-    return data.id;
+    const { data, error } = await supabase.functions.invoke('chat-history', {
+      body: { action: 'create', device_id: deviceId },
+    });
+    if (error || !data?.conversation_id) throw new Error('Failed to create conversation');
+    setConversationId(data.conversation_id);
+    return data.conversation_id as string;
   };
 
   const saveMessage = async (convoId: string, role: 'user' | 'assistant', content: string) => {
-    await supabase.from('chat_messages').insert({ conversation_id: convoId, role, content });
+    await supabase.functions.invoke('chat-history', {
+      body: { action: 'save', device_id: getDeviceId(), conversation_id: convoId, role, content },
+    });
   };
 
   const clearHistory = () => {
