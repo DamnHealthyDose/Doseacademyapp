@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 supabase/.temp/
+
+# a11y audit output (npm run a11y)
+a11y-before.json
+a11y-report.json
+a11y-report.md
