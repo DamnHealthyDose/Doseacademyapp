@@ -93,8 +93,7 @@ const Index = () => {
         <div className="flex gap-3 mt-6 w-full">
           <motion.button
             onClick={() => navigate('/spark')}
-            className="flex-1 h-14 bg-bg-card border-2 border-primary text-primary font-heading font-bold text-sm rounded-button
-                       flex items-center justify-center gap-1 hover:bg-primary/10 transition-colors"
+            className="tool-btn"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.4 }}
@@ -104,8 +103,7 @@ const Index = () => {
           </motion.button>
           <motion.button
             onClick={() => navigate('/wave/setup')}
-            className="flex-1 h-14 bg-primary text-primary-foreground font-heading font-bold text-sm rounded-button
-                       flex items-center justify-center gap-1 teal-glow hover:bg-primary-dark transition-colors"
+            className="tool-btn"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.4 }}
@@ -115,8 +113,7 @@ const Index = () => {
           </motion.button>
           <motion.button
             onClick={() => navigate('/rsd')}
-            className="flex-1 h-14 bg-bg-card border-2 border-rsd-warm text-rsd-warm font-heading font-bold text-sm rounded-button
-                       flex items-center justify-center gap-1 hover:bg-rsd-warm/10 transition-colors"
+            className="tool-btn"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.4 }}
@@ -126,8 +123,7 @@ const Index = () => {
           </motion.button>
           <motion.button
             onClick={() => navigate('/squad')}
-            className="flex-1 h-14 bg-bg-card border-2 border-squad text-squad font-heading font-bold text-sm rounded-button
-                       flex items-center justify-center gap-1 hover:bg-squad/10 transition-colors"
+            className="tool-btn"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.4 }}
@@ -158,7 +154,7 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
         >
-          <h3 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-2">Recent Sessions</h3>
+          <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-2">Recent Sessions</h2>
           {['English essay draft · 25 min', 'Science reading · 15 min', 'Math problems · 25 min'].map(s => (
             <div key={s} className="flex items-center justify-between py-2 border-b border-border last:border-0">
               <span className="text-foreground text-sm font-body">{s}</span>

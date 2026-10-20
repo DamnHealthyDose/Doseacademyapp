@@ -157,7 +157,7 @@ const RsdFlow = () => {
                           onClick={() => setIntensity(n)}
                           className={`w-[52px] h-[52px] rounded-full flex items-center justify-center font-heading font-extrabold text-lg
                             border-2 transition-all duration-150
-                            ${selected ? 'bg-rsd-warm text-primary-foreground border-rsd-warm scale-110' : `${colors} text-foreground`}`}
+                            ${selected ? 'bg-rsd-warm text-rsd-warm-foreground border-rsd-warm scale-110' : `${colors} text-foreground`}`}
                         >
                           {n}
                         </button>

@@ -37,10 +37,10 @@ const BottomNav = () => {
               key={to}
               to={to}
               className={`flex flex-col items-center gap-1 px-2 py-2 rounded-button transition-all duration-200
-                ${active ? 'text-primary' : 'text-text-hint hover:text-text-secondary'}`}
+                ${active ? 'text-tool-accent' : 'text-text-secondary hover:text-foreground'}`}
             >
               <Icon size={18} />
-              <span className="text-[9px] font-body font-medium">{label}</span>
+              <span className="text-xs font-body font-medium">{label}</span>
             </Link>
           );
         })}

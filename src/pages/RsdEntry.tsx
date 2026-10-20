@@ -27,7 +27,7 @@ const RsdEntry = () => {
 
         <motion.button
           onClick={() => navigate('/rsd/flow')}
-          className="w-full h-14 mt-10 bg-rsd-warm text-primary-foreground font-heading font-bold text-base rounded-button
+          className="w-full h-14 mt-10 bg-rsd-warm text-rsd-warm-foreground font-heading font-bold text-base rounded-button
                      hover:brightness-110 transition-all"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

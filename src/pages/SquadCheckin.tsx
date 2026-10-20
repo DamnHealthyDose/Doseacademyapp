@@ -58,7 +58,7 @@ const SquadCheckin = () => {
               <button
                 disabled={!completion}
                 onClick={() => setStep(2)}
-                className="w-full h-14 mt-6 bg-squad text-primary-foreground font-heading font-bold rounded-button disabled:opacity-30"
+                className="w-full h-14 mt-6 bg-squad text-squad-foreground font-heading font-bold rounded-button disabled:opacity-30"
               >
                 Next →
               </button>
@@ -97,7 +97,7 @@ const SquadCheckin = () => {
               <button
                 disabled={!feeling}
                 onClick={handleDone}
-                className="w-full h-14 mt-6 bg-squad text-primary-foreground font-heading font-bold rounded-button disabled:opacity-30"
+                className="w-full h-14 mt-6 bg-squad text-squad-foreground font-heading font-bold rounded-button disabled:opacity-30"
               >
                 Done →
               </button>

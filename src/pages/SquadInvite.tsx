@@ -35,7 +35,7 @@ const SquadInvite = () => {
 
         <motion.button
           onClick={handleJoin}
-          className="w-full h-14 bg-squad text-primary-foreground font-heading font-bold rounded-button"
+          className="w-full h-14 bg-squad text-squad-foreground font-heading font-bold rounded-button"
           whileTap={{ scale: 0.97 }}
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
         >

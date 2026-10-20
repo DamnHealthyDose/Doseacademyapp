@@ -104,7 +104,7 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm font-body ${
                   m.role === 'user'
-                    ? 'bg-squad text-primary-foreground rounded-br-md'
+                    ? 'bg-squad text-squad-foreground rounded-br-md'
                     : 'bg-bg-elevated text-foreground rounded-bl-md'
                 }`}>
                   {m.content}
@@ -172,7 +172,7 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
             <button
               onClick={send}
               disabled={!input.trim() || loading}
-              className="w-9 h-9 rounded-full bg-squad flex items-center justify-center text-primary-foreground disabled:opacity-40"
+              className="w-9 h-9 rounded-full bg-squad flex items-center justify-center text-squad-foreground disabled:opacity-40"
             >
               <Send size={14} />
             </button>

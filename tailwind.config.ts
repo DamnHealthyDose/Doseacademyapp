@@ -63,6 +63,9 @@ export default {
         danger: "hsl(var(--danger))",
         "rsd-warm": "hsl(var(--rsd-warm))",
         "rsd-calm": "hsl(var(--rsd-calm))",
+        "rsd-warm-foreground": "hsl(var(--rsd-warm-foreground))",
+        "rsd-calm-foreground": "hsl(var(--rsd-calm-foreground))",
+        "squad-foreground": "hsl(var(--squad-foreground))",
         "squad": "hsl(var(--squad))",
         "squad-dim": "hsl(var(--squad-dim))",
         "squad-glow": "hsl(var(--squad-glow))",
@@ -71,6 +74,7 @@ export default {
         "bg-elevated": "hsl(var(--bg-elevated))",
         "text-secondary": "hsl(var(--text-secondary))",
         "text-hint": "hsl(var(--text-hint))",
+        "tool-accent": "hsl(var(--tool-accent))",
       },
       borderRadius: {
         lg: "var(--radius)",

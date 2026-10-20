@@ -16,14 +16,14 @@
     --popover-foreground: 180 30% 12%;
 
     --primary: 180 100% 39%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 180 70% 8%;
     --primary-dark: 180 100% 30%;
 
     --secondary: 170 18% 88%;
     --secondary-foreground: 180 25% 30%;
 
     --muted: 170 18% 88%;
-    --muted-foreground: 180 15% 45%;
+    --muted-foreground: 180 15% 33%;
 
     --accent: 170 18% 85%;
     --accent-foreground: 180 25% 30%;
@@ -39,10 +39,13 @@
 
     --danger: 0 84% 60%;
 
-    --rsd-warm: 330 90% 60%;
+    --rsd-warm: 330 90% 40%;
+    --rsd-warm-foreground: 0 0% 100%;
     --rsd-calm: 263 70% 58%;
+    --rsd-calm-foreground: 0 0% 100%;
 
-    --squad: 160 64% 40%;
+    --squad: 160 64% 27%;
+    --squad-foreground: 0 0% 100%;
     --squad-dim: 160 80% 20%;
     --squad-glow: 160 60% 55%;
 
@@ -55,8 +58,11 @@
     --bg-deep: 170 20% 96%;
     --bg-card: 170 20% 92%;
     --bg-elevated: 170 18% 88%;
-    --text-secondary: 180 15% 40%;
-    --text-hint: 180 10% 60%;
+    --text-secondary: 180 15% 33%;
+    --text-hint: 180 10% 36%;
+
+    --tool-accent: 180 100% 22%;
+    --tool-active-foreground: 0 0% 100%;
 
     --shadow-teal: 0 8px 32px rgba(0, 200, 200, 0.06);
     --shadow-teal-lg: 0 12px 48px rgba(0, 200, 200, 0.1);
@@ -73,7 +79,7 @@
     --popover-foreground: 0 0% 100%;
 
     --primary: 180 100% 39%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 180 70% 8%;
     --primary-dark: 180 100% 30%;
 
     --secondary: 180 33% 15%;
@@ -96,10 +102,13 @@
 
     --danger: 0 84% 60%;
 
-    --rsd-warm: 330 90% 60%;
+    --rsd-warm: 330 90% 68%;
+    --rsd-warm-foreground: 180 70% 8%;
     --rsd-calm: 263 70% 58%;
+    --rsd-calm-foreground: 0 0% 100%;
 
-    --squad: 160 64% 40%;
+    --squad: 160 64% 42%;
+    --squad-foreground: 180 70% 8%;
     --squad-dim: 160 80% 20%;
     --squad-glow: 160 60% 55%;
 
@@ -111,7 +120,10 @@
     --bg-card: 180 33% 10%;
     --bg-elevated: 180 33% 15%;
     --text-secondary: 180 32% 71%;
-    --text-hint: 180 22% 44%;
+    --text-hint: 180 22% 62%;
+
+    --tool-accent: 180 100% 39%;
+    --tool-active-foreground: 180 70% 8%;
 
     --shadow-teal: 0 8px 32px rgba(0, 200, 200, 0.08);
     --shadow-teal-lg: 0 12px 48px rgba(0, 200, 200, 0.12);
@@ -152,6 +164,22 @@
 
   .teal-glow {
     box-shadow: var(--shadow-teal-lg);
+  }
+
+  /* Shared scheme for the four tool selector buttons (SPARK, WAVE, RSD, Squad) */
+  .tool-btn {
+    @apply flex-1 h-14 flex items-center justify-center gap-1 rounded-button border-2 border-tool-accent
+           bg-transparent text-foreground font-heading font-bold text-sm transition-colors;
+  }
+  .tool-btn:hover {
+    @apply bg-tool-accent/10;
+  }
+  .tool-btn:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-tool-accent;
+  }
+  .tool-btn[aria-pressed="true"] {
+    @apply bg-tool-accent;
+    color: hsl(var(--tool-active-foreground));
   }
 
   .step-label {

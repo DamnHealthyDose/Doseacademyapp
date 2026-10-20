@@ -152,7 +152,7 @@ const AgeVerification = () => {
               </p>
               <button
                 onClick={() => navigate('/squad')}
-                className="w-full h-12 bg-squad text-primary-foreground font-heading font-bold rounded-button"
+                className="w-full h-12 bg-squad text-squad-foreground font-heading font-bold rounded-button"
               >
                 Back to Squad Focus
               </button>

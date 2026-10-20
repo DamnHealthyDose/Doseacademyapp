@@ -89,7 +89,7 @@ const SquadSetup = () => {
               <button
                 disabled={task.length < 3}
                 onClick={() => setStep(2)}
-                className="w-full h-14 mt-6 bg-squad text-primary-foreground font-heading font-bold rounded-button disabled:opacity-30 transition-opacity"
+                className="w-full h-14 mt-6 bg-squad text-squad-foreground font-heading font-bold rounded-button disabled:opacity-30 transition-opacity"
               >
                 Next →
               </button>
@@ -114,7 +114,7 @@ const SquadSetup = () => {
               <button
                 disabled={!duration}
                 onClick={() => setStep(3)}
-                className="w-full h-14 mt-6 bg-squad text-primary-foreground font-heading font-bold rounded-button disabled:opacity-30 transition-opacity"
+                className="w-full h-14 mt-6 bg-squad text-squad-foreground font-heading font-bold rounded-button disabled:opacity-30 transition-opacity"
               >
                 Next →
               </button>
@@ -143,7 +143,7 @@ const SquadSetup = () => {
                     ))}
                   </div>
                   <button onClick={handleStart}
-                    className="w-full h-14 bg-squad text-primary-foreground font-heading font-bold rounded-button">
+                    className="w-full h-14 bg-squad text-squad-foreground font-heading font-bold rounded-button">
                     Let's go →
                   </button>
                 </>
@@ -156,7 +156,7 @@ const SquadSetup = () => {
                     <>
                       <p className="text-text-secondary text-sm font-body mb-5">They're already working. Set up and join them.</p>
                       <button onClick={handleStart}
-                        className="w-full h-14 bg-squad text-primary-foreground font-heading font-bold rounded-button">
+                        className="w-full h-14 bg-squad text-squad-foreground font-heading font-bold rounded-button">
                         Start together →
                       </button>
                     </>
@@ -170,7 +170,7 @@ const SquadSetup = () => {
                       </div>
                       <button onClick={handleCopy}
                         className={`w-full h-14 font-heading font-bold rounded-button mb-3 transition-all
-                          ${copied ? 'bg-squad text-primary-foreground' : 'bg-bg-elevated text-foreground border-2 border-squad'}`}>
+                          ${copied ? 'bg-squad text-squad-foreground' : 'bg-bg-elevated text-foreground border-2 border-squad'}`}>
                         {copied ? 'Copied! ✓' : 'Copy link'}
                       </button>
                       <p className="text-text-secondary text-xs font-body text-center mb-4 animate-pulse">Waiting for them to join...</p>

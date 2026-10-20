@@ -183,7 +183,7 @@ const SquadSession = () => {
         )}
         {status === 'paused' && (
           <div className="flex flex-col items-center gap-2">
-            <motion.button onClick={handleResume} className="h-14 px-8 bg-squad text-primary-foreground font-heading font-bold rounded-button flex items-center gap-2"
+            <motion.button onClick={handleResume} className="h-14 px-8 bg-squad text-squad-foreground font-heading font-bold rounded-button flex items-center gap-2"
               whileTap={{ scale: 0.97 }}>
               <Play size={16} /> Resume
             </motion.button>
@@ -219,7 +219,7 @@ const SquadSession = () => {
                     <span className="absolute bottom-0 right-0 w-2 h-2 bg-squad-glow rounded-full border border-bg-deep animate-pulse" />
                     {m.isAI && (
                       <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-squad rounded-full flex items-center justify-center">
-                        <MessageCircle size={8} className="text-primary-foreground" />
+                        <MessageCircle size={8} className="text-squad-foreground" />
                       </span>
                     )}
                   </div>
@@ -260,7 +260,7 @@ const SquadSession = () => {
               initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
               <p className="text-foreground font-heading font-bold mb-3">End this session early?</p>
               <p className="text-text-secondary text-sm font-body mb-4">You still showed up — that counts.</p>
-              <button onClick={handleEndEarly} className="w-full h-12 bg-squad text-primary-foreground font-heading font-bold rounded-button mb-2">
+              <button onClick={handleEndEarly} className="w-full h-12 bg-squad text-squad-foreground font-heading font-bold rounded-button mb-2">
                 End session
               </button>
               <button onClick={() => setShowConfirmEnd(false)} className="text-text-hint text-sm underline">Keep going</button>

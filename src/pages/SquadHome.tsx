@@ -107,7 +107,7 @@ const SquadHome = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h3 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-2">Recent Sessions</h3>
+          <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-2">Recent Sessions</h2>
           {recentSessions.map(s => (
             <div key={s} className="flex items-center justify-between py-2 border-b border-border last:border-0">
               <span className="text-foreground text-sm font-body">{s}</span>
