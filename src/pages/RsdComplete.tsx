@@ -19,7 +19,7 @@ const RsdComplete = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-16 flex flex-col items-center">
+      <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] px-6 pt-16 flex flex-col items-center">
         {/* Pulsing circle */}
         <motion.div
           className="w-20 h-20 rounded-full bg-rsd-calm/20 border-2 border-rsd-calm/40 flex items-center justify-center mb-8"

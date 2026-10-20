@@ -97,7 +97,7 @@ const SparkPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[420px] px-6 pt-4 pb-32 flex flex-col">
+      <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] px-6 pt-4 pb-32 flex flex-col">
         {/* Back */}
         <button onClick={handleBack} className="flex items-center gap-1 text-text-secondary text-sm font-body mb-2 self-start hover:text-foreground transition-colors">
           <ArrowLeft size={16} /> Back

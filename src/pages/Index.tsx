@@ -1,17 +1,16 @@
-import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Play, X, Flame } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Check, Flame } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import SlickMessage from '@/components/SlickMessage';
 import ThemeToggle from '@/components/ThemeToggle';
+import WhatsDoseButton from '@/components/WhatsDoseButton';
+import HomeDashboard from '@/components/HomeDashboard';
 import logo from '@/assets/dose-logo.png';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [showVideo, setShowVideo] = useState(false);
-  const [videoVersion, setVideoVersion] = useState<'narrated' | 'music'>('narrated');
   const { xp, streak, sessionsCount, sessionsToday, minutesToday, hasActiveSession, waveSession } = useAppState();
 
   const stats = [
@@ -24,19 +23,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col items-center">
+      <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col items-center md:hidden">
         {/* Top row: Watch intro + Theme toggle */}
         <div className="w-full flex items-center justify-between mb-2">
-          <motion.button
-            onClick={() => setShowVideo(true)}
+          <WhatsDoseButton
+            animated
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/30 text-primary-strong font-heading font-bold text-xs hover:bg-primary/10 transition-colors"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.4 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Play size={12} className="fill-current" /> What's DOSE?
-          </motion.button>
+          />
           <ThemeToggle />
         </div>
         {/* Logo */}
@@ -205,65 +198,7 @@ const Index = () => {
           <span>© {new Date().getFullYear()} DOSE Academy</span>
         </div>
       </div>
-      {/* Video modal */}
-      <AnimatePresence>
-        {showVideo && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowVideo(false)}
-          >
-            <motion.div
-              className="relative w-full max-w-lg rounded-2xl overflow-hidden bg-black shadow-2xl"
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: 'spring', damping: 20, stiffness: 200 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setShowVideo(false)}
-                className="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
-              >
-                <X size={16} />
-              </button>
-              {/* Version toggle */}
-              <div className="flex bg-black/80 border-b border-white/10">
-                <button
-                  onClick={() => setVideoVersion('narrated')}
-                  className={`flex-1 py-2.5 text-xs font-heading font-bold transition-colors ${
-                    videoVersion === 'narrated'
-                      ? 'text-white bg-white/10'
-                      : 'text-white/50 hover:text-white/70'
-                  }`}
-                >
-                  🎙 Narrated
-                </button>
-                <button
-                  onClick={() => setVideoVersion('music')}
-                  className={`flex-1 py-2.5 text-xs font-heading font-bold transition-colors ${
-                    videoVersion === 'music'
-                      ? 'text-white bg-white/10'
-                      : 'text-white/50 hover:text-white/70'
-                  }`}
-                >
-                  🎵 Music Only
-                </button>
-              </div>
-              <video
-                key={videoVersion}
-                src={videoVersion === 'narrated' ? '/dose-onboarding-narrated.mp4' : '/dose-onboarding-music.mp4'}
-                controls
-                autoPlay
-                className="w-full"
-                style={{ aspectRatio: '16/9' }}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <HomeDashboard />
       <BottomNav />
     </div>
   );

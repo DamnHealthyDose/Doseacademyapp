@@ -64,26 +64,26 @@ const BadgesPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-10">
+      <div className="w-full max-w-[420px] md:max-w-[900px] px-6 pt-10">
         <h1 className="text-2xl font-heading font-extrabold text-foreground mb-6">My Badges</h1>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">SPARK Badges</h2>
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {sparkBadges.map((b, i) => renderBadge(b, i))}
         </div>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">WAVE Badges</h2>
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {waveBadges.map((b, i) => renderBadge(b, i))}
         </div>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">RSD Badges</h2>
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {rsdBadges.map((b, i) => renderBadge(b, i))}
         </div>
 
         <h2 className="text-text-secondary text-xs font-body font-medium uppercase tracking-wider mb-3">Squad Badges</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {squadBadges.map((b, i) => renderBadge(b, i))}
         </div>
       </div>

@@ -9,7 +9,7 @@ const SparkComplete = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="max-w-[420px] w-full px-6 flex flex-col items-center text-center">
+      <div className="max-w-[420px] md:max-w-[640px] lg:max-w-[720px] w-full px-6 flex flex-col items-center text-center">
         {/* Badge */}
         <motion.div
           className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-success flex items-center justify-center mb-6"

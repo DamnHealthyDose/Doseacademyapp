@@ -6,7 +6,7 @@ const RsdEntry = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-[420px] flex flex-col items-center text-center">
+      <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] flex flex-col items-center text-center">
         <motion.h1
           className="text-[28px] font-heading font-extrabold text-foreground leading-tight"
           initial={{ opacity: 0, y: 12 }}

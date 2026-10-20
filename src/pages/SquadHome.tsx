@@ -23,7 +23,7 @@ const SquadHome = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-8">
+      <div className="w-full max-w-[420px] md:max-w-[900px] px-6 pt-8">
         <motion.h1
           className="text-2xl font-heading font-extrabold text-foreground mb-1"
           initial={{ opacity: 0, y: 10 }}
@@ -62,7 +62,7 @@ const SquadHome = () => {
 
         {/* Mode picker */}
         <motion.div
-          className="space-y-3 mb-6"
+          className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-3 mb-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

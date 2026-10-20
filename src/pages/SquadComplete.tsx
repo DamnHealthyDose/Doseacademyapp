@@ -25,7 +25,7 @@ const SquadComplete = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pb-24">
-      <div className="w-full max-w-[420px] px-6 pt-12 flex flex-col items-center">
+      <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] px-6 pt-12 flex flex-col items-center">
         {/* Animated icon */}
         <motion.div
           className="w-20 h-20 rounded-full bg-squad/20 flex items-center justify-center mb-6"

@@ -57,7 +57,7 @@ const SquadSetup = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
-      <div className="w-full max-w-[420px] px-6 pt-6">
+      <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] px-6 pt-6">
         <div className="flex items-center mb-4">
           <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/squad')} className="text-text-secondary hover:text-foreground" aria-label="Go back">
             <ArrowLeft size={20} />

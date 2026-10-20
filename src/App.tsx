@@ -34,6 +34,7 @@ import TeacherDashboard from "./pages/TeacherDashboard.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SlickChatWidget from "./components/SlickChatWidget.tsx";
+import AppShell from "./components/AppShell.tsx";
 import CookieConsent from "./components/CookieConsent.tsx";
 
 const queryClient = new QueryClient();
@@ -48,32 +49,34 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Index />} />
+                <Route element={<AppShell />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/spark" element={<SparkPage />} />
+                  <Route path="/spark/complete" element={<SparkComplete />} />
+                  <Route path="/wave/setup" element={<WaveSetup />} />
+                  <Route path="/wave/complete" element={<WaveComplete />} />
+                  <Route path="/rsd" element={<RsdEntry />} />
+                  <Route path="/rsd/complete" element={<RsdComplete />} />
+                  <Route path="/squad" element={<SquadHome />} />
+                  <Route path="/squad/setup" element={<SquadSetup />} />
+                  <Route path="/squad/complete" element={<SquadComplete />} />
+                  <Route path="/badges" element={<BadgesPage />} />
+                  <Route path="/ignite" element={<IgnitePage />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                </Route>
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/age-verify" element={<AgeVerification />} />
                 <Route path="/signup-age-check" element={<SignupAgeCheck />} />
                 <Route path="/parent-consent/:token" element={<ParentConsent />} />
                 <Route path="/parent-dashboard/:token" element={<ParentDashboard />} />
-              <Route path="/spark" element={<SparkPage />} />
-              <Route path="/spark/complete" element={<SparkComplete />} />
-              <Route path="/wave/setup" element={<WaveSetup />} />
               <Route path="/wave/session" element={<WaveSession />} />
               <Route path="/wave/break" element={<WaveBreak />} />
-              <Route path="/wave/complete" element={<WaveComplete />} />
-              <Route path="/rsd" element={<RsdEntry />} />
               <Route path="/rsd/flow" element={<RsdFlow />} />
               <Route path="/rsd/breathe" element={<RsdBreathe />} />
-              <Route path="/rsd/complete" element={<RsdComplete />} />
-              <Route path="/squad" element={<SquadHome />} />
-              <Route path="/squad/setup" element={<SquadSetup />} />
               <Route path="/squad/session" element={<SquadSession />} />
               <Route path="/squad/checkin" element={<SquadCheckin />} />
-              <Route path="/squad/complete" element={<SquadComplete />} />
               <Route path="/squad/invite/:code" element={<SquadInvite />} />
-              <Route path="/badges" element={<BadgesPage />} />
-              <Route path="/ignite" element={<IgnitePage />} />
               <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
               <SlickChatWidget />

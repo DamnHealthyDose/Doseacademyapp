@@ -190,7 +190,7 @@ const SlickChatWidget = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setOpen(true)}
-className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full overflow-hidden bg-white border-[3px] border-muted shadow-lg"
+className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 z-50 w-14 h-14 rounded-full overflow-hidden bg-white border-[3px] border-muted shadow-lg"
             style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}
           >
             <img src={slickImg} alt="Chat with Slick" className="w-full h-full object-cover" />
@@ -205,7 +205,7 @@ className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full overflow-hidden b
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-20 right-4 z-50 w-[340px] max-h-[460px] rounded-2xl border border-border bg-card flex flex-col overflow-hidden shadow-xl"
+            className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 z-50 w-[340px] max-h-[460px] rounded-2xl border border-border bg-card flex flex-col overflow-hidden shadow-xl"
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-secondary/50">

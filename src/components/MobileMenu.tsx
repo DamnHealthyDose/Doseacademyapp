@@ -1,27 +1,14 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Zap, Waves, Heart, Users, Award, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NAV_ITEMS, isNavActive } from '@/lib/navItems';
 
-const items = [
-  { to: '/', icon: Home, label: 'Home' },
-  { to: '/spark', icon: Zap, label: 'SPARK' },
-  { to: '/wave/setup', icon: Waves, label: 'WAVE' },
-  { to: '/rsd', icon: Heart, label: 'RSD' },
-  { to: '/squad', icon: Users, label: 'Squad' },
-  { to: '/badges', icon: Award, label: 'Badges' },
-];
+const items = NAV_ITEMS.filter((i) => !i.hideOnPhone);
 
 const MobileMenu = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-
-  const isActive = (to: string) =>
-    pathname === to ||
-    (to === '/spark' && pathname.startsWith('/spark')) ||
-    (to === '/wave/setup' && pathname.startsWith('/wave')) ||
-    (to === '/rsd' && pathname.startsWith('/rsd')) ||
-    (to === '/squad' && pathname.startsWith('/squad'));
 
   return (
     <>
@@ -52,19 +39,19 @@ const MobileMenu = () => {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 250 }}
             >
-              {items.map(({ to, icon: Icon, label }) => (
+              {items.map((item) => (
                 <Link
-                  key={to}
-                  to={to}
+                  key={item.to}
+                  to={item.to}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-button mb-1 transition-all duration-200 font-heading font-bold text-sm
-                    ${isActive(to)
+                    ${isNavActive(item, pathname)
                       ? 'bg-primary/5 text-primary-strong'
                       : 'text-foreground hover:bg-primary/5 hover:text-primary-strong'
                     }`}
                 >
-                  <Icon size={20} />
-                  <span>{label}</span>
+                  <item.icon size={20} />
+                  <span>{item.label}</span>
                 </Link>
               ))}
             </motion.nav>
