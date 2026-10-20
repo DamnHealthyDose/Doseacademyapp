@@ -16,7 +16,9 @@ export const useTheme = () => {
   return ctx;
 };
 
-const getSystemTheme = (): 'light' | 'dark' =>
+// NOTE: index.html has an inline script that applies this same theme before first paint
+// (same 'dose-theme' key and 'dark' class). Keep the two in sync.
+const getSystemTheme =(): 'light' | 'dark' =>
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {

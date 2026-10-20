@@ -3,6 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Keep in sync with src/context/ThemeContext.tsx (key 'dose-theme', 'dark' class on <html>). -->
+    <script>
+      (function () {
+        var dark;
+        try {
+          var t = localStorage.getItem('dose-theme');
+          dark = t === 'dark' || ((t === null || t === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        } catch (e) {
+          dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        if (dark) document.documentElement.classList.add('dark');
+      })();
+    </script>
+    <style>
+      /* Mirrors the background variable in src/index.css (:root and .dark). */
+      html, body { background-color: #f3f7f6; }
+      html:not(.dark) { color-scheme: light; }
+      html.dark, html.dark body { background-color: #0a1a1a; color-scheme: dark; }
+    </style>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <title>DOSE Academy</title>
     <meta name="description" content="Lovable Generated Project" />
