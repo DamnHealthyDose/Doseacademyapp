@@ -17,7 +17,7 @@ const RsdEntry = () => {
         </motion.h1>
 
         <motion.p
-          className="text-[15px] font-body text-rsd-warm/80 mt-4 leading-relaxed"
+          className="text-[15px] font-body text-rsd-warm mt-4 leading-relaxed"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}

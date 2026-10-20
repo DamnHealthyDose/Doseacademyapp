@@ -114,7 +114,7 @@ const RsdComplete = () => {
         </motion.div>
 
         {/* Safety footer */}
-        <p className="text-text-hint text-[11px] font-body text-center mt-8 max-w-[320px]">
+        <p className="text-text-hint text-xs font-body text-center mt-8 max-w-[320px]">
           If the sting is still very intense, it's okay to ask for help. That's strength, not weakness.
         </p>
       </div>

@@ -77,7 +77,7 @@ const CookieConsent = () => {
                   <Shield size={18} className="text-primary shrink-0" />
                   <div>
                     <p className="text-sm font-bold text-foreground font-nunito">Essential</p>
-                    <p className="text-[11px] text-muted-foreground font-dm-sans">Keeps the app working — always on</p>
+                    <p className="text-xs text-muted-foreground font-dm-sans">Keeps the app working — always on</p>
                   </div>
                 </div>
                 <div className="h-6 w-11 rounded-full bg-primary/80 flex items-center justify-end px-0.5 cursor-not-allowed">
@@ -94,7 +94,7 @@ const CookieConsent = () => {
                   <BarChart3 size={18} className="text-muted-foreground shrink-0" />
                   <div className="text-left">
                     <p className="text-sm font-bold text-foreground font-nunito">Analytics</p>
-                    <p className="text-[11px] text-muted-foreground font-dm-sans">Helps us improve — totally optional</p>
+                    <p className="text-xs text-muted-foreground font-dm-sans">Helps us improve — totally optional</p>
                   </div>
                 </div>
                 <div
@@ -127,7 +127,7 @@ const CookieConsent = () => {
               </button>
             </div>
 
-            <p className="text-center text-[11px] text-muted-foreground font-dm-sans mt-3">
+            <p className="text-center text-xs text-muted-foreground font-dm-sans mt-3">
               Read our{" "}
               <Link to="/privacy" className="text-primary underline hover:text-primary/80" onClick={() => setVisible(false)}>
                 Privacy Policy

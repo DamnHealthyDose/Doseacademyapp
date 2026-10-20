@@ -163,9 +163,9 @@ const SquadSession = () => {
       {/* Controls */}
       <div className="mt-6 flex flex-col items-center gap-3">
         {status === 'idle' && (
-          <motion.button onClick={handleStart} className="text-squad font-heading font-bold text-base animate-pulse"
+          <motion.button onClick={handleStart} className="text-squad font-heading font-bold text-base"
             whileTap={{ scale: 0.95 }}>
-            Tap to start
+            <span className="inline-block motion-safe:animate-scale-pulse">Tap to start</span>
           </motion.button>
         )}
         {status === 'running' && (
@@ -195,7 +195,7 @@ const SquadSession = () => {
       {/* Squad rail */}
       <div className="fixed bottom-0 left-0 right-0 bg-bg-deep/90 backdrop-blur-sm border-t border-border py-3">
         <div className="max-w-[420px] mx-auto px-6">
-          <p className="text-text-hint text-[10px] font-body uppercase tracking-wider mb-2">
+          <p className="text-text-hint text-xs font-body uppercase tracking-wider mb-2">
             {mode === 'invite' ? 'Your squad' : 'Studying with you right now'}
           </p>
           <div className="flex gap-3 overflow-x-auto">
@@ -211,8 +211,8 @@ const SquadSession = () => {
                   onClick={() => m.isAI && setChatMember(m)}
                 >
                   <div className="relative">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-[10px] ${
-                      m.isAI ? 'bg-squad/25 text-squad ring-1 ring-squad/40' : 'bg-squad-dim text-squad'
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-xs ${
+                      m.isAI ? 'bg-squad/25 text-foreground ring-1 ring-squad/40' : 'bg-squad-dim text-squad'
                     }`}>
                       {m.initials}
                     </div>
@@ -223,7 +223,7 @@ const SquadSession = () => {
                       </span>
                     )}
                   </div>
-                  <span className="text-text-hint text-[9px] mt-0.5">{m.subject}</span>
+                  <span className="text-text-hint text-xs mt-0.5">{m.subject}</span>
                 </motion.div>
               ))}
             </AnimatePresence>

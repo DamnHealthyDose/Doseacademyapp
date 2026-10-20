@@ -91,7 +91,7 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-foreground font-heading font-bold text-sm">{member.initials}</p>
-              <p className="text-text-hint text-[10px] font-body">Studying {member.subject} · {member.minutesIn}m in</p>
+              <p className="text-text-hint text-xs font-body">Studying {member.subject} · {member.minutesIn}m in</p>
             </div>
             <button onClick={onClose} className="text-text-hint hover:text-foreground p-1">
               <X size={16} />
@@ -149,7 +149,7 @@ const QuickChatBubble = ({ member, onClose }: QuickChatBubbleProps) => {
                       setInput('');
                     });
                   }}
-                  className="text-[11px] font-body text-squad bg-squad/10 hover:bg-squad/20 px-2.5 py-1 rounded-full transition-colors"
+                  className="text-xs font-body text-squad bg-squad/10 hover:bg-squad/20 px-2.5 py-1 rounded-full transition-colors"
                 >
                   {chip}
                 </button>

@@ -102,7 +102,7 @@ const AgeVerification = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
       <div className="w-full max-w-[420px] px-6 pt-6">
-        <button onClick={() => navigate(-1)} className="text-text-secondary hover:text-foreground mb-4">
+        <button onClick={() => navigate(-1)} className="text-text-secondary hover:text-foreground mb-4" aria-label="Go back">
           <ArrowLeft size={20} />
         </button>
 
@@ -119,7 +119,7 @@ const AgeVerification = () => {
 
               <label className="text-foreground font-body text-sm font-medium mb-2 block">Date of birth</label>
               <input
-                type="date"
+                type="date" aria-label="Date of birth"
                 value={dob}
                 onChange={e => setDob(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}

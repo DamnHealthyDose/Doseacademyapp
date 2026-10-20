@@ -102,7 +102,7 @@ const RsdFlow = () => {
       <div className="w-full max-w-[420px] px-6 pt-6 flex flex-col min-h-screen">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <button onClick={handleBack} className="text-text-hint hover:text-foreground transition-colors">
+          <button onClick={handleBack} className="text-text-hint hover:text-foreground transition-colors" aria-label="Go back">
             <ArrowLeft size={20} />
           </button>
           <div className="flex gap-2">{dots}</div>

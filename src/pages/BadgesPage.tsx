@@ -39,23 +39,24 @@ const BadgesPage = () => {
     return (
       <motion.div
         key={badge.id}
-        className={`dose-card flex flex-col items-center py-6 relative ${!earned ? 'opacity-40' : ''}`}
+        className={`dose-card flex flex-col items-center py-6 relative`}
         initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: earned ? 1 : 0.4, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: i * 0.08 }}
       >
         {!earned && (
-          <div className="absolute top-3 right-3 text-text-hint">
+          <div className="absolute top-3 right-3 flex items-center gap-1 text-text-secondary">
             <Lock size={14} />
+            <span className="text-xs font-body font-medium">Locked</span>
           </div>
         )}
         {earned && (
           <div className="absolute top-3 left-3">
-            <span className="text-[10px] font-heading font-bold bg-success/20 text-success px-2 py-0.5 rounded-button">Earned!</span>
+            <span className="text-xs font-heading font-bold bg-success/20 text-success px-2 py-0.5 rounded-button">Earned!</span>
           </div>
         )}
-        <span className="text-3xl mb-2">{badge.emoji}</span>
-        <span className="text-foreground font-heading font-bold text-sm">{badge.name}</span>
+        <span className={`text-3xl mb-2 ${!earned ? 'grayscale opacity-50' : ''}`} aria-hidden="true">{badge.emoji}</span>
+        <span className={`${earned ? 'text-foreground' : 'text-text-secondary'} font-heading font-bold text-sm`}>{badge.name}</span>
         <span className="text-text-secondary text-xs font-body text-center mt-1 px-2">{badge.description}</span>
       </motion.div>
     );

@@ -29,7 +29,7 @@ const Index = () => {
         <div className="w-full flex items-center justify-between mb-2">
           <motion.button
             onClick={() => setShowVideo(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-heading font-bold text-xs hover:bg-primary/20 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/30 text-primary font-heading font-bold text-xs hover:bg-primary/10 transition-colors"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, duration: 0.4 }}
@@ -78,7 +78,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <span className="step-label text-[10px]">PICK UP WHERE YOU LEFT OFF</span>
+            <span className="step-label text-xs">PICK UP WHERE YOU LEFT OFF</span>
             <p className="text-foreground font-heading font-bold text-sm mt-1">{waveSession.task}</p>
             <button
               onClick={() => navigate('/wave/session')}
@@ -199,7 +199,7 @@ const Index = () => {
         </motion.div>
 
         {/* Footer */}
-        <div className="w-full mt-6 mb-2 flex items-center justify-center gap-3 text-[11px] text-muted-foreground font-body">
+        <div className="w-full mt-6 mb-2 flex items-center justify-center gap-3 text-xs text-muted-foreground font-body">
           <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <span>·</span>
           <span>© {new Date().getFullYear()} DOSE Academy</span>

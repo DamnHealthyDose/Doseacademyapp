@@ -168,7 +168,7 @@ const ParentDashboard = () => {
                       <p className="text-xs font-body text-text-secondary">Avg Steps</p>
                     </div>
                     <div className="text-center p-2">
-                      <AlertTriangle size={14} className="text-amber-400 mx-auto mb-1" />
+                      <AlertTriangle size={14} className="text-warning mx-auto mb-1" />
                       <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklySparkHandoffs}</p>
                       <p className="text-xs font-body text-text-secondary">Extra Support</p>
                     </div>
@@ -186,7 +186,7 @@ const ParentDashboard = () => {
                 <div className="space-y-3">
                   <button
                     onClick={() => setConfirmAction('revoke')}
-                    className="w-full py-3 rounded-xl border-2 border-amber-500 text-amber-600 font-heading font-bold flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-xl border-2 border-warning text-warning font-heading font-bold flex items-center justify-center gap-2"
                   >
                     <XCircle size={18} /> Revoke Consent
                   </button>
@@ -229,7 +229,7 @@ const ParentDashboard = () => {
 
           {status === 'revoked' && (
             <div className="text-center">
-              <CheckCircle size={48} className="text-amber-500 mx-auto mb-4" />
+              <CheckCircle size={48} className="text-warning mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Consent Revoked</h1>
               <p className="text-text-secondary font-body">Peer features have been disabled.</p>
             </div>

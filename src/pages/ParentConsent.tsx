@@ -95,7 +95,7 @@ const ParentConsent = () => {
 
           {status === 'expired' && (
             <>
-              <AlertTriangle size={48} className="text-amber-500 mx-auto mb-4" />
+              <AlertTriangle size={48} className="text-warning mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Link Expired</h1>
               <p className="text-text-secondary font-body">
                 This consent link has expired. Your child can request a new one from within the app.

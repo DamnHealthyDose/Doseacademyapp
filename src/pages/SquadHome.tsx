@@ -43,7 +43,7 @@ const SquadHome = () => {
           <p className="text-text-secondary text-xs font-body uppercase tracking-wider mb-3">
             {squad.length} people studying right now
           </p>
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="flex gap-3 overflow-x-auto pb-1" tabIndex={0} role="region" aria-label="Squad members">
             {squad.map((m, i) => (
               <div key={i} className="flex flex-col items-center min-w-[52px]">
                 <div className="relative">
@@ -52,12 +52,12 @@ const SquadHome = () => {
                   </div>
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-squad-glow rounded-full border-2 border-bg-card animate-pulse" />
                 </div>
-                <span className="text-text-hint text-[10px] font-body mt-1">{m.subject}</span>
-                <span className="text-text-hint text-[9px]">{m.minutesIn}m in</span>
+                <span className="text-text-hint text-xs font-body mt-1">{m.subject}</span>
+                <span className="text-text-hint text-xs">{m.minutesIn}m in</span>
               </div>
             ))}
           </div>
-          <p className="text-text-hint text-[11px] font-body mt-2">Silent co-working. No chatting. Just presence.</p>
+          <p className="text-text-hint text-xs font-body mt-2">Silent co-working. No chatting. Just presence.</p>
         </motion.div>
 
         {/* Mode picker */}
@@ -73,7 +73,7 @@ const SquadHome = () => {
           >
             <p className="text-foreground font-heading font-bold text-base">Join the squad</p>
             <p className="text-text-secondary text-sm font-body mt-1">Focus alongside others. Quiet presence, real accountability.</p>
-            <span className="inline-block mt-2 text-[10px] font-body text-squad bg-squad/10 px-2 py-0.5 rounded-button">Solo · Ambient squad</span>
+            <span className="inline-block mt-2 text-xs font-body text-squad bg-squad/10 px-2 py-0.5 rounded-button">Solo · Ambient squad</span>
             <p className="text-squad font-heading font-bold text-sm mt-3">Start focusing →</p>
           </button>
 
@@ -94,7 +94,7 @@ const SquadHome = () => {
               <ShieldCheck size={16} className="text-primary" />
             </div>
             <p className="text-text-secondary text-sm font-body mt-1">Invite someone specific. You'll each set your task and go.</p>
-            <span className="inline-block mt-2 text-[10px] font-body text-text-hint bg-muted px-2 py-0.5 rounded-button">2-person · Async</span>
+            <span className="inline-block mt-2 text-xs font-body text-text-hint bg-muted px-2 py-0.5 rounded-button">2-person · Async</span>
             <p className="text-squad font-heading font-bold text-sm mt-3">
               {!user ? '🔒 Sign in to unlock →' : !profile?.age_verified ? '🔒 Verify age to unlock →' : 'Invite someone →'}
             </p>

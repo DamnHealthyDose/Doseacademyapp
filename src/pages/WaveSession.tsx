@@ -138,7 +138,7 @@ const WaveSession = () => {
       {/* Distraction counter */}
       <motion.div
         className={`absolute top-6 right-6 px-3 py-1 rounded-button text-xs font-heading font-bold transition-colors
-          ${distractionFlash ? 'bg-success text-success-foreground' : 'bg-primary/20 text-primary'}`}
+          ${distractionFlash ? 'bg-success text-success-foreground' : 'bg-primary/10 text-primary'}`}
         animate={distractionFlash ? { opacity: [0.3, 1, 0.3] } : {}}
         transition={{ duration: 0.3 }}
       >
@@ -206,13 +206,13 @@ const WaveSession = () => {
 
         {waveSession.status === 'running' && (
           <div className="flex items-center gap-6 mt-8">
-            <button onClick={handlePause} className="w-12 h-12 rounded-full bg-bg-elevated flex items-center justify-center text-text-secondary hover:text-foreground transition-colors">
+            <button onClick={handlePause} aria-label="Pause session" className="w-12 h-12 rounded-full bg-bg-elevated flex items-center justify-center text-text-secondary hover:text-foreground transition-colors">
               <Pause size={20} />
             </button>
-            <button onClick={() => setShowDistractionModal(true)} className="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center text-warning hover:bg-warning/30 transition-colors">
+            <button onClick={() => setShowDistractionModal(true)} aria-label="Log a distraction" className="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center text-warning hover:bg-warning/30 transition-colors">
               <Flag size={20} />
             </button>
-            <button onClick={() => setShowEndConfirm(true)} className="w-12 h-12 rounded-full bg-bg-elevated flex items-center justify-center text-text-hint hover:text-destructive transition-colors">
+            <button onClick={() => setShowEndConfirm(true)} aria-label="End session" className="w-12 h-12 rounded-full bg-bg-elevated flex items-center justify-center text-text-hint hover:text-destructive transition-colors">
               <X size={20} />
             </button>
           </div>

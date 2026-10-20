@@ -51,7 +51,7 @@ const WaveBreak = () => {
         className="text-3xl font-heading font-extrabold text-foreground mb-2"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        style={{ color: '#7C3AED' }}
+        style={{ color: 'hsl(var(--rsd-calm))' }}
       >
         BREAK TIME
       </motion.h1>
@@ -62,7 +62,7 @@ const WaveBreak = () => {
           <circle cx={ringSize / 2} cy={ringSize / 2} r={radius} fill="none" stroke="hsl(var(--bg-elevated))" strokeWidth={strokeWidth} />
           <circle
             cx={ringSize / 2} cy={ringSize / 2} r={radius} fill="none"
-            stroke="#7C3AED"
+            stroke="hsl(var(--rsd-calm))"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             strokeDasharray={circumference}

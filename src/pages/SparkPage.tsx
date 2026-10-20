@@ -171,7 +171,7 @@ const SparkPage = () => {
                     How intense? (1 = a little, 5 = a lot)
                   </label>
                   <input
-                    type="range" min={1} max={5} step={1}
+                    type="range" min={1} max={5} step={1} aria-label="How intense, from 1 (a little) to 5 (a lot)"
                     value={answers.intensity}
                     onChange={e => setAnswer('intensity', Number(e.target.value))}
                     className="w-full accent-primary"
@@ -213,7 +213,7 @@ const SparkPage = () => {
                         ${answers.reframe === r
                           ? 'border-success bg-success/10 text-foreground'
                           : answers.reframe && answers.reframe !== r
-                            ? 'border-transparent opacity-30'
+                            ? 'border-transparent text-text-secondary'
                             : 'border-transparent text-text-secondary hover:border-primary/40'}`}>
                       {r}
                     </button>

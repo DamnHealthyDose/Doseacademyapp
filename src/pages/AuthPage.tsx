@@ -95,7 +95,7 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center">
       <div className="w-full max-w-[420px] px-6 pt-6">
-        <button onClick={() => navigate(-1)} className="text-text-secondary hover:text-foreground mb-4">
+        <button onClick={() => navigate(-1)} className="text-text-secondary hover:text-foreground mb-4" aria-label="Go back">
           <ArrowLeft size={20} />
         </button>
 

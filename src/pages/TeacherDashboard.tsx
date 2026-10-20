@@ -117,7 +117,7 @@ const TeacherDashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="text-center space-y-3">
-          <AlertTriangle size={32} className="text-amber-400 mx-auto" />
+          <AlertTriangle size={32} className="text-warning mx-auto" />
           <h1 className="text-xl font-heading font-extrabold text-foreground">Access Denied</h1>
           <p className="text-text-secondary font-body text-sm">You need an admin or moderator role to view this dashboard.</p>
           <button onClick={() => navigate('/')} className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-heading font-bold text-sm">
@@ -133,7 +133,7 @@ const TeacherDashboard = () => {
       <div className="w-full max-w-3xl mx-auto px-6 pt-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="text-text-secondary hover:text-foreground">
+          <button onClick={() => navigate('/')} className="text-text-secondary hover:text-foreground" aria-label="Go back">
             <ArrowLeft size={20} />
           </button>
           <div>
@@ -194,7 +194,7 @@ const TeacherDashboard = () => {
                       <td className="px-4 py-3 text-right font-body text-foreground">{s.sessionsThisWeek}</td>
                       <td className="px-4 py-3 text-right font-body text-foreground">{s.avgSteps}</td>
                       <td className="px-4 py-3 text-right font-body">
-                        <span className={s.sparkHandoffs > 2 ? 'text-amber-400' : 'text-foreground'}>
+                        <span className={s.sparkHandoffs > 2 ? 'text-warning' : 'text-foreground'}>
                           {s.sparkHandoffs}
                         </span>
                       </td>

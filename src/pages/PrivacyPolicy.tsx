@@ -175,7 +175,7 @@ const PrivacyPolicy = () => {
           </div>
         </Section>
 
-        <p className="text-xs text-muted-foreground/60 font-dm-sans text-center pt-4">
+        <p className="text-xs text-muted-foreground font-dm-sans text-center pt-4">
           Built for DOSE Academy by Odishon Corp — the world's first crisis intervention platform for ADHD.
         </p>
       </div>

@@ -15,9 +15,9 @@
     --popover: 170 20% 92%;
     --popover-foreground: 180 30% 12%;
 
-    --primary: 180 100% 39%;
-    --primary-foreground: 180 70% 8%;
-    --primary-dark: 180 100% 30%;
+    --primary: 180 100% 22%;
+    --primary-foreground: 0 0% 100%;
+    --primary-dark: 180 100% 18%;
 
     --secondary: 170 18% 88%;
     --secondary-foreground: 180 25% 30%;
@@ -28,30 +28,30 @@
     --accent: 170 18% 85%;
     --accent-foreground: 180 25% 30%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 38%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 160 64% 40%;
+    --success: 160 64% 22%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 38 92% 23%;
     --warning-foreground: 0 0% 100%;
 
-    --danger: 0 84% 60%;
+    --danger: 0 84% 38%;
 
     --rsd-warm: 330 90% 40%;
     --rsd-warm-foreground: 0 0% 100%;
-    --rsd-calm: 263 70% 58%;
+    --rsd-calm: 263 70% 46%;
     --rsd-calm-foreground: 0 0% 100%;
 
-    --squad: 160 64% 27%;
+    --squad: 160 64% 22%;
     --squad-foreground: 0 0% 100%;
-    --squad-dim: 160 80% 20%;
+    --squad-dim: 160 50% 85%;
     --squad-glow: 160 60% 55%;
 
     --border: 170 18% 82%;
     --input: 170 18% 82%;
-    --ring: 180 100% 39%;
+    --ring: 180 100% 22%;
 
     --radius: 1rem;
 
@@ -91,25 +91,25 @@
     --accent: 180 33% 15%;
     --accent-foreground: 180 32% 71%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 73%;
+    --destructive-foreground: 180 70% 8%;
 
-    --success: 160 64% 40%;
-    --success-foreground: 0 0% 100%;
+    --success: 160 64% 50%;
+    --success-foreground: 180 70% 8%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 38 92% 53%;
+    --warning-foreground: 180 70% 8%;
 
-    --danger: 0 84% 60%;
+    --danger: 0 84% 73%;
 
     --rsd-warm: 330 90% 68%;
     --rsd-warm-foreground: 180 70% 8%;
-    --rsd-calm: 263 70% 58%;
-    --rsd-calm-foreground: 0 0% 100%;
+    --rsd-calm: 263 70% 81%;
+    --rsd-calm-foreground: 180 70% 8%;
 
-    --squad: 160 64% 42%;
+    --squad: 160 64% 50%;
     --squad-foreground: 180 70% 8%;
-    --squad-dim: 160 80% 20%;
+    --squad-dim: 160 70% 12%;
     --squad-glow: 160 60% 55%;
 
     --border: 180 33% 15%;

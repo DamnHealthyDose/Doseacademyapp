@@ -59,7 +59,7 @@ const SquadSetup = () => {
     <div className="min-h-screen bg-background flex flex-col items-center">
       <div className="w-full max-w-[420px] px-6 pt-6">
         <div className="flex items-center mb-4">
-          <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/squad')} className="text-text-secondary hover:text-foreground">
+          <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/squad')} className="text-text-secondary hover:text-foreground" aria-label="Go back">
             <ArrowLeft size={20} />
           </button>
           <div className="flex-1 flex justify-center"><ProgressDots total={3} current={step - 1} completed={Array.from({ length: step - 1 }, (_, i) => i)} /></div>
@@ -138,7 +138,7 @@ const SquadSetup = () => {
                           </div>
                           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-squad-glow rounded-full border-2 border-bg-card animate-pulse" />
                         </div>
-                        <span className="text-text-hint text-[10px] mt-1">{m.subject}</span>
+                        <span className="text-text-hint text-xs mt-1">{m.subject}</span>
                       </div>
                     ))}
                   </div>
@@ -173,7 +173,7 @@ const SquadSetup = () => {
                           ${copied ? 'bg-squad text-squad-foreground' : 'bg-bg-elevated text-foreground border-2 border-squad'}`}>
                         {copied ? 'Copied! ✓' : 'Copy link'}
                       </button>
-                      <p className="text-text-secondary text-xs font-body text-center mb-4 animate-pulse">Waiting for them to join...</p>
+                      <p className="text-text-secondary text-xs font-body text-center mb-4"><span className="inline-block motion-safe:animate-scale-pulse">Waiting for them to join...</span></p>
                       <button onClick={handleStart}
                         className="text-text-hint text-sm font-body underline w-full text-center">
                         Or start without them →

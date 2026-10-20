@@ -70,7 +70,7 @@ const IgnitePage = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <button onClick={() => navigate('/')} className="text-muted-foreground hover:text-foreground transition-colors">
+            <button onClick={() => navigate('/')} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Go back">
               <ArrowLeft size={20} />
             </button>
             <h1 className="text-xl font-heading font-extrabold text-foreground flex items-center gap-2">
@@ -166,7 +166,7 @@ const IgnitePage = () => {
                 <p className="text-foreground font-heading font-bold text-lg leading-relaxed">
                   {ignite.currentStep.step}
                 </p>
-                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-heading font-bold">
+                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-heading font-bold">
                   About {ignite.currentStep.time_estimate} {ignite.currentStep.time_estimate === 1 ? 'minute' : 'minutes'}
                 </div>
               </div>
