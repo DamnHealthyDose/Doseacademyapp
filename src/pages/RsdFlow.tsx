@@ -249,7 +249,7 @@ const RsdFlow = () => {
                         onClick={() => setAction(a.text)}
                         className={`p-4 rounded-card border-2 text-left transition-all duration-150 flex items-start gap-3
                           ${action === a.text
-                            ? 'border-primary bg-primary/10'
+                            ? 'border-primary-strong bg-primary/10'
                             : 'border-bg-elevated bg-bg-card hover:border-primary/40'}`}
                       >
                         <div className={`w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0 flex items-center justify-center

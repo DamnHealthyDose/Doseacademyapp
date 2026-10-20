@@ -75,7 +75,7 @@ const ParentConsent = () => {
 
           {status === 'valid' && (
             <>
-              <ShieldCheck size={48} className="text-primary mx-auto mb-4" />
+              <ShieldCheck size={48} className="text-primary-strong mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">
                 Parental Consent Request
               </h1>
@@ -115,7 +115,7 @@ const ParentConsent = () => {
 
           {status === 'confirmed' && (
             <>
-              <CheckCircle size={48} className="text-primary mx-auto mb-4" />
+              <CheckCircle size={48} className="text-primary-strong mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Consent Granted!</h1>
               <p className="text-text-secondary font-body">
                 {childName} can now access peer features. You can manage this from the link in your email.

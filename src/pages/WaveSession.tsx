@@ -138,7 +138,7 @@ const WaveSession = () => {
       {/* Distraction counter */}
       <motion.div
         className={`absolute top-6 right-6 px-3 py-1 rounded-button text-xs font-heading font-bold transition-colors
-          ${distractionFlash ? 'bg-success text-success-foreground' : 'bg-primary/10 text-primary'}`}
+          ${distractionFlash ? 'bg-success text-success-foreground' : 'bg-primary/10 text-primary-strong'}`}
         animate={distractionFlash ? { opacity: [0.3, 1, 0.3] } : {}}
         transition={{ duration: 0.3 }}
       >
@@ -196,7 +196,7 @@ const WaveSession = () => {
         {waveSession.status === 'idle' && (
           <motion.button
             onClick={handleStart}
-            className="mt-8 text-primary font-heading font-bold text-lg"
+            className="mt-8 text-primary-strong font-heading font-bold text-lg"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -304,7 +304,7 @@ const WaveSession = () => {
               <h3 className="text-foreground font-heading font-bold text-lg mb-2">End session early?</h3>
               <p className="text-text-secondary text-sm font-body mb-4">You still showed up — that counts.</p>
               <div className="flex gap-3">
-                <button onClick={() => setShowEndConfirm(false)} className="flex-1 h-12 rounded-button border-2 border-bg-elevated text-text-secondary font-heading font-bold text-sm hover:border-primary transition-colors">
+                <button onClick={() => setShowEndConfirm(false)} className="flex-1 h-12 rounded-button border-2 border-bg-elevated text-text-secondary font-heading font-bold text-sm hover:border-primary-strong transition-colors">
                   Keep going
                 </button>
                 <button onClick={handleEndEarly} className="flex-1 h-12 rounded-button bg-primary text-primary-foreground font-heading font-bold text-sm hover:bg-primary-dark transition-colors">

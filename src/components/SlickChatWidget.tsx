@@ -242,7 +242,7 @@ className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full overflow-hidden b
               {isLoading && messages[messages.length - 1]?.role === 'user' && (
                 <div className="flex justify-start">
                   <div className="bg-secondary rounded-2xl rounded-bl-md px-3 py-2">
-                    <Loader2 size={16} className="animate-spin text-primary" />
+                    <Loader2 size={16} className="animate-spin text-primary-strong" />
                   </div>
                 </div>
               )}

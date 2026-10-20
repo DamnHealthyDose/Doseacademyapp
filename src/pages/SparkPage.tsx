@@ -159,7 +159,7 @@ const SparkPage = () => {
                   {emotions.map(e => (
                     <button key={e.label} onClick={() => setAnswer('affect', e.label)}
                       className={`dose-card flex flex-col items-center gap-1 py-4 cursor-pointer border-2 transition-all duration-150
-                        ${answers.affect === e.label ? 'border-primary scale-[1.03]' : 'border-transparent hover:border-primary/40'}`}>
+                        ${answers.affect === e.label ? 'border-primary-strong scale-[1.03]' : 'border-transparent hover:border-primary/40'}`}>
                       <span className="text-2xl">{e.emoji}</span>
                       <span className="text-xs text-text-secondary font-body">{e.label}</span>
                     </button>
@@ -193,7 +193,7 @@ const SparkPage = () => {
                     <p className="text-foreground text-sm font-body mb-2">
                       This sounds really hard. You're not alone.
                     </p>
-                    <a href="tel:988" className="text-primary text-sm font-body font-medium hover:underline">
+                    <a href="tel:988" className="text-primary-strong text-sm font-body font-medium hover:underline">
                       Talk to someone →
                     </a>
                   </motion.div>

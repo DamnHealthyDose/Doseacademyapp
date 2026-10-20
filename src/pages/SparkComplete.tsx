@@ -65,7 +65,7 @@ const SparkComplete = () => {
           </button>
           <button
             onClick={() => { resetSpark(); navigate('/spark'); }}
-            className="w-full h-14 border-2 border-primary text-primary font-heading font-bold rounded-button flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
+            className="w-full h-14 border-2 border-primary-strong text-primary-strong font-heading font-bold rounded-button flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
           >
             <RotateCcw size={18} /> Do it again
           </button>

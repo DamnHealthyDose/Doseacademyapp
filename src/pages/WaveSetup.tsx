@@ -93,7 +93,7 @@ const WaveSetup = () => {
                   value={task}
                   onChange={e => setTask(e.target.value.slice(0, 60))}
                   placeholder="e.g. Math homework, English essay..."
-                  className="w-full h-14 rounded-card bg-bg-card border-2 border-bg-elevated px-4 text-foreground font-body text-base placeholder:text-text-hint focus:border-primary focus:outline-none transition-colors"
+                  className="w-full h-14 rounded-card bg-bg-card border-2 border-bg-elevated px-4 text-foreground font-body text-base placeholder:text-text-hint focus:border-primary-strong focus:outline-none transition-colors"
                 />
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   {quickPicks.map(qp => (
@@ -121,7 +121,7 @@ const WaveSetup = () => {
                       key={d.minutes}
                       onClick={() => setDuration(d.minutes)}
                       className={`dose-card flex flex-col items-center gap-1 py-5 border-2 transition-all duration-150 cursor-pointer
-                        ${duration === d.minutes ? 'border-primary bg-primary/10 scale-[1.03]' : 'border-transparent hover:border-primary/40'}`}
+                        ${duration === d.minutes ? 'border-primary-strong bg-primary/10 scale-[1.03]' : 'border-transparent hover:border-primary/40'}`}
                     >
                       <span className="text-2xl">{d.emoji}</span>
                       <span className="text-foreground font-heading font-bold text-lg">{d.label}</span>
@@ -154,7 +154,7 @@ const WaveSetup = () => {
                   value={distractionNote}
                   onChange={e => setDistractionNote(e.target.value.slice(0, 80))}
                   placeholder="Anything else? (optional)"
-                  className="w-full h-12 rounded-card bg-bg-card border-2 border-bg-elevated px-4 text-foreground font-body text-sm placeholder:text-text-hint focus:border-primary focus:outline-none transition-colors mt-4"
+                  className="w-full h-12 rounded-card bg-bg-card border-2 border-bg-elevated px-4 text-foreground font-body text-sm placeholder:text-text-hint focus:border-primary-strong focus:outline-none transition-colors mt-4"
                 />
               </>
             )}

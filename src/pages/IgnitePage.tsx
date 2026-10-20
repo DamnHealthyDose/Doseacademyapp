@@ -74,14 +74,14 @@ const IgnitePage = () => {
               <ArrowLeft size={20} />
             </button>
             <h1 className="text-xl font-heading font-extrabold text-foreground flex items-center gap-2">
-              <Flame size={22} className="text-primary" />
+              <Flame size={22} className="text-primary-strong" />
               IGNITE
             </h1>
           </div>
           {/* Streak counter */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30">
-            <Flame size={14} className="text-primary" />
-            <span className="text-primary font-heading font-bold text-xs">{ignite.streak}</span>
+            <Flame size={14} className="text-primary-strong" />
+            <span className="text-primary-strong font-heading font-bold text-xs">{ignite.streak}</span>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ const IgnitePage = () => {
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               >
-                <Flame size={48} className="text-primary" />
+                <Flame size={48} className="text-primary-strong" />
               </motion.div>
               <AnimatePresence mode="wait">
                 <motion.p
@@ -166,7 +166,7 @@ const IgnitePage = () => {
                 <p className="text-foreground font-heading font-bold text-lg leading-relaxed">
                   {ignite.currentStep.step}
                 </p>
-                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-heading font-bold">
+                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 text-primary-strong text-xs font-heading font-bold">
                   About {ignite.currentStep.time_estimate} {ignite.currentStep.time_estimate === 1 ? 'minute' : 'minutes'}
                 </div>
               </div>
@@ -217,7 +217,7 @@ const IgnitePage = () => {
                 transition={{ duration: 0.6, ease: 'easeOut' }}
                 className="relative"
               >
-                <Flame size={ignite.ageMode === 'middle_school' ? 64 : 48} className="text-primary" />
+                <Flame size={ignite.ageMode === 'middle_school' ? 64 : 48} className="text-primary-strong" />
                 {/* Decorative sparks */}
                 {[...Array(ignite.ageMode === 'middle_school' ? 8 : 5)].map((_, i) => (
                   <motion.div
@@ -244,7 +244,7 @@ const IgnitePage = () => {
                 {ignite.getCelebrationCopy()}
               </motion.p>
 
-              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary font-heading font-bold text-sm">
+              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary-strong font-heading font-bold text-sm">
                 {ignite.stepsCompleted} {ignite.stepsCompleted === 1 ? 'step' : 'steps'} done
               </div>
 
@@ -254,7 +254,7 @@ const IgnitePage = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="text-primary font-heading font-bold text-sm text-center"
+                  className="text-primary-strong font-heading font-bold text-sm text-center"
                 >
                   {copy.streakCopy(ignite.streak)}
                 </motion.p>
@@ -266,7 +266,7 @@ const IgnitePage = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
-                  className="text-primary font-body text-sm text-center px-4"
+                  className="text-primary-strong font-body text-sm text-center px-4"
                 >
                   {ignite.getMilestoneCopy(ignite.milestoneDays)}
                 </motion.p>
@@ -334,7 +334,7 @@ const IgnitePage = () => {
                 animate={{ scale: [0, 1.4, 1] }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
               >
-                <Flame size={72} className="text-primary" />
+                <Flame size={72} className="text-primary-strong" />
               </motion.div>
 
               <motion.p
@@ -346,7 +346,7 @@ const IgnitePage = () => {
                 {copy.completeFinal}
               </motion.p>
 
-              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary font-heading font-bold text-sm">
+              <div className="px-4 py-2 rounded-full bg-primary/10 text-primary-strong font-heading font-bold text-sm">
                 {ignite.stepsCompleted} steps completed
               </div>
 
@@ -355,7 +355,7 @@ const IgnitePage = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="text-primary font-heading font-bold text-sm"
+                  className="text-primary-strong font-heading font-bold text-sm"
                 >
                   {copy.streakCopy(ignite.streak)}
                 </motion.p>

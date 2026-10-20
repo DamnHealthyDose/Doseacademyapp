@@ -29,7 +29,7 @@ const Index = () => {
         <div className="w-full flex items-center justify-between mb-2">
           <motion.button
             onClick={() => setShowVideo(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/30 text-primary font-heading font-bold text-xs hover:bg-primary/10 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/30 text-primary-strong font-heading font-bold text-xs hover:bg-primary/10 transition-colors"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, duration: 0.4 }}
@@ -82,7 +82,7 @@ const Index = () => {
             <p className="text-foreground font-heading font-bold text-sm mt-1">{waveSession.task}</p>
             <button
               onClick={() => navigate('/wave/session')}
-              className="mt-2 text-primary text-sm font-heading font-bold flex items-center gap-1 hover:underline"
+              className="mt-2 text-primary-strong text-sm font-heading font-bold flex items-center gap-1 hover:underline"
             >
               Resume <ArrowRight size={14} />
             </button>
@@ -188,19 +188,19 @@ const Index = () => {
             className="w-full dose-card p-4 flex items-center gap-3 hover:border-primary/50 transition-colors group"
           >
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Flame size={20} className="text-primary" />
+              <Flame size={20} className="text-primary-strong" />
             </div>
             <div className="flex-1 text-left">
               <span className="text-foreground font-heading font-bold text-sm block">IGNITE</span>
               <span className="text-muted-foreground font-body text-xs">Break any task into your first move</span>
             </div>
-            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
+            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary-strong transition-colors" />
           </button>
         </motion.div>
 
         {/* Footer */}
         <div className="w-full mt-6 mb-2 flex items-center justify-center gap-3 text-xs text-muted-foreground font-body">
-          <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+          <Link to="/privacy" className="hover:text-primary-strong transition-colors">Privacy Policy</Link>
           <span>·</span>
           <span>© {new Date().getFullYear()} DOSE Academy</span>
         </div>

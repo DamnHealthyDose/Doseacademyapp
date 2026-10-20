@@ -110,7 +110,7 @@ const AgeVerification = () => {
           {status === 'input' && (
             <>
               <div className="flex items-center gap-2 mb-1">
-                <ShieldCheck size={24} className="text-primary" />
+                <ShieldCheck size={24} className="text-primary-strong" />
                 <h1 className="text-2xl font-heading font-extrabold text-foreground">Age Verification</h1>
               </div>
               <p className="text-text-secondary text-sm font-body mb-6">
@@ -123,7 +123,7 @@ const AgeVerification = () => {
                 value={dob}
                 onChange={e => setDob(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary transition-colors"
+                className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary-strong transition-colors"
               />
 
               <button
@@ -176,7 +176,7 @@ const AgeVerification = () => {
                 placeholder="parent@example.com"
                 value={parentEmail}
                 onChange={e => setParentEmail(e.target.value)}
-                className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary transition-colors placeholder:text-text-hint"
+                className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary-strong transition-colors placeholder:text-text-hint"
               />
 
               <button

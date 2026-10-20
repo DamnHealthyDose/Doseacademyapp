@@ -59,7 +59,7 @@ const CookieConsent = () => {
             {/* Header */}
             <div className="flex items-center gap-2.5 mb-1">
               <div className="rounded-xl bg-primary/15 p-2">
-                <Cookie size={20} className="text-primary" />
+                <Cookie size={20} className="text-primary-strong" />
               </div>
               <h3 className="text-base font-bold text-foreground font-nunito">
                 Your privacy, your call 🍪
@@ -74,7 +74,7 @@ const CookieConsent = () => {
               {/* Essential — always on */}
               <div className="flex items-center justify-between rounded-xl border border-white/10 bg-background/50 px-4 py-3">
                 <div className="flex items-center gap-3">
-                  <Shield size={18} className="text-primary shrink-0" />
+                  <Shield size={18} className="text-primary-strong shrink-0" />
                   <div>
                     <p className="text-sm font-bold text-foreground font-nunito">Essential</p>
                     <p className="text-xs text-muted-foreground font-dm-sans">Keeps the app working — always on</p>
@@ -129,7 +129,7 @@ const CookieConsent = () => {
 
             <p className="text-center text-xs text-muted-foreground font-dm-sans mt-3">
               Read our{" "}
-              <Link to="/privacy" className="text-primary underline hover:text-primary/80" onClick={() => setVisible(false)}>
+              <Link to="/privacy" className="text-primary-strong underline hover:text-primary-strong/80" onClick={() => setVisible(false)}>
                 Privacy Policy
               </Link>
             </p>

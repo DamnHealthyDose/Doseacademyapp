@@ -138,7 +138,7 @@ const TeacherDashboard = () => {
           </button>
           <div>
             <h1 className="text-2xl font-heading font-extrabold text-foreground flex items-center gap-2">
-              <BarChart3 size={24} className="text-primary" /> Teacher Dashboard
+              <BarChart3 size={24} className="text-primary-strong" /> Teacher Dashboard
             </h1>
             <p className="text-text-secondary font-body text-sm">IGNITE session data — aggregated, no raw task text</p>
           </div>
@@ -200,7 +200,7 @@ const TeacherDashboard = () => {
                       </td>
                       <td className="px-4 py-3 text-right font-body text-foreground">
                         <span className="inline-flex items-center gap-1">
-                          <Flame size={14} className="text-primary" /> {s.currentStreak}
+                          <Flame size={14} className="text-primary-strong" /> {s.currentStreak}
                         </span>
                       </td>
                     </tr>
@@ -225,7 +225,7 @@ const SummaryCard = ({ icon, label, value }: { icon: React.ReactNode; label: str
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
   >
-    <div className="text-primary">{icon}</div>
+    <div className="text-primary-strong">{icon}</div>
     <p className="text-lg font-heading font-extrabold text-foreground">{value}</p>
     <p className="text-xs font-body text-text-secondary">{label}</p>
   </motion.div>

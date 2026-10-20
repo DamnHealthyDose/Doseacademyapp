@@ -91,7 +91,7 @@ const SquadHome = () => {
           >
             <div className="flex items-center justify-between">
               <p className="text-foreground font-heading font-bold text-base">Study with a friend</p>
-              <ShieldCheck size={16} className="text-primary" />
+              <ShieldCheck size={16} className="text-primary-strong" />
             </div>
             <p className="text-text-secondary text-sm font-body mt-1">Invite someone specific. You'll each set your task and go.</p>
             <span className="inline-block mt-2 text-xs font-body text-text-hint bg-muted px-2 py-0.5 rounded-button">2-person · Async</span>

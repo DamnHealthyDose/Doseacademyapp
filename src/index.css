@@ -15,9 +15,10 @@
     --popover: 170 20% 92%;
     --popover-foreground: 180 30% 12%;
 
-    --primary: 180 100% 22%;
-    --primary-foreground: 0 0% 100%;
-    --primary-dark: 180 100% 18%;
+    --primary: 180 100% 39%;
+    --primary-foreground: 180 70% 8%;
+    --primary-dark: 180 100% 30%;
+    --primary-strong: 180 100% 22%;
 
     --secondary: 170 18% 88%;
     --secondary-foreground: 180 25% 30%;
@@ -51,7 +52,7 @@
 
     --border: 170 18% 82%;
     --input: 170 18% 82%;
-    --ring: 180 100% 22%;
+    --ring: 180 100% 22%; /* = primary-strong */
 
     --radius: 1rem;
 
@@ -81,6 +82,7 @@
     --primary: 180 100% 39%;
     --primary-foreground: 180 70% 8%;
     --primary-dark: 180 100% 30%;
+    --primary-strong: 180 100% 39%;
 
     --secondary: 180 33% 15%;
     --secondary-foreground: 180 32% 71%;
@@ -151,10 +153,10 @@
            transition-all duration-150 ease-out select-none;
   }
   .chip:hover {
-    @apply border-primary;
+    @apply border-primary-strong;
   }
   .chip-selected {
-    @apply border-primary bg-primary/15 text-foreground font-bold scale-[1.03];
+    @apply border-primary-strong bg-primary/15 text-foreground font-bold scale-[1.03];
   }
 
   .dose-card {
@@ -178,12 +180,11 @@
     @apply outline outline-2 outline-offset-2 outline-tool-accent;
   }
   .tool-btn[aria-pressed="true"] {
-    @apply bg-tool-accent;
-    color: hsl(var(--tool-active-foreground));
+    @apply bg-primary text-primary-foreground;
   }
 
   .step-label {
-    @apply font-body text-xs font-bold uppercase tracking-widest text-primary;
+    @apply font-body text-xs font-bold uppercase tracking-widest text-primary-strong;
   }
 }
 

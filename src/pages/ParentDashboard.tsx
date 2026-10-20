@@ -97,7 +97,7 @@ const ParentDashboard = () => {
           {status === 'valid' && childData && (
             <div className="space-y-6">
               <div className="text-center">
-                <Shield size={48} className="text-primary mx-auto mb-4" />
+                <Shield size={48} className="text-primary-strong mx-auto mb-4" />
                 <h1 className="text-2xl font-heading font-extrabold text-foreground mb-1">Parent Dashboard</h1>
                 <p className="text-text-secondary font-body text-sm">
                   Manage your child's DOSE Academy account
@@ -118,7 +118,7 @@ const ParentDashboard = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-text-secondary">Consent</span>
-                    <span className={childData.parent_consent_given ? 'text-primary' : 'text-destructive'}>
+                    <span className={childData.parent_consent_given ? 'text-primary-strong' : 'text-destructive'}>
                       {childData.parent_consent_given ? 'Granted' : 'Not granted'}
                     </span>
                   </div>
@@ -133,7 +133,7 @@ const ParentDashboard = () => {
               {ignite && (
                 <div className="bg-secondary/50 rounded-xl p-4 space-y-3">
                   <h2 className="font-heading font-bold text-foreground flex items-center gap-2">
-                    <Flame size={18} className="text-primary" /> IGNITE Weekly Summary
+                    <Flame size={18} className="text-primary-strong" /> IGNITE Weekly Summary
                   </h2>
 
                   {/* Today's status */}
@@ -146,24 +146,24 @@ const ParentDashboard = () => {
 
                   {/* Streak */}
                   <div className="flex items-center gap-2 bg-primary/10 rounded-lg px-3 py-2">
-                    <Flame size={16} className="text-primary" />
+                    <Flame size={16} className="text-primary-strong" />
                     <span className="text-foreground font-heading font-bold text-sm">
                       {ignite.currentStreak}-day streak
                     </span>
                     {ignite.currentStreak >= 7 && (
-                      <span className="text-primary text-xs font-body ml-auto">🎉 Milestone!</span>
+                      <span className="text-primary-strong text-xs font-body ml-auto">🎉 Milestone!</span>
                     )}
                   </div>
 
                   {/* Weekly stats */}
                   <div className="grid grid-cols-3 gap-2">
                     <div className="text-center p-2">
-                      <TrendingUp size={14} className="text-primary mx-auto mb-1" />
+                      <TrendingUp size={14} className="text-primary-strong mx-auto mb-1" />
                       <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklySessionCount}</p>
                       <p className="text-xs font-body text-text-secondary">Sessions</p>
                     </div>
                     <div className="text-center p-2">
-                      <Zap size={14} className="text-primary mx-auto mb-1" />
+                      <Zap size={14} className="text-primary-strong mx-auto mb-1" />
                       <p className="text-lg font-heading font-extrabold text-foreground">{ignite.weeklyAvgSteps}</p>
                       <p className="text-xs font-body text-text-secondary">Avg Steps</p>
                     </div>
@@ -237,7 +237,7 @@ const ParentDashboard = () => {
 
           {status === 'deleted' && (
             <div className="text-center">
-              <CheckCircle size={48} className="text-primary mx-auto mb-4" />
+              <CheckCircle size={48} className="text-primary-strong mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Account Deleted</h1>
               <p className="text-text-secondary font-body">All data has been permanently removed.</p>
             </div>

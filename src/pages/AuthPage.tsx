@@ -139,7 +139,7 @@ const AuthPage = () => {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary transition-colors placeholder:text-text-hint"
+              className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary-strong transition-colors placeholder:text-text-hint"
             />
             <input
               type="password"
@@ -148,7 +148,7 @@ const AuthPage = () => {
               onChange={e => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary transition-colors placeholder:text-text-hint"
+              className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary-strong transition-colors placeholder:text-text-hint"
             />
             <button
               type="submit"
@@ -166,7 +166,7 @@ const AuthPage = () => {
                 Don't have an account?{' '}
                 <button
                   onClick={() => navigate(`/signup-age-check?redirect=${encodeURIComponent(redirect)}`)}
-                  className="text-primary font-bold"
+                  className="text-primary-strong font-bold"
                 >
                   Sign up
                 </button>
@@ -174,7 +174,7 @@ const AuthPage = () => {
             ) : (
               <>
                 Already have an account?{' '}
-                <button onClick={() => setMode('login')} className="text-primary font-bold">
+                <button onClick={() => setMode('login')} className="text-primary-strong font-bold">
                   Sign in
                 </button>
               </>

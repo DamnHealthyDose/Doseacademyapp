@@ -121,13 +121,13 @@ const WaveComplete = () => {
           </button>
           <button
             onClick={() => { resetWave(); navigate('/'); }}
-            className="w-full h-14 border-2 border-primary text-primary font-heading font-bold rounded-button flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
+            className="w-full h-14 border-2 border-primary-strong text-primary-strong font-heading font-bold rounded-button flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
           >
             <Home size={18} /> I'm done for now
           </button>
         </motion.div>
 
-        <button onClick={handleShare} className="mt-4 text-text-hint text-xs font-body hover:text-primary transition-colors">
+        <button onClick={handleShare} className="mt-4 text-text-hint text-xs font-body hover:text-primary-strong transition-colors">
           Share this session with your coach →
         </button>
       </div>

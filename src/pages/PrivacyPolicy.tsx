@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
             <ArrowLeft size={20} className="text-muted-foreground" />
           </button>
           <div className="flex items-center gap-2">
-            <Shield size={18} className="text-primary" />
+            <Shield size={18} className="text-primary-strong" />
             <h1 className="text-lg font-bold font-nunito">Privacy Policy</h1>
           </div>
         </div>
@@ -33,7 +33,7 @@ const PrivacyPolicy = () => {
 
         {/* Sections */}
         <Section
-          icon={<Eye size={18} className="text-primary" />}
+          icon={<Eye size={18} className="text-primary-strong" />}
           title="What we collect"
         >
           <ul className="space-y-2">
@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Cookie size={18} className="text-primary" />}
+          icon={<Cookie size={18} className="text-primary-strong" />}
           title="How we use cookies"
         >
           <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed mb-3">
@@ -79,7 +79,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Database size={18} className="text-primary" />}
+          icon={<Database size={18} className="text-primary-strong" />}
           title="Where your data lives"
         >
           <ul className="space-y-2">
@@ -91,7 +91,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Shield size={18} className="text-primary" />}
+          icon={<Shield size={18} className="text-primary-strong" />}
           title="Teen safety"
         >
           <ul className="space-y-2">
@@ -103,7 +103,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Shield size={18} className="text-primary" />}
+          icon={<Shield size={18} className="text-primary-strong" />}
           title="Children's privacy (COPPA)"
         >
           <ul className="space-y-2">
@@ -126,7 +126,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Shield size={18} className="text-primary" />}
+          icon={<Shield size={18} className="text-primary-strong" />}
           title="Parental rights"
         >
           <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed mb-3">
@@ -141,7 +141,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Eye size={18} className="text-primary" />}
+          icon={<Eye size={18} className="text-primary-strong" />}
           title="Your choices"
         >
           <ul className="space-y-2">
@@ -158,7 +158,7 @@ const PrivacyPolicy = () => {
         </Section>
 
         <Section
-          icon={<Mail size={18} className="text-primary" />}
+          icon={<Mail size={18} className="text-primary-strong" />}
           title="Contact us"
         >
           <p className="text-sm text-muted-foreground font-dm-sans leading-relaxed">
@@ -197,7 +197,7 @@ const Section = ({ icon, title, children }: { icon: React.ReactNode; title: stri
 
 const Li = ({ children }: { children: React.ReactNode }) => (
   <li className="text-sm text-muted-foreground font-dm-sans leading-relaxed flex gap-2">
-    <span className="text-primary mt-1 shrink-0">•</span>
+    <span className="text-primary-strong mt-1 shrink-0">•</span>
     <span>{children}</span>
   </li>
 );
