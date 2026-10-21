@@ -7,6 +7,7 @@ import SlickMessage from '@/components/SlickMessage';
 import ThemeToggle from '@/components/ThemeToggle';
 import WhatsDoseButton from '@/components/WhatsDoseButton';
 import HomeDashboard from '@/components/HomeDashboard';
+import { TOOLS } from '@/lib/tools';
 import logo from '@/assets/dose-logo.png';
 
 const Index = () => {
@@ -84,46 +85,19 @@ const Index = () => {
 
         {/* CTAs */}
         <div className="flex gap-3 mt-6 w-full">
-          <motion.button
-            onClick={() => navigate('/spark')}
-            className="tool-btn"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.4 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            ⚡ SPARK
-          </motion.button>
-          <motion.button
-            onClick={() => navigate('/wave/setup')}
-            className="tool-btn"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45, duration: 0.4 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            🌊 WAVE
-          </motion.button>
-          <motion.button
-            onClick={() => navigate('/rsd')}
-            className="tool-btn"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            💜 RSD
-          </motion.button>
-          <motion.button
-            onClick={() => navigate('/squad')}
-            className="tool-btn"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.4 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            👥 Squad
-          </motion.button>
+          {TOOLS.map((tool, i) => (
+            <motion.button
+              key={tool.id}
+              onClick={() => navigate(tool.route)}
+              className="tool-btn"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + i * 0.05, duration: 0.4 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              {tool.icon} {tool.label}
+            </motion.button>
+          ))}
         </div>
 
         {/* Stats */}

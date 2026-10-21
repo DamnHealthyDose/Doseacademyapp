@@ -1,16 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Flame, Zap, Waves, Heart, Users } from 'lucide-react';
+import { ArrowRight, Check, Flame } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
+import { TOOLS } from '@/lib/tools';
 import SlickMessage from './SlickMessage';
 import ThemeToggle from './ThemeToggle';
 import WhatsDoseButton from './WhatsDoseButton';
-
-const TOOLS = [
-  { to: '/spark', icon: Zap, name: 'SPARK', description: 'Work through your emotions' },
-  { to: '/wave/setup', icon: Waves, name: 'WAVE', description: 'Get into focus' },
-  { to: '/rsd', icon: Heart, name: 'RSD', description: 'Ease rejection feelings' },
-  { to: '/squad', icon: Users, name: 'Squad', description: 'Study together' },
-];
 
 const RECENT_SESSIONS = ['English essay draft · 25 min', 'Science reading · 15 min', 'Math problems · 25 min'];
 
@@ -75,14 +69,14 @@ const HomeDashboard = () => {
 
       {/* Tools */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {TOOLS.map(({ to, icon: Icon, name, description }) => (
+        {TOOLS.map(({ id, route, icon, label, description }) => (
           <Link
-            key={to}
-            to={to}
+            key={id}
+            to={route}
             className={`flex flex-col items-start gap-3 min-h-[140px] p-5 rounded-button border-2 border-tool-accent bg-transparent text-foreground transition-colors hover:bg-tool-accent/10 ${focusRing}`}
           >
-            <Icon size={28} className="text-tool-accent" aria-hidden="true" />
-            <span className="font-heading font-bold text-lg">{name}</span>
+            <span className="flex items-center justify-center w-7 h-7 text-[24px] leading-none" aria-hidden="true">{icon}</span>
+            <span className="font-heading font-bold text-lg">{label}</span>
             <span className="text-text-secondary font-body text-sm">{description}</span>
           </Link>
         ))}
