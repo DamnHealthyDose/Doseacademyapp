@@ -17,7 +17,7 @@ const RsdEntry = () => {
         </motion.h1>
 
         <motion.p
-          className="text-[15px] font-body text-rsd-warm mt-4 leading-relaxed"
+          className="text-[15px] font-body text-rsd-accent-text mt-4 leading-relaxed"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
@@ -27,7 +27,7 @@ const RsdEntry = () => {
 
         <motion.button
           onClick={() => navigate('/rsd/flow')}
-          className="w-full h-14 mt-10 bg-rsd-warm text-rsd-warm-foreground font-heading font-bold text-base rounded-button
+          className="w-full h-14 mt-10 bg-rsd-accent text-rsd-accent-foreground font-heading font-bold text-base rounded-button
                      hover:brightness-110 transition-all"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,7 +39,7 @@ const RsdEntry = () => {
 
         <motion.button
           onClick={() => navigate('/rsd/breathe', { state: { returnTo: '/rsd/flow', returnStep: 2 } })}
-          className="mt-4 text-rsd-calm text-sm font-body hover:underline"
+          className="mt-4 text-rsd-accent-muted text-sm font-body hover:underline"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1, duration: 0.4 }}

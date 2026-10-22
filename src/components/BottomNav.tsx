@@ -24,9 +24,9 @@ const BottomNav = () => {
               key={to}
               to={to}
               className={`flex flex-col items-center gap-1 px-2 py-2 rounded-button transition-all duration-200
-                ${active ? 'text-tool-accent' : 'text-text-secondary hover:text-foreground'}`}
+                ${active ? (item.tone === 'rsd' ? 'text-rsd-accent-text' : 'text-tool-accent') : 'text-text-secondary hover:text-foreground'}`}
             >
-              <Icon size={18} />
+              <Icon size={18} className={item.tone === 'rsd' && active ? 'text-rsd-accent' : ''} />
               <span className="text-xs font-body font-medium">{label}</span>
             </Link>
           );

@@ -40,8 +40,11 @@
 
     --danger: 0 84% 38%;
 
-    --rsd-warm: 330 90% 40%;
-    --rsd-warm-foreground: 0 0% 100%;
+    /* RSD accent (#9B4DE0). Change --rsd-accent to re-theme the RSD tool. */
+    --rsd-accent: 272 70% 59%;
+    --rsd-accent-foreground: 0 0% 100%;
+    --rsd-accent-text: 272 65% 42%;
+    --rsd-accent-muted: 255 25% 36%;
     --rsd-calm: 263 70% 46%;
     --rsd-calm-foreground: 0 0% 100%;
 
@@ -104,8 +107,10 @@
 
     --danger: 0 84% 73%;
 
-    --rsd-warm: 330 90% 68%;
-    --rsd-warm-foreground: 180 70% 8%;
+    --rsd-accent: 272 70% 59%;
+    --rsd-accent-foreground: 0 0% 100%;
+    --rsd-accent-text: 268 80% 80%;
+    --rsd-accent-muted: 250 30% 75%;
     --rsd-calm: 263 70% 81%;
     --rsd-calm-foreground: 180 70% 8%;
 

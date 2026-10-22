@@ -12,6 +12,8 @@ interface SidebarProps {
 
 const focusRing = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tool-accent';
 
+const rsdFocusRing = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rsd-accent';
+
 const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const { pathname } = useLocation();
 
@@ -42,10 +44,12 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
               title={collapsed ? item.label : undefined}
               className={`flex items-center gap-3 min-h-12 px-3 rounded-button font-heading font-bold text-sm transition-colors
                 ${collapsed ? 'justify-center' : ''}
-                ${active ? 'bg-primary/10 text-primary-strong' : 'text-foreground hover:bg-primary/5 hover:text-primary-strong'}
-                ${focusRing}`}
+                ${item.tone === 'rsd'
+                  ? (active ? 'bg-rsd-accent/15 text-rsd-accent-text' : 'text-foreground hover:bg-rsd-accent/10 hover:text-rsd-accent-text')
+                  : (active ? 'bg-primary/10 text-primary-strong' : 'text-foreground hover:bg-primary/5 hover:text-primary-strong')}
+                ${item.tone === 'rsd' ? rsdFocusRing : focusRing}`}
             >
-              <Icon size={20} className="shrink-0" />
+              <Icon size={20} className={`shrink-0 ${item.tone === 'rsd' && active ? 'text-rsd-accent' : ''}`} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );

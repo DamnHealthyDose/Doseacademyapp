@@ -71,7 +71,7 @@ const RsdFlow = () => {
     <div
       key={i}
       className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-        i === step ? 'bg-rsd-warm' : i < step ? 'bg-rsd-calm' : 'bg-bg-elevated'
+        i === step ? 'bg-rsd-accent' : i < step ? 'bg-rsd-accent/50' : 'bg-bg-elevated'
       }`}
     />
   ));
@@ -132,8 +132,8 @@ const RsdFlow = () => {
                         onClick={() => setScenario(s.id)}
                         className={`h-[130px] rounded-card flex flex-col items-center justify-center gap-2 border-2 transition-all duration-150
                           ${scenario === s.id
-                            ? 'border-rsd-warm bg-rsd-warm/10'
-                            : 'border-bg-elevated bg-bg-card hover:border-rsd-warm/40'}`}
+                            ? 'border-rsd-accent bg-rsd-accent/10'
+                            : 'border-bg-elevated bg-bg-card hover:border-rsd-accent/40'}`}
                       >
                         <span className="text-2xl">{s.emoji}</span>
                         <span className="text-foreground text-sm font-body font-medium text-center px-2">{s.label}</span>
@@ -149,7 +149,7 @@ const RsdFlow = () => {
                   <p className="text-text-secondary text-sm font-body mt-1 mb-8">Be honest — there's no wrong answer</p>
                   <div className="flex justify-center gap-4 mb-4">
                     {[1, 2, 3, 4, 5].map(n => {
-                      const colors = n <= 2 ? 'bg-rsd-warm/20 border-rsd-warm/40' : n === 3 ? 'bg-warning/20 border-warning/40' : 'bg-rsd-warm/30 border-rsd-warm/60';
+                      const colors = n <= 2 ? 'bg-rsd-accent/20 border-rsd-accent/40' : n === 3 ? 'bg-warning/20 border-warning/40' : 'bg-rsd-accent/30 border-rsd-accent/60';
                       const selected = intensity === n;
                       return (
                         <button
@@ -157,7 +157,7 @@ const RsdFlow = () => {
                           onClick={() => setIntensity(n)}
                           className={`w-[52px] h-[52px] rounded-full flex items-center justify-center font-heading font-extrabold text-lg
                             border-2 transition-all duration-150
-                            ${selected ? 'bg-rsd-warm text-rsd-warm-foreground border-rsd-warm scale-110' : `${colors} text-foreground`}`}
+                            ${selected ? 'bg-rsd-accent text-rsd-accent-foreground border-rsd-accent scale-110' : `${colors} text-foreground`}`}
                         >
                           {n}
                         </button>
@@ -180,7 +180,7 @@ const RsdFlow = () => {
                       animate={{ opacity: 1, y: 0 }}
                     >
                       <p className="text-foreground text-sm font-body">Intensity 5 is a lot to carry. You can talk to someone right now.</p>
-                      <a href="tel:988" className="text-rsd-calm text-sm font-body mt-1 inline-block hover:underline">Crisis support →</a>
+                      <a href="tel:988" className="text-rsd-accent-text text-sm font-body mt-1 inline-block hover:underline">Crisis support →</a>
                     </motion.div>
                   )}
                 </>
@@ -191,7 +191,7 @@ const RsdFlow = () => {
                   <h2 className="text-xl font-heading font-extrabold text-foreground text-center">Before we think — let's land.</h2>
                   <p className="text-text-secondary text-sm font-body mt-1 mb-8 text-center">Take one slow breath with me.</p>
                   <motion.div
-                    className="rounded-full flex items-center justify-center bg-rsd-calm/20 border-2 border-rsd-calm/40"
+                    className="rounded-full flex items-center justify-center bg-rsd-accent/20 border-2 border-rsd-accent/40"
                     animate={{
                       width: breathPhase === 'inhale' || breathPhase === 'hold' ? 180 : breathPhase === 'done' ? 140 : 120,
                       height: breathPhase === 'inhale' || breathPhase === 'hold' ? 180 : breathPhase === 'done' ? 140 : 120,
@@ -207,7 +207,7 @@ const RsdFlow = () => {
                   </motion.div>
                   {breathDone && (
                     <motion.p
-                      className="text-rsd-calm text-sm font-body mt-6"
+                      className="text-rsd-accent-text text-sm font-body mt-6"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                     >
@@ -228,8 +228,8 @@ const RsdFlow = () => {
                         onClick={() => setReframe(r)}
                         className={`p-4 rounded-card border-2 text-left transition-all duration-150 text-sm font-body text-foreground
                           ${reframe === r
-                            ? 'border-rsd-calm bg-rsd-calm/10'
-                            : 'border-bg-elevated bg-bg-card hover:border-rsd-calm/40'}`}
+                            ? 'border-rsd-accent bg-rsd-accent/10'
+                            : 'border-bg-elevated bg-bg-card hover:border-rsd-accent/40'}`}
                       >
                         {r}
                       </button>
@@ -274,8 +274,7 @@ const RsdFlow = () => {
               onClick={handleNext}
               disabled={!canNext()}
               className={`w-full h-14 rounded-button font-heading font-bold text-base transition-all
-                ${step <= 1 ? 'bg-rsd-warm' : step <= 3 ? 'bg-rsd-calm' : 'bg-primary'}
-                text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed`}
+                ${step <= 3 ? 'bg-rsd-accent text-rsd-accent-foreground' : 'bg-primary text-primary-foreground'} disabled:opacity-30 disabled:cursor-not-allowed`}
             >
               {nextLabel()}
             </button>

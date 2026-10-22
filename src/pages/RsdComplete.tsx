@@ -22,7 +22,7 @@ const RsdComplete = () => {
       <div className="w-full max-w-[420px] md:max-w-[640px] lg:max-w-[720px] px-6 pt-16 flex flex-col items-center">
         {/* Pulsing circle */}
         <motion.div
-          className="w-20 h-20 rounded-full bg-rsd-calm/20 border-2 border-rsd-calm/40 flex items-center justify-center mb-8"
+          className="w-20 h-20 rounded-full bg-rsd-accent/20 border-2 border-rsd-accent/40 flex items-center justify-center mb-8"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
@@ -84,7 +84,7 @@ const RsdComplete = () => {
 
         {/* Affirmation */}
         <motion.p
-          className="text-rsd-calm text-sm font-body text-center mt-6 italic"
+          className="text-rsd-accent-text text-sm font-body text-center mt-6 italic"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -107,7 +107,7 @@ const RsdComplete = () => {
           </button>
           <button
             onClick={() => navigate('/rsd')}
-            className="w-full h-12 border-2 border-border text-foreground font-heading font-bold rounded-button hover:border-rsd-calm transition-colors"
+            className="w-full h-12 border-2 border-border text-foreground font-heading font-bold rounded-button hover:border-rsd-accent transition-colors"
           >
             Do it again
           </button>

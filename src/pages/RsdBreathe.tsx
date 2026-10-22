@@ -64,7 +64,7 @@ const RsdBreathe = () => {
         <p className="text-text-hint text-xs font-body mb-12">RSD Junior · Breathe</p>
 
         <motion.div
-          className="rounded-full flex items-center justify-center bg-rsd-calm/20 border-2 border-rsd-calm/30"
+          className="rounded-full flex items-center justify-center bg-rsd-accent/20 border-2 border-rsd-accent/40"
           animate={{ width: done ? 160 : circleSize, height: done ? 160 : circleSize }}
           transition={{ duration: phase === 'hold' || done ? 0.3 : 4, ease: 'easeInOut' }}
         >
@@ -79,7 +79,7 @@ const RsdBreathe = () => {
             <div
               key={i}
               className={`w-2.5 h-2.5 rounded-full transition-colors duration-300
-                ${i <= cycle && !done ? 'bg-rsd-calm' : done ? 'bg-rsd-calm' : 'bg-bg-elevated'}`}
+                ${i <= cycle && !done ? 'bg-rsd-accent' : done ? 'bg-rsd-accent' : 'bg-bg-elevated'}`}
             />
           ))}
         </div>
@@ -102,7 +102,7 @@ const RsdBreathe = () => {
 
         <a
           href="tel:988"
-          className="mt-8 text-rsd-calm text-xs font-body hover:underline"
+          className="mt-8 text-rsd-accent-muted text-xs font-body hover:underline"
         >
           Skip — I need to talk to someone →
         </a>
