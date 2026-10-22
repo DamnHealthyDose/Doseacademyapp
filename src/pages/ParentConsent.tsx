@@ -26,7 +26,7 @@ const ParentConsent = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ action: 'validate', token }),
+        body: JSON.stringify({ action: 'validate-consent', token }),
       });
 
       if (resp.status === 410) { setStatus('expired'); return; }
@@ -118,7 +118,7 @@ const ParentConsent = () => {
               <CheckCircle size={48} className="text-primary-strong mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Consent Granted!</h1>
               <p className="text-text-secondary font-body">
-                {childName} can now access peer features. You can manage this from the link in your email.
+                {childName} can now access peer features. We've emailed you a link to your parent dashboard, where you can withdraw consent or delete the account at any time.
               </p>
             </>
           )}

@@ -1,146 +1,217 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.99.2'
+import { escapeHtml, getEmailConfig, sendEmail, type EmailConfig } from '../_shared/email.ts'
+import { newToken, sha256Hex } from '../_shared/tokens.ts'
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.99.2'
 
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const LINK_COOLDOWN_MS = 60 * 1000
+
+// Two kinds of token, both stored only as SHA-256 hashes:
+//   consent token  - one-time, expires, emailed when the child requests consent
+//   manage token   - long-lived, rotated on every grant / resend, emailed after consent is granted
+// Actions: validate-consent + grant-consent use the consent token;
+//          validate + revoke-consent + delete use the manage token;
+//          resend-dashboard-link takes the parent's email instead of a token.
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
-  }
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
   try {
     const body = await req.json()
-    const { action, token } = body
+    const { action } = body ?? {}
+    if (typeof action !== 'string') return json({ error: 'Missing or invalid fields' }, 400)
 
-    if (!action || !token || typeof token !== 'string' || token.length > 100) {
-      return new Response(JSON.stringify({ error: 'Missing or invalid fields' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
+
+    if (action === 'resend-dashboard-link') {
+      const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+      // Same response whether or not the email matched, so this can't be used to probe
+      // which addresses are registered. The work runs after the response is sent so
+      // response time doesn't leak it either.
+      const work = resendDashboardLink(supabase, email).catch(() => console.error('resend-dashboard-link failed'))
+      const runtime = (globalThis as { EdgeRuntime?: { waitUntil: (p: Promise<unknown>) => void } }).EdgeRuntime
+      if (runtime?.waitUntil) runtime.waitUntil(work)
+      else await work
+      return json({ success: true })
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    const supabase = createClient(supabaseUrl, serviceKey)
+    const token = body.token
+    if (!token || typeof token !== 'string' || token.length > 100) return json({ error: 'Missing or invalid fields' }, 400)
+    const tokenHash = await sha256Hex(token)
 
-    // All actions are token-based — look up profile by consent_token
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('user_id, display_name, age_bracket, age_verified, parent_consent_given, created_at, consent_token_expires_at')
-      .eq('consent_token', token)
-      .single()
-
-    if (profileError || !profile) {
-      return new Response(JSON.stringify({ error: 'Invalid or expired token' }), {
-        status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
-
-    // Check token expiry
-    if (profile.consent_token_expires_at && new Date(profile.consent_token_expires_at) < new Date()) {
-      return new Response(JSON.stringify({ error: 'Token has expired' }), {
-        status: 410,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
-
-    if (action === 'validate') {
-      // Also fetch aggregated IGNITE data for the parent dashboard
-      const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString()
-      const { data: igniteSessions } = await supabase
-        .from('barkley_memory')
-        .select('steps_completed, spark_handoff, session_completed, streak_day, created_at')
-        .eq('student_id', profile.user_id)
-
-      const { data: streakData } = await supabase
-        .from('ignite_streaks')
-        .select('current_streak, last_activity_date')
-        .eq('user_id', profile.user_id)
-        .single()
-
-      const allSessions = igniteSessions || []
-      const weeklySessions = allSessions.filter(s => new Date(s.created_at) >= new Date(weekAgo))
-
-      const igniteData = {
-        currentStreak: streakData?.current_streak ?? 0,
-        lastActivity: streakData?.last_activity_date ?? null,
-        weeklySessionCount: weeklySessions.length,
-        weeklyAvgSteps: weeklySessions.length
-          ? Math.round(weeklySessions.reduce((a, s) => a + s.steps_completed, 0) / weeklySessions.length * 10) / 10
-          : 0,
-        weeklySparkHandoffs: weeklySessions.filter(s => s.spark_handoff).length,
-        totalSessions: allSessions.length,
-        todayActive: allSessions.some(s => {
-          const d = new Date(s.created_at)
-          const now = new Date()
-          return d.toDateString() === now.toDateString()
-        }),
+    if (action === 'validate-consent' || action === 'grant-consent') {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, age_verified, consent_token_expires_at, parent_manage_token_hash, parent_email')
+        .eq('consent_token_hash', tokenHash)
+        .maybeSingle()
+      if (!profile) return json({ error: 'Invalid or expired token' }, 404)
+      if (profile.consent_token_expires_at && new Date(profile.consent_token_expires_at) < new Date()) {
+        return json({ error: 'Token has expired' }, 410)
       }
 
-      return new Response(JSON.stringify({
-        display_name: profile.display_name,
-        age_bracket: profile.age_bracket,
-        age_verified: profile.age_verified,
-        parent_consent_given: profile.parent_consent_given,
-        created_at: profile.created_at,
-        ignite: igniteData,
-      }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
+      if (action === 'validate-consent') return json({ display_name: profile.display_name })
 
-    if (action === 'grant-consent') {
-      await supabase
+      // grant-consent: email the parent their dashboard link BEFORE granting, so consent is
+      // never active without a way to revoke it. If the email fails, nothing has changed.
+      const email = getEmailConfig()
+      if (!email || !profile.parent_email) return json({ error: 'Could not complete consent right now' }, 503)
+
+      const manageToken = newToken()
+      const rotate = await supabase
+        .from('profiles')
+        .update({ parent_manage_token_hash: await sha256Hex(manageToken), parent_manage_link_sent_at: new Date().toISOString() })
+        .eq('user_id', profile.user_id)
+      if (rotate.error) return json({ error: 'An error occurred' }, 500)
+
+      const link = `${email.appUrl}/parent-dashboard/${manageToken}`
+      const sent = await sendEmail(email, {
+        to: profile.parent_email,
+        subject: 'Consent confirmed - your DOSE Academy dashboard link',
+        html:
+          `<p>You've given consent for ${escapeHtml(profile.display_name || 'your child')} to use peer features in DOSE Academy.</p>` +
+          `<p>Use this link any time to see what's stored, withdraw consent, or delete the account:</p>` +
+          `<p><a href="${escapeHtml(link)}">Open your parent dashboard</a></p>` +
+          `<p>Keep this email. If you lose it, you can request a new link from the dashboard page.</p>`,
+      })
+      if (!sent) {
+        // Restore the previous manage hash (if any); consent is untouched and the consent link still works.
+        await supabase
+          .from('profiles')
+          .update({ parent_manage_token_hash: profile.parent_manage_token_hash })
+          .eq('user_id', profile.user_id)
+        return json({ error: 'Could not send your confirmation email. Please try again.' }, 502)
+      }
+
+      const grant = await supabase
         .from('profiles')
         .update({
           parent_consent_given: true,
           parent_consent_at: new Date().toISOString(),
           age_verified: true,
-          consent_token: null,
+          consent_token_hash: null,
           consent_token_expires_at: null,
         })
         .eq('user_id', profile.user_id)
+      if (grant.error) return json({ error: 'An error occurred' }, 500)
 
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return json({ success: true })
     }
 
-    if (action === 'revoke-consent') {
-      await supabase
+    if (action === 'validate' || action === 'revoke-consent' || action === 'delete') {
+      const { data: profile } = await supabase
         .from('profiles')
-        .update({
-          parent_consent_given: false,
-          age_verified: false,
-          parent_consent_at: null,
+        .select('user_id, display_name, age_bracket, age_verified, parent_consent_given, created_at')
+        .eq('parent_manage_token_hash', tokenHash)
+        .maybeSingle()
+      if (!profile) return json({ error: 'Invalid or expired token' }, 404)
+
+      if (action === 'validate') {
+        // Aggregated IGNITE data for the parent dashboard
+        const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString()
+        const { data: igniteSessions } = await supabase
+          .from('barkley_memory')
+          .select('steps_completed, spark_handoff, session_completed, streak_day, created_at')
+          .eq('student_id', profile.user_id)
+
+        const { data: streakData } = await supabase
+          .from('ignite_streaks')
+          .select('current_streak, last_activity_date')
+          .eq('user_id', profile.user_id)
+          .maybeSingle()
+
+        const allSessions = igniteSessions || []
+        const weeklySessions = allSessions.filter((s) => new Date(s.created_at) >= new Date(weekAgo))
+
+        const igniteData = {
+          currentStreak: streakData?.current_streak ?? 0,
+          lastActivity: streakData?.last_activity_date ?? null,
+          weeklySessionCount: weeklySessions.length,
+          weeklyAvgSteps: weeklySessions.length
+            ? Math.round(weeklySessions.reduce((a, s) => a + s.steps_completed, 0) / weeklySessions.length * 10) / 10
+            : 0,
+          weeklySparkHandoffs: weeklySessions.filter((s) => s.spark_handoff).length,
+          totalSessions: allSessions.length,
+          todayActive: allSessions.some((s) => new Date(s.created_at).toDateString() === new Date().toDateString()),
+        }
+
+        return json({
+          display_name: profile.display_name,
+          age_bracket: profile.age_bracket,
+          age_verified: profile.age_verified,
+          parent_consent_given: profile.parent_consent_given,
+          created_at: profile.created_at,
+          ignite: igniteData,
         })
-        .eq('user_id', profile.user_id)
+      }
 
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
+      if (action === 'revoke-consent') {
+        // The manage token is kept so the parent can still delete the account afterwards.
+        const { error } = await supabase
+          .from('profiles')
+          .update({ parent_consent_given: false, age_verified: false, parent_consent_at: null })
+          .eq('user_id', profile.user_id)
+        if (error) return json({ error: 'An error occurred' }, 500)
+        return json({ success: true })
+      }
 
-    if (action === 'delete') {
+      // delete
       await supabase.from('profiles').delete().eq('user_id', profile.user_id)
       const { error: deleteError } = await supabase.auth.admin.deleteUser(profile.user_id)
       if (deleteError) throw deleteError
-
-      return new Response(JSON.stringify({ success: true, message: 'Account deleted' }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return json({ success: true, message: 'Account deleted' })
     }
 
-    return new Response(JSON.stringify({ error: 'Unknown action' }), {
-      status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
-  } catch (err) {
-    return new Response(JSON.stringify({ error: 'An error occurred' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return json({ error: 'Unknown action' }, 400)
+  } catch (_err) {
+    return json({ error: 'An error occurred' }, 500)
   }
 })
+
+// Rotates and emails a fresh dashboard link for every consented profile registered to this
+// parent email (one parent may have several children). Rate-limited per profile.
+async function resendDashboardLink(supabase: ReturnType<typeof createClient>, parentEmail: string) {
+  if (!parentEmail || parentEmail.length > 254 || !EMAIL_RE.test(parentEmail)) return
+  const email: EmailConfig | null = getEmailConfig()
+  if (!email) return
+
+  const { data: rows } = await supabase
+    .from('profiles')
+    .select('user_id, display_name, parent_manage_link_sent_at')
+    .eq('parent_email', parentEmail)
+    .eq('parent_consent_given', true)
+    .limit(20)
+
+  const due = (rows ?? []).filter(
+    (r) => !r.parent_manage_link_sent_at || Date.now() - new Date(r.parent_manage_link_sent_at).getTime() >= LINK_COOLDOWN_MS,
+  )
+  if (due.length === 0) return
+
+  const links: { name: string; link: string }[] = []
+  for (const row of due) {
+    const manageToken = newToken()
+    const { error } = await supabase
+      .from('profiles')
+      .update({ parent_manage_token_hash: await sha256Hex(manageToken), parent_manage_link_sent_at: new Date().toISOString() })
+      .eq('user_id', row.user_id)
+    if (!error) {
+      links.push({ name: row.display_name || 'Your child', link: `${email.appUrl}/parent-dashboard/${manageToken}` })
+    }
+  }
+  if (links.length === 0) return
+
+  await sendEmail(email, {
+    to: parentEmail,
+    subject: 'Your DOSE Academy dashboard link',
+    html:
+      `<p>You asked for a new parent dashboard link. Any earlier link no longer works.</p><ul>` +
+      links.map((l) => `<li>${escapeHtml(l.name)}: <a href="${escapeHtml(l.link)}">Open dashboard</a></li>`).join('') +
+      `</ul><p>If you didn't ask for this, you can ignore this email.</p>`,
+  })
+}

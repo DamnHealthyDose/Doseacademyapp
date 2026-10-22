@@ -12,8 +12,6 @@ interface Profile {
   parent_email: string | null;
   parent_consent_given: boolean;
   parent_consent_at: string | null;
-  consent_token: string | null;
-  consent_token_expires_at: string | null;
 }
 
 interface AuthContextType {
@@ -48,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .select('id, user_id, display_name, date_of_birth, age_verified, age_bracket, parent_email, parent_consent_given, parent_consent_at')
       .eq('user_id', userId)
       .single();
-    setProfile(data ? { ...data, consent_token: null, consent_token_expires_at: null } as Profile : null);
+    setProfile(data as Profile | null);
   };
 
   const refreshProfile = async () => {

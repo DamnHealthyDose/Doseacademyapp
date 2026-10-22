@@ -5,7 +5,6 @@ import { ArrowLeft, ShieldCheck, Clock, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { differenceInYears } from 'date-fns';
 
 type AgeStatus = 'input' | 'under13' | 'needs-parent' | 'verified';
 
@@ -32,38 +31,35 @@ const AgeVerification = () => {
     return null;
   }
 
+  // Age bracket, verification and the parental-consent token are set server-side
+  // (verify-age edge function). The browser can't write those columns.
+  const callVerifyAge = async (payload: { dob: string; parent_email?: string }) => {
+    const { data, error } = await supabase.functions.invoke('verify-age', { body: payload });
+    if (error) {
+      let message = error.message;
+      try {
+        const body = await (error as { context?: Response }).context?.json();
+        if (body?.error) message = body.error;
+      } catch { /* keep generic message */ }
+      throw new Error(message);
+    }
+    return data as { status: 'verified' | 'under13' | 'needs-parent' | 'consent-requested' };
+  };
+
   const handleVerify = async () => {
     if (!dob) return;
     setLoading(true);
-
-    const birthDate = new Date(dob);
-    const age = differenceInYears(new Date(), birthDate);
-
-    if (age < 13) {
-      setStatus('under13');
-      setLoading(false);
-      return;
-    }
-
-    if (age < 16) {
-      setStatus('needs-parent');
-      setLoading(false);
-      return;
-    }
-
-    // 16+ — verify immediately
-    const ageBracket = '16+';
-    const { error } = await supabase
-      .from('profiles')
-      .update({ date_of_birth: dob, age_verified: true, age_bracket: ageBracket })
-      .eq('user_id', user.id);
-
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
-      await refreshProfile();
-      setStatus('verified');
-      setTimeout(() => navigate(redirect, { replace: true }), 1500);
+    try {
+      const { status: result } = await callVerifyAge({ dob });
+      if (result === 'verified') {
+        await refreshProfile();
+        setStatus('verified');
+        setTimeout(() => navigate(redirect, { replace: true }), 1500);
+      } else if (result === 'under13' || result === 'needs-parent') {
+        setStatus(result);
+      }
+    } catch (e) {
+      toast({ title: 'Error', description: (e as Error).message, variant: 'destructive' });
     }
     setLoading(false);
   };
@@ -71,30 +67,15 @@ const AgeVerification = () => {
   const handleParentConsent = async () => {
     if (!parentEmail) return;
     setLoading(true);
-
-    const consentToken = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
-
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        date_of_birth: dob,
-        age_bracket: '13-15' as any,
-        parent_email: parentEmail,
-        consent_token: consentToken,
-        consent_token_expires_at: expiresAt,
-        parent_consent_given: false,
-      })
-      .eq('user_id', user.id);
-
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
+    try {
+      await callVerifyAge({ dob, parent_email: parentEmail });
       await refreshProfile();
       toast({
         title: 'Request sent',
-        description: "We've saved your parent's email. This feature will be available once parental consent is verified.",
+        description: "We've emailed your parent or guardian. This feature unlocks once they approve.",
       });
+    } catch (e) {
+      toast({ title: 'Error', description: (e as Error).message, variant: 'destructive' });
     }
     setLoading(false);
   };

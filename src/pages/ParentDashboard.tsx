@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Trash2, XCircle, AlertTriangle, CheckCircle, Flame, TrendingUp, Zap } from 'lucide-react';
@@ -32,6 +32,8 @@ const ParentDashboard = () => {
   const [childData, setChildData] = useState<ChildData | null>(null);
   const [loading, setLoading] = useState(false);
   const [confirmAction, setConfirmAction] = useState<'revoke' | 'delete' | null>(null);
+  const [lostEmail, setLostEmail] = useState('');
+  const [lostSent, setLostSent] = useState(false);
 
   useEffect(() => {
     if (!token) { setStatus('invalid'); return; }
@@ -82,6 +84,24 @@ const ParentDashboard = () => {
     }
     setLoading(false);
     setConfirmAction(null);
+  };
+
+  const handleResendLink = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!lostEmail) return;
+    setLoading(true);
+    try {
+      await fetch(FUNC_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ action: 'resend-dashboard-link', email: lostEmail }),
+      });
+    } catch { /* same message either way */ }
+    setLostSent(true);
+    setLoading(false);
   };
 
   const ignite = childData?.ignite;
@@ -248,6 +268,38 @@ const ParentDashboard = () => {
               <AlertTriangle size={48} className="text-destructive mx-auto mb-4" />
               <h1 className="text-2xl font-heading font-extrabold text-foreground mb-2">Invalid Link</h1>
               <p className="text-text-secondary font-body">This dashboard link is no longer valid.</p>
+
+              <div className="mt-8 text-left">
+                <h2 className="font-heading font-bold text-foreground mb-1">Lost your link?</h2>
+                {lostSent ? (
+                  <p className="text-text-secondary font-body text-sm" role="status">
+                    If that email address is registered with us, we've sent a new dashboard link to it. It can take a minute to arrive.
+                  </p>
+                ) : (
+                  <form onSubmit={handleResendLink}>
+                    <p className="text-text-secondary font-body text-sm mb-3">
+                      Enter the email address you gave as the parent or guardian and we'll send you a new link.
+                    </p>
+                    <label htmlFor="lost-link-email" className="sr-only">Parent or guardian email</label>
+                    <input
+                      id="lost-link-email"
+                      type="email"
+                      required
+                      placeholder="parent@example.com"
+                      value={lostEmail}
+                      onChange={(e) => setLostEmail(e.target.value)}
+                      className="w-full h-12 bg-bg-elevated rounded-card px-4 text-foreground font-body text-base outline-none border-2 border-transparent focus:border-primary-strong transition-colors placeholder:text-text-hint"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!lostEmail || loading}
+                      className="w-full h-12 mt-3 bg-primary text-primary-foreground font-heading font-bold rounded-button disabled:opacity-30"
+                    >
+                      {loading ? 'Sending...' : 'Email me a new link'}
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           )}
         </motion.div>

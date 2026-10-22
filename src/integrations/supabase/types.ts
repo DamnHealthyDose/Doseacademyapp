@@ -134,7 +134,7 @@ export type Database = {
         Row: {
           age_bracket: Database["public"]["Enums"]["age_bracket"] | null
           age_verified: boolean
-          consent_token: string | null
+          consent_token_hash: string | null
           consent_token_expires_at: string | null
           created_at: string
           date_of_birth: string | null
@@ -143,13 +143,15 @@ export type Database = {
           parent_consent_at: string | null
           parent_consent_given: boolean
           parent_email: string | null
+          parent_manage_link_sent_at: string | null
+          parent_manage_token_hash: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           age_bracket?: Database["public"]["Enums"]["age_bracket"] | null
           age_verified?: boolean
-          consent_token?: string | null
+          consent_token_hash?: string | null
           consent_token_expires_at?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -158,13 +160,15 @@ export type Database = {
           parent_consent_at?: string | null
           parent_consent_given?: boolean
           parent_email?: string | null
+          parent_manage_link_sent_at?: string | null
+          parent_manage_token_hash?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           age_bracket?: Database["public"]["Enums"]["age_bracket"] | null
           age_verified?: boolean
-          consent_token?: string | null
+          consent_token_hash?: string | null
           consent_token_expires_at?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -173,6 +177,8 @@ export type Database = {
           parent_consent_at?: string | null
           parent_consent_given?: boolean
           parent_email?: string | null
+          parent_manage_link_sent_at?: string | null
+          parent_manage_token_hash?: string | null
           updated_at?: string
           user_id?: string
         }
