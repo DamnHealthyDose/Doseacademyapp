@@ -1,4 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.99.2'
+import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2.99.2'
 import { escapeHtml, getEmailConfig, sendEmail, type EmailConfig } from '../_shared/email.ts'
 import { newToken, sha256Hex } from '../_shared/tokens.ts'
 
@@ -161,10 +161,31 @@ Deno.serve(async (req) => {
         return json({ success: true })
       }
 
-      // delete
-      await supabase.from('profiles').delete().eq('user_id', profile.user_id)
-      const { error: deleteError } = await supabase.auth.admin.deleteUser(profile.user_id)
-      if (deleteError) throw deleteError
+      // delete: remove everything keyed to the child. Any failure returns an error instead of
+      // success. The profile row (which holds the manage token hash) goes last so the parent
+      // can retry with the same link if a step fails. Deletes are idempotent, so retrying is safe.
+      // Chat history is keyed by browser device_id, not user, so it can't be linked to the child.
+      const userId = profile.user_id
+      for (const [table, column] of [['barkley_memory', 'student_id'], ['ignite_streaks', 'user_id']] as const) {
+        const { error } = await supabase.from(table).delete().eq(column, userId)
+        if (error) {
+          console.error(`delete failed: ${table}`)
+          return json({ error: 'Could not delete all data. Please try again.' }, 500)
+        }
+      }
+
+      // Deleting the auth user also cascades to profiles and user_roles.
+      const { error: authError } = await supabase.auth.admin.deleteUser(userId)
+      if (authError && authError.status !== 404) {
+        console.error('delete failed: auth user')
+        return json({ error: 'Could not delete the account. Please try again.' }, 500)
+      }
+
+      const { error: profileError } = await supabase.from('profiles').delete().eq('user_id', userId)
+      if (profileError) {
+        console.error('delete failed: profiles')
+        return json({ error: 'Could not delete the account. Please try again.' }, 500)
+      }
       return json({ success: true, message: 'Account deleted' })
     }
 
@@ -176,7 +197,7 @@ Deno.serve(async (req) => {
 
 // Rotates and emails a fresh dashboard link for every consented profile registered to this
 // parent email (one parent may have several children). Rate-limited per profile.
-async function resendDashboardLink(supabase: ReturnType<typeof createClient>, parentEmail: string) {
+async function resendDashboardLink(supabase: SupabaseClient, parentEmail: string) {
   if (!parentEmail || parentEmail.length > 254 || !EMAIL_RE.test(parentEmail)) return
   const email: EmailConfig | null = getEmailConfig()
   if (!email) return
