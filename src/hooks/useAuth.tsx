@@ -60,21 +60,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // `loading` must never stay true forever. A session that arrives late still updates user/session below.
     const giveUp = setTimeout(() => setLoading(false), AUTH_TIMEOUT_MS);
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        try {
-          if (session?.user) {
-            await fetchProfile(session.user.id);
-          } else {
-            setProfile(null);
-          }
-        } finally {
-          setLoading(false);
-        }
+    // Don't await Supabase calls inside this callback: it runs inside auth-js's lock/initialization,
+    // so awaiting fetchProfile (which needs getSession) can deadlock the whole client.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        setTimeout(() => {
+          fetchProfile(session.user.id).catch((err) => console.error('fetchProfile failed', err));
+        }, 0);
+      } else {
+        setProfile(null);
       }
-    );
+      setLoading(false);
+    });
 
     supabase.auth.getSession()
       .then(({ data: { session } }) => {

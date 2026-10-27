@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,7 +9,9 @@ import { useToast } from '@/hooks/use-toast';
 const AuthPage = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const redirect = params.get('redirect') || '/squad';
+  // Only same-site paths ("/x", not "//x" or "https://…"), since this is also used to build an OAuth URL.
+  const rawRedirect = params.get('redirect') || '/squad';
+  const redirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/squad';
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -22,11 +24,8 @@ const AuthPage = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // If already logged in, redirect
-  if (user) {
-    navigate(redirect, { replace: true });
-    return null;
-  }
+  // If already logged in, redirect (<Navigate> works on first render; calling navigate() there doesn't).
+  if (user) return <Navigate to={redirect} replace />;
 
   // Block signup if no age check was done (must go through /signup-age-check first)
   const signupAllowed = !!dobParam && !!bracketParam;
@@ -78,7 +77,7 @@ const AuthPage = () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin },
+        options: { redirectTo: `${window.location.origin}${redirect}` },
       });
       if (error) throw error;
     } catch (err: any) {
