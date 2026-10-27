@@ -2,13 +2,17 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAppState } from '@/context/AppContext';
+import { useSettings } from '@/context/SettingsContext';
 
 const breakOptions = ['Get water', 'Stretch', 'Close your eyes'];
 
 const WaveBreak = () => {
   const navigate = useNavigate();
   const { waveSession } = useAppState();
-  const [remaining, setRemaining] = useState(5 * 60); // 5 min
+  const { settings } = useSettings();
+  // Captured once so changing Settings mid-break doesn't reset or skew the running timer.
+  const [totalSeconds] = useState(() => settings.defaultBreakMinutes * 60);
+  const [remaining, setRemaining] = useState(totalSeconds);
   const [running, setRunning] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -42,7 +46,7 @@ const WaveBreak = () => {
   const strokeWidth = 8;
   const radius = (ringSize - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const progress = remaining / (5 * 60);
+  const progress = remaining / totalSeconds;
   const dashOffset = circumference * (1 - progress);
 
   return (

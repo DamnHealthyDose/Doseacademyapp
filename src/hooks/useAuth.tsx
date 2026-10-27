@@ -34,6 +34,9 @@ const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
+// If auth hasn't settled by then (stalled request, lock timeout), stop waiting and treat the visitor as signed out.
+const AUTH_TIMEOUT_MS = 8000;
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -54,29 +57,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    // `loading` must never stay true forever. A session that arrives late still updates user/session below.
+    const giveUp = setTimeout(() => setLoading(false), AUTH_TIMEOUT_MS);
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
+        try {
+          if (session?.user) {
+            await fetchProfile(session.user.id);
+          } else {
+            setProfile(null);
+          }
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      }
-      setLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchProfile(session.user.id).catch((err) => console.error('fetchProfile failed', err));
+        }
+      })
+      .catch((err) => console.error('getSession failed', err))
+      .finally(() => setLoading(false));
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(giveUp);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {

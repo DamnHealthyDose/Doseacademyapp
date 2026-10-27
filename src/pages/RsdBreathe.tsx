@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { MotionConfig, motion } from 'framer-motion';
 
 const INHALE_MS = 4000;
 const HOLD_MS = 2000;
@@ -63,15 +63,18 @@ const RsdBreathe = () => {
       <div className="w-full max-w-[420px] flex flex-col items-center text-center">
         <p className="text-text-hint text-xs font-body mb-12">RSD Junior · Breathe</p>
 
-        <motion.div
-          className="rounded-full flex items-center justify-center bg-rsd-accent/20 border-2 border-rsd-accent/40"
-          animate={{ width: done ? 160 : circleSize, height: done ? 160 : circleSize }}
-          transition={{ duration: phase === 'hold' || done ? 0.3 : 4, ease: 'easeInOut' }}
-        >
-          <span className="text-foreground font-heading font-bold text-base">
-            {done ? '' : phase === 'inhale' ? 'In...' : phase === 'hold' ? 'Hold...' : 'Out...'}
-          </span>
-        </motion.div>
+        {/* The breathing circle always animates, even with Reduce motion on (it's the exercise itself). */}
+        <MotionConfig reducedMotion="never">
+          <motion.div
+            className="rounded-full flex items-center justify-center bg-rsd-accent/20 border-2 border-rsd-accent/40"
+            animate={{ width: done ? 160 : circleSize, height: done ? 160 : circleSize }}
+            transition={{ duration: phase === 'hold' || done ? 0.3 : 4, ease: 'easeInOut' }}
+          >
+            <span className="text-foreground font-heading font-bold text-base">
+              {done ? '' : phase === 'inhale' ? 'In...' : phase === 'hold' ? 'Hold...' : 'Out...'}
+            </span>
+          </motion.div>
+        </MotionConfig>
 
         {/* Cycle dots */}
         <div className="flex gap-2 mt-8">

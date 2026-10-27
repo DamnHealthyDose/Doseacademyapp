@@ -210,3 +210,14 @@
 .animate-streak-pulse {
   animation: streak-pulse 3s ease-in-out infinite;
 }
+
+/* Reduce motion (Settings). `html.reduce-motion` is set from SettingsContext.
+   .animate-spin is excluded so loading spinners don't look frozen. */
+.reduce-motion *:not(.animate-spin),
+.reduce-motion *:not(.animate-spin)::before,
+.reduce-motion *:not(.animate-spin)::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

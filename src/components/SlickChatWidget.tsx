@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useSettings } from '@/context/SettingsContext';
 import slickImg from '@/assets/slick-character.png';
 
 interface Message {
@@ -23,6 +24,7 @@ const getDeviceId = (): string => {
 };
 
 const SlickChatWidget = () => {
+  const { settings } = useSettings();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([WELCOME_MSG]);
   const [input, setInput] = useState('');
@@ -178,6 +180,9 @@ const SlickChatWidget = () => {
       setIsLoading(false);
     }
   };
+
+  // All hooks have run above; hide the whole widget (bubble and panel) when turned off in Settings.
+  if (!settings.showSlick) return null;
 
   return (
     <>

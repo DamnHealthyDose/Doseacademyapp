@@ -1,4 +1,4 @@
-import { Home, Zap, Waves, Heart, Users, Award, Flame, type LucideIcon } from 'lucide-react';
+import { Home, Zap, Waves, Heart, Users, Award, Flame, Settings, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   to: string;
@@ -20,6 +20,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/squad', icon: Users, label: 'Squad', match: '/squad' },
   { to: '/ignite', icon: Flame, label: 'IGNITE', match: '/ignite', hideOnPhone: true },
   { to: '/badges', icon: Award, label: 'Badges' },
+  { to: '/settings', icon: Settings, label: 'Settings' },
 ];
 
 export const isNavActive = (item: NavItem, pathname: string) =>

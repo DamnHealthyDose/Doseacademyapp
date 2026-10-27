@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Rocket } from 'lucide-react';
 import { useAppState } from '@/context/AppContext';
+import { useSettings } from '@/context/SettingsContext';
 import ProgressDots from '@/components/ProgressDots';
 import BottomNav from '@/components/BottomNav';
 
@@ -28,18 +29,21 @@ const variants = {
 const WaveSetup = () => {
   const navigate = useNavigate();
   const { startWave } = useAppState();
+  const { settings } = useSettings();
   const [step, setStep] = useState(0);
   const [task, setTask] = useState('');
-  const [duration, setDuration] = useState<number | null>(null);
+  // null = not picked this session; fall back to the default from Settings.
+  const [picked, setPicked] = useState<number | null>(null);
+  const duration = picked ?? settings.defaultSessionMinutes;
   const [selectedDistractions, setSelectedDistractions] = useState<string[]>([]);
   const [distractionNote, setDistractionNote] = useState('');
 
   const completedSteps: number[] = [];
   if (task.length >= 3) completedSteps.push(0);
-  if (duration !== null) completedSteps.push(1);
+  if (picked !== null || step > 1) completedSteps.push(1);
   if (selectedDistractions.length > 0) completedSteps.push(2);
 
-  const canProceed = step === 0 ? task.length >= 3 : step === 1 ? duration !== null : selectedDistractions.length > 0;
+  const canProceed = step === 0 ? task.length >= 3 : step === 1 ? true :selectedDistractions.length > 0;
 
   const handleNext = () => {
     if (step < 2) {
@@ -47,7 +51,7 @@ const WaveSetup = () => {
     } else {
       const plan = [...selectedDistractions];
       if (distractionNote.trim()) plan.push(distractionNote.trim());
-      startWave(task, duration!, plan);
+      startWave(task, duration, plan);
       navigate('/wave/session');
     }
   };
@@ -119,7 +123,7 @@ const WaveSetup = () => {
                   {durations.map(d => (
                     <button
                       key={d.minutes}
-                      onClick={() => setDuration(d.minutes)}
+                      onClick={() => setPicked(d.minutes)}
                       className={`dose-card flex flex-col items-center gap-1 py-5 border-2 transition-all duration-150 cursor-pointer
                         ${duration === d.minutes ? 'border-primary-strong bg-primary/10 scale-[1.03]' : 'border-transparent hover:border-primary/40'}`}
                     >

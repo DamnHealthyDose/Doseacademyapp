@@ -1,14 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { NAV_ITEMS, isNavActive } from '@/lib/navItems';
-import { useSignOut } from '@/hooks/useSignOut';
 import MobileMenu from './MobileMenu';
 
 const BottomNav = () => {
   const { pathname } = useLocation();
   const isMobile = useIsMobile();
-  const handleSignOut = useSignOut();
 
   // On small screens, show hamburger menu instead of bottom tab bar
   if (isMobile) {
@@ -34,14 +31,6 @@ const BottomNav = () => {
             </Link>
           );
         })}
-        <button
-          onClick={handleSignOut}
-          aria-label="Sign out"
-          className="flex flex-col items-center gap-1 px-1.5 py-2 rounded-button transition-all duration-200 text-text-secondary hover:text-foreground"
-        >
-          <LogOut size={18} />
-          <span className="text-xs font-body font-medium">Sign out</span>
-        </button>
       </div>
     </nav>
   );
