@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, LogOut } from 'lucide-react';
 import { NAV_ITEMS, isNavActive } from '@/lib/navItems';
+import { useSignOut } from '@/hooks/useSignOut';
 import ThemeToggle from './ThemeToggle';
 import WhatsDoseButton from './WhatsDoseButton';
 import logo from '@/assets/dose-logo.png';
@@ -16,6 +17,7 @@ const rsdFocusRing = 'focus-visible:outline focus-visible:outline-2 focus-visibl
 
 const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const { pathname } = useLocation();
+  const handleSignOut = useSignOut();
 
   return (
     <aside
@@ -70,6 +72,14 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
           className={`flex items-center gap-2 min-h-10 rounded-button text-text-secondary hover:text-foreground hover:bg-primary/5 text-xs font-body font-medium transition-colors ${collapsed ? 'justify-center w-10' : 'px-3'} ${focusRing}`}
         >
           {collapsed ? <PanelLeftOpen size={18} /> : <><PanelLeftClose size={18} /> Collapse</>}
+        </button>
+        <button
+          onClick={handleSignOut}
+          aria-label="Sign out"
+          title="Sign out"
+          className={`flex items-center gap-2 min-h-10 rounded-button text-text-secondary hover:text-foreground hover:bg-primary/5 text-xs font-body font-medium transition-colors ${collapsed ? 'justify-center w-10' : 'px-3'} ${focusRing}`}
+        >
+          {collapsed ? <LogOut size={18} /> : <><LogOut size={18} /> Sign out</>}
         </button>
       </div>
     </aside>

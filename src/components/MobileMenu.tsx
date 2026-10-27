@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_ITEMS, isNavActive } from '@/lib/navItems';
+import { useSignOut } from '@/hooks/useSignOut';
 
 const items = NAV_ITEMS.filter((i) => !i.hideOnPhone);
 
 const MobileMenu = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const handleSignOut = useSignOut();
 
   return (
     <>
@@ -54,6 +56,14 @@ const MobileMenu = () => {
                   <span>{item.label}</span>
                 </Link>
               ))}
+              <button
+                onClick={() => { setOpen(false); handleSignOut(); }}
+                aria-label="Sign out"
+                className="flex items-center gap-3 px-4 py-3 rounded-button mt-2 pt-4 border-t border-border transition-all duration-200 font-heading font-bold text-sm text-foreground hover:bg-primary/5 hover:text-primary-strong"
+              >
+                <LogOut size={20} />
+                <span>Sign out</span>
+              </button>
             </motion.nav>
           </>
         )}

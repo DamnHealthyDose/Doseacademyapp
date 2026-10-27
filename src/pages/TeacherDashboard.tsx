@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Users, Flame, AlertTriangle, TrendingUp, ArrowLeft } from 'lucide-react';
+import { BarChart3, Users, Flame, AlertTriangle, TrendingUp, ArrowLeft, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useSignOut } from '@/hooks/useSignOut';
 
 interface SessionRow {
   student_id: string;
@@ -33,6 +34,7 @@ interface StudentSummary {
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const handleSignOut = useSignOut();
   const [sessions, setSessions] = useState<SessionRow[]>([]);
   const [streaks, setStreaks] = useState<StreakRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -142,6 +144,15 @@ const TeacherDashboard = () => {
             </h1>
             <p className="text-text-secondary font-body text-sm">IGNITE session data — aggregated, no raw task text</p>
           </div>
+          <button
+            onClick={handleSignOut}
+            aria-label="Sign out"
+            title="Sign out"
+            className="ml-auto flex items-center gap-2 px-3 py-2 rounded-lg text-text-secondary hover:text-foreground hover:bg-secondary/50 font-heading font-bold text-sm transition-colors"
+          >
+            <LogOut size={18} />
+            <span className="hidden sm:inline">Sign out</span>
+          </button>
         </div>
 
         {/* Time range toggle */}
