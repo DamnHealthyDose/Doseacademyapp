@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# DOSE Academy
 
 TODO: Document your project here
