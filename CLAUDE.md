@@ -38,7 +38,46 @@ and has **no Supabase copy**. Consequences:
 - Students on a shared device see each other's progress.
 - Progress is lost on a new device or when the browser is cleared.
 
-This needs to move to Supabase, keyed by user, **before any school pilot**.
+This move to Supabase is in progress on the `feat/progress-to-supabase` branch —
+see **Progress-to-Supabase status** below for current state and remaining work.
+It must be finished **before any school pilot**.
+
+## Progress-to-Supabase status
+
+Tracks the migration of local-only progress to per-user Supabase rows.
+
+**Done (schema + RLS, on `feat/progress-to-supabase`):**
+- Migrations `20261030000000` (adds `teacher` to the `app_role` enum) and
+  `20261030000100` (tables `student_progress`, `user_settings`, `enrollments`;
+  the `is_teacher_of` helper; enrollment-scoped teacher/admin SELECT on
+  `student_progress`, `ignite_streaks`, `barkley_memory`; explicit DML grants).
+- RLS verified locally: **14/14 checks passing**.
+
+**Decisions:**
+- No import of old localStorage progress — the **server row is the source of
+  truth**; a default row is created on first sign-in.
+- `dose-wave-session` (the in-progress timer) **stays local**.
+- Teachers can read `barkley_memory.task_input` (student-written task text) —
+  clinical sign-off obtained.
+- Parents read progress **only** via the `parent-account-action` edge function
+  (token-validated), never directly.
+- **No moderator access** to student data.
+
+**How to test:** `supabase/tests/rls_progress_test.sql` (header explains how to
+run it against the local stack).
+
+**Next — client phase, stages 1–5:**
+1. `AppContext` — hydrate from / upsert to `student_progress`.
+2. `SettingsContext` — move prefs to `user_settings`.
+3. Parent `get_progress` action in `parent-account-action`.
+4. Teacher dashboard gated on the `teacher` role.
+5. IGNITE notice: "Your teacher can see the tasks you add here."
+
+**Known gap:** no admin UI for enrollments yet — create enrollment rows via SQL
+for the pilot.
+
+**Rule:** never `link` or `push` to a remote Supabase project from this branch;
+all testing is local (`supabase start` / `supabase db reset --local`).
 
 ## Naming: `barkley_memory` is Slick's session table
 
