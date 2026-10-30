@@ -39,3 +39,15 @@ and has **no Supabase copy**. Consequences:
 - Progress is lost on a new device or when the browser is cleared.
 
 This needs to move to Supabase, keyed by user, **before any school pilot**.
+
+## Naming: `barkley_memory` is Slick's session table
+
+The companion/chatbot in DOSE Academy is **Slick**. The Supabase table
+`barkley_memory` is a **legacy name** from an earlier "Barkley" concept —
+**do not rename it** (it would break the deployed schema, edge functions, and
+`src/integrations/supabase/types.ts`). It stores IGNITE session rows written
+**only** by `src/hooks/useIgnite.ts`: `student_id`, `age_group`, `task_input`
+(the student's free-typed task), `steps_completed`, `spark_handoff`,
+`session_completed`, `streak_day`, `created_at`. It is **not** a Slick chat log —
+chat transcripts live in `chat_conversations` / `chat_messages`. The only
+student-authored free text here is `task_input`.
