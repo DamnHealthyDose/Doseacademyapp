@@ -197,3 +197,19 @@ CREATE POLICY "Teachers and admins can view enrolled student sessions"
   ON public.barkley_memory FOR SELECT
   TO authenticated
   USING (public.is_teacher_of(student_id) OR public.has_role(auth.uid(), 'admin'));
+
+-- ============================================================================
+-- 6. Table privileges
+-- ============================================================================
+-- These tables hold per-user data; anon never touches them. Grant DML to
+-- authenticated explicitly rather than relying on platform default privileges.
+-- RLS still governs which rows are visible/writable (enrollment writes stay
+-- admin-only via the policies above; the DELETE grant is what lets the
+-- admin-only DELETE policy take effect at all).
+REVOKE ALL ON public.student_progress FROM anon;
+REVOKE ALL ON public.user_settings    FROM anon;
+REVOKE ALL ON public.enrollments      FROM anon;
+
+GRANT SELECT, INSERT, UPDATE         ON public.student_progress TO authenticated;
+GRANT SELECT, INSERT, UPDATE         ON public.user_settings    TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.enrollments      TO authenticated;
